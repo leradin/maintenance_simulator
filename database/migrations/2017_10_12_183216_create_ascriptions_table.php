@@ -15,6 +15,8 @@ class CreateAscriptionsTable extends Migration
     {
         Schema::create('ascriptions', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name',150);
+            $table->char('abbreviation',20);
             $table->timestamps();
         });
     }

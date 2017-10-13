@@ -15,6 +15,8 @@ class CreateSoftwareBehaviorsTable extends Migration
     {
         Schema::create('software_behaviors', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name',255);
+            $table->string('description',255)->nullable();
             $table->timestamps();
         });
     }

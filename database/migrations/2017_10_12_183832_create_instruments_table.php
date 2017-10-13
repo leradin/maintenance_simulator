@@ -15,6 +15,8 @@ class CreateInstrumentsTable extends Migration
     {
         Schema::create('instruments', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name',50);
+            $table->string('description',100)->nullable();
             $table->timestamps();
         });
     }

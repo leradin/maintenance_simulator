@@ -15,6 +15,8 @@ class CreateErrorTypesTable extends Migration
     {
         Schema::create('error_types', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name',25);
+            $table->char('abbreviation',10);
             $table->timestamps();
         });
     }
