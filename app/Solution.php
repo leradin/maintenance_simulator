@@ -33,4 +33,9 @@ class Solution extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+     public function activitie(){
+        return $this->belongsTo('\App\Activitie');
+    }
+
 }

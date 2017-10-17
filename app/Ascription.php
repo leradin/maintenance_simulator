@@ -33,4 +33,8 @@ class Ascription extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function student(){
+        return $this->belongsTo('\App\Student');
+    }
 }
