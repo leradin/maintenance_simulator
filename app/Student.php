@@ -31,4 +31,12 @@ class Student extends Model
         return $this->belongsToMany('\App\Practice','practice_student_pivot')
             ->withPivot('practice_id');
     }
+
+    public function degree(){
+        return $this->hasOne('\App\Degree');
+    }
+
+    public function ascription(){
+        return $this->hasOne('\App\Ascription');
+    }
 }

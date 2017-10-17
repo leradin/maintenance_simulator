@@ -33,4 +33,9 @@ class UnitType extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function practice(){
+        return $this->belongsTo('\App\Practice');
+    }
+
 }

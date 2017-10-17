@@ -33,4 +33,8 @@ class Activitie extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function solution(){
+        return $this->hasOne('\App\Solution');
+    }
 }
