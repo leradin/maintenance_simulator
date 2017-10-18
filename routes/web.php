@@ -12,5 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::resource('exercise', 'ExerciseController');
+
+Route::resource('stage', 'StageController');
+
+Route::resource('practice', 'PracticeController');
+
+Route::resource('student', 'StudentController');
+
+Route::resource('user', 'UserController');
