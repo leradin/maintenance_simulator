@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSolutionsTable extends Migration
+class CreatePracticeActivitiePivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateSolutionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('solutions', function (Blueprint $table) {
+        Schema::create('practice_activitie_pivot', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',255);
             $table->integer('activitie_id')->unsigned();
             $table->foreign('activitie_id')->references('id')->on('activities');
-            $table->timestamps();
+            $table->integer('practice_id')->unsigned();
+            $table->foreign('practice_id')->references('id')->on('practices');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateSolutionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solutions');
+        Schema::dropIfExists('practice_activitie_pivot');
     }
 }

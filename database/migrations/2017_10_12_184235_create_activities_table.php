@@ -17,7 +17,6 @@ class CreateActivitiesTable extends Migration
             $table->increments('id');
             $table->string('name',255);
             $table->string('description',255)->nullable();
-            $table->tinyInteger('priority');
             $table->timestamps();
         });
     }

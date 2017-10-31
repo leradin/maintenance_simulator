@@ -15,8 +15,8 @@ class CreateMaterialsTable extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',50);
-            $table->string('description',100)->nullable();
+            $table->string('name',100);
+            $table->string('description',255)->nullable();
             $table->timestamps();
         });
     }

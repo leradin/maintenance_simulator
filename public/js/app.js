@@ -7979,11 +7979,12 @@ escapeMarkup:function(a){return a&&"string"===typeof a?a.replace(/&/g,"&amp;"):a
                 },
 				// --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
                 "ajaxUserCall": {
-                    "url": "ajaxValidateFieldUser",
+                    "url": "http://127.0.0.1:8000/studentE",
 					// you may want to pass extra data on the ajax call
-                    "extraData": "name=eric",
+                    //"extraData": "name=eric",
                     "alertTextLoad": "* Cargando, espere por favor",
-                    "alertText": "* Este nombre de usuario ya se encuentra usado"
+                    "alertText": "* Esta matrícula ya se encuentra usada",
+                    "alertTextOk": "* Esta matrícula está disponible",
                 },
                 "ajaxNameCall": {
 					// remote json service location
@@ -7995,6 +7996,16 @@ escapeMarkup:function(a){return a&&"string"===typeof a?a.replace(/&/g,"&amp;"):a
 					// speaks by itself
                     "alertTextLoad": "* Cargando, espere por favor"
                 },
+                // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
+                "enrollmentExists": {
+                    "url": "http://127.0.0.1:8000/studentE",
+                    // you may want to pass extra data on the ajax call
+                    //"extraData": "name=eric",
+                    "alertText": "* Este nombre ya se encuentra usado",
+                    "alertTextLoad": "* Cargando, espere por favor",
+                    "alertTextOk": "* Este nombre está disponible"
+                },
+
                 "validate2fields": {
                     "alertText": "* Por favor entrar HELLO"
                 }
@@ -8415,6 +8426,7 @@ escapeMarkup:function(a){return a&&"string"===typeof a?a.replace(/&/g,"&amp;"):a
                         	var type = (options.ajaxmethod) ? options.ajaxmethod : "GET";
 			var url = (options.ajaxFormValidationURL) ? options.ajaxFormValidationURL : form.attr("action");
                         	var dataType = (options.dataType) ? options.dataType : "json";
+
 			$.ajax({
 				type: type,
 				url: url,
@@ -9339,6 +9351,7 @@ escapeMarkup:function(a){return a&&"string"===typeof a?a.replace(/&/g,"&amp;"):a
 
 			 // If there is an error or if the the field is already validated, do not re-execute AJAX
 			 if (!options.isError && !methods._checkAjaxFieldStatus(field.attr("id"), options)) {
+
 				 $.ajax({
 					 type: options.ajaxFormValidationMethod,
 					 url: rule.url,

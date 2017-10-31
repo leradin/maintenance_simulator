@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use Illuminate\Http\Request;
+use Lang;
 
 class StudentController extends Controller
 {
@@ -14,7 +15,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::all();
+        return view('student.index',['students' => $students]);
     }
 
     /**
@@ -24,7 +26,10 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $degrees = \App\Degree::all();
+        $ascriptions = \App\Ascription::all();
+
+        return view('student.create',['degrees' => $degrees,'ascriptions' => $ascriptions]);
     }
 
     /**
@@ -35,7 +40,15 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $student = Student::create($request->except('_token'));
+            return redirect('student')->with('status', 'Profile updated!');
+        }catch(\Exception $e){            
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_enrollment_duplicate');
+            return back()->withInput()->with('message', $message);
+        }
+
     }
 
     /**
@@ -46,7 +59,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+
     }
 
     /**
@@ -81,5 +94,17 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         //
+    }
+
+    public function search($enrollment){
+        //return $enrollment;
+        //$student = Student::where('enrollment', $enrollment)->first();
+            $arrayToJs = array();
+            $arrayToJs[0] = "enrollment";
+            $arrayToJs[1] = false;
+        //if($student){
+            return \Response::json($arrayToJs);
+        //}
+        //return \Response::json($arrayToJs);
     }
 }

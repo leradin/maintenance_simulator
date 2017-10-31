@@ -1,5 +1,5 @@
 
-            <div id="default">
+            <!--div id="default">
 
                 <div class="widget-fluid userInfo clearfix">
                     <div class="image">
@@ -327,4 +327,4 @@
                         <strong>Heads up!</strong> This alert...
                     </div>                  
                 </div>
-            </div>   
+            </div-->   

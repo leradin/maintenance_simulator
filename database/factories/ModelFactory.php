@@ -22,3 +22,10 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\ErrorType::class, function(Faker\Generator $faker){
+	return [
+		'name' => $faker->words(10,true),
+		'abbreviation' => $faker->realText()
+	];
+});

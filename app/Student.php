@@ -33,10 +33,10 @@ class Student extends Model
     }
 
     public function degree(){
-        return $this->hasOne('\App\Degree');
+        return $this->hasOne('App\Degree', 'id', 'degree_id');
     }
 
     public function ascription(){
-        return $this->hasOne('\App\Ascription');
+        return $this->hasOne('App\Ascription', 'id', 'ascription_id');
     }
 }

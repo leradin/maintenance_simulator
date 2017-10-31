@@ -25,7 +25,7 @@ class Activitie extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description','priority'];
+    protected $fillable = ['name','description'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -34,7 +34,13 @@ class Activitie extends Model
      */
     protected $guarded = ['id'];
 
-    public function solution(){
-        return $this->hasOne('\App\Solution');
+    public function practices(){
+        return $this->belongsToMany('\App\Practice','practice_activitie_pivot')
+            ->withPivot('practice_id');
+    }
+
+    public function solutions(){
+        return $this->belongsToMany('\App\Solution','activitie_solution_pivot')
+            ->withPivot('activitie_id');
     }
 }

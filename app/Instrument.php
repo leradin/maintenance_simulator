@@ -33,4 +33,9 @@ class Instrument extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function practices(){
+        return $this->belongsToMany('\App\Practice','practice_instrument_pivot')
+            ->withPivot('practice_id');
+    }
 }

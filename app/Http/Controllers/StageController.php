@@ -14,7 +14,8 @@ class StageController extends Controller
      */
     public function index()
     {
-        //
+        $stages = Stage::all();
+        return view('stage.index',['stages' => $stages]);
     }
 
     /**
@@ -24,7 +25,8 @@ class StageController extends Controller
      */
     public function create()
     {
-        //
+        $practices = \App\Practice::all();
+        return view('stage.create',['practices' => $practices]);
     }
 
     /**

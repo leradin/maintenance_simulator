@@ -25,7 +25,7 @@ class Knowledge extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description','priority'];
+    protected $fillable = ['name','description'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -33,4 +33,9 @@ class Knowledge extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function practices(){
+        return $this->belongsToMany('\App\Practice','practice_knowledge_pivot')
+            ->withPivot('practice_id');
+    }
 }

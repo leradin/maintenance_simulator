@@ -80,10 +80,12 @@ $(document).ready(function(){
     // Select2
     if($(".select").length > 0){
         $(".select").select2();
-        $(".select").on("change", function(e) {             
+        $(".select")
+        .on("change", function(e) {             
             notify('Select','Value changed: '+e.val);
+            console.log(e);
         });
-    }
+        }
     // Tagsinput
     if($(".tags").length > 0)
         $(".tags").tagsInput({'width':'100%',
@@ -396,7 +398,7 @@ $(document).ready(function(){
                                                      "aTargets": [ -1 , 0]}]});
         if($(".fTable").length > 0)
             $(".fTable").dataTable({bSort: true, 
-                                    "iDisplayLength": 5, "aLengthMenu": [5,10,25,50,100], // can be removed for basic 10 items per page
+                                    "iDisplayLength": 10, "aLengthMenu": [5,10,25,50,100], // can be removed for basic 10 items per page
                                     "aoColumnDefs": [{"bSortable": false,
                                                      "aTargets": [ -1 , 0]}]});
         

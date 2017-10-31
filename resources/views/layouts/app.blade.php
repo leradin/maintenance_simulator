@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />        
     <![endif]-->        
     
-    <title>.::CESISCCAM::.</title>
+    <title>.::CESISCCAM - @yield('title')</title>
     
     <link href="{{ mix('css/app.css')}}" rel="stylesheet" type="text/css" />
     <!--[if lt IE 10]>
@@ -18,6 +18,8 @@
 
     <script src="{{ mix('js/app.js')}}"></script>
     
+    @yield('js') 
+
 </head>
 <body>    
 
@@ -28,10 +30,25 @@
     <div class="navigation">
         @include('layouts.menu')
     </div>
+    
+
+    @if(!Request::is('/'))
+        <div class="breadCrumb clearfix">    
+            <ul id="breadcrumbs">
+                @yield('breadCrumb')
+            </ul>        
+        </div>
+    @endif
 
     <div class="content">
         @yield('content')
     </div> 
+
+    <div class="footer">
+        @yield('footer')
+    </div> 
+
+    @yield('modal')
 
 </body>
 </html>

@@ -16,7 +16,6 @@ class CreatePracticesTable extends Migration
         Schema::create('practices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',255);
-            $table->dateTime('date_time');
             $table->time('duration');
             $table->integer('error_type_id')->unsigned();
             $table->foreign('error_type_id')->references('id')->on('error_types');

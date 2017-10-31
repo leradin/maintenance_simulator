@@ -19,7 +19,7 @@ class CreatePracticeDetailsPivotTable extends Migration
             $table->foreign('material_id')->references('id')->on('materials');
             $table->integer('tool_id')->unsigned();
             $table->foreign('tool_id')->references('id')->on('tools');
-            $table->integer('instrument_id')->unsigned();
+            /*$table->integer('instrument_id')->unsigned();
             $table->foreign('instrument_id')->references('id')->on('instruments');
             $table->integer('knowledge_id')->unsigned();
             $table->foreign('knowledge_id')->references('id')->on('knowledge');
@@ -30,10 +30,9 @@ class CreatePracticeDetailsPivotTable extends Migration
             $table->integer('hardware_behavior_id')->unsigned();
             $table->foreign('hardware_behavior_id')->references('id')->on('hardware_behaviors');
             $table->integer('activitie_id')->unsigned();
-            $table->foreign('activitie_id')->references('id')->on('activities');
+            $table->foreign('activitie_id')->references('id')->on('activities');*/
             $table->integer('practice_id')->unsigned();
             $table->foreign('practice_id')->references('id')->on('practices');
-            $table->timestamps();
         });
     }
 

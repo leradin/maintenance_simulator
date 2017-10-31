@@ -8,13 +8,13 @@
                 <div class="label"><span class="icos-user2"></span></div>
                 <div class="body" style="width: 160px;">
                     <div class="itemLink">
-                        <a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a>
+                        <a href="#"><span class="glyphicon glyphicon-cog"></span> @lang('messages.settings')</a>
                     </div>
                     <div class="itemLink">
-                        <a href="#"><span class="glyphicon glyphicon-comment"></span> Messages</a>
+                        <a href="#"><span class="glyphicon glyphicon-comment"></span> @lang('messages.messages')</a>
                     </div>                    
                     <div class="itemLink">
-                        <a href="#"><span class="glyphicon glyphicon-off"></span> Logoff</a>
+                        <a href="#"><span class="glyphicon glyphicon-off"></span> @lang('messages.logout')</a>
                     </div>                                        
                 </div>                
             </div>            
@@ -46,14 +46,14 @@
                             <div class="col-md-12">
                                 <span class="help-block">Themes:</span>
                                 <div class="themes">
-                                    <a href="#" data-theme="" class="tip" title="Default"><img src="img/themes/default.jpg"/></a>                                    
-                                    <a href="#" data-theme="ssDaB" class="tip" title="DaB"><img src="img/themes/dab.jpg"/></a>
-                                    <a href="#" data-theme="ssTq" class="tip" title="Tq"><img src="img/themes/tq.jpg"/></a>
-                                    <a href="#" data-theme="ssGy" class="tip" title="Gy"><img src="img/themes/gy.jpg"/></a>
-                                    <a href="#" data-theme="ssLight" class="tip" title="Light"><img src="img/themes/light.jpg"/></a>
-                                    <a href="#" data-theme="ssDark" class="tip" title="Dark"><img src="img/themes/dark.jpg"/></a>
-                                    <a href="#" data-theme="ssGreen" class="tip" title="Green"><img src="img/themes/green.jpg"/></a>
-                                    <a href="#" data-theme="ssRed" class="tip" title="Red"><img src="img/themes/red.jpg"/></a>
+                                    <a href="#" data-theme="" class="tip" title="Default"><img src="{{ asset('img/themes/default.jpg') }}"/></a>                                    
+                                    <a href="#" data-theme="ssDaB" class="tip" title="DaB"><img src="{{ asset('img/themes/dab.jpg')}}"/></a>
+                                    <a href="#" data-theme="ssTq" class="tip" title="Tq"><img src="{{ asset('img/themes/tq.jpg')}}"/></a>
+                                    <a href="#" data-theme="ssGy" class="tip" title="Gy"><img src="{{ asset('img/themes/gy.jpg')}}"/></a>
+                                    <a href="#" data-theme="ssLight" class="tip" title="Light"><img src="{{ asset('img/themes/light.jpg')}}"/></a>
+                                    <a href="#" data-theme="ssDark" class="tip" title="Dark"><img src="{{ asset('img/themes/dark.jpg')}}"/></a>
+                                    <a href="#" data-theme="ssGreen" class="tip" title="Green"><img src="{{ asset('img/themes/green.jpg')}}"/></a>
+                                    <a href="#" data-theme="ssRed" class="tip" title="Red"><img src="{{ asset('img/themes/red.jpg')}}"/></a>
                                 </div>
                             </div>
                         </div>

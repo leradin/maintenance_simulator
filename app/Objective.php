@@ -25,7 +25,7 @@ class Objective extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description','prority'];
+    protected $fillable = ['name','description'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -33,4 +33,9 @@ class Objective extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function practices(){
+        return $this->belongsToMany('\App\Practice','practice_objective_pivot')
+            ->withPivot('practice_id');
+    }
 }
