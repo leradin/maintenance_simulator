@@ -36,6 +36,6 @@ class Exercise extends Model
 
     public function stages(){
         return $this->belongsToMany('\App\Stage','exercise_stage_pivot')
-            ->withPivot('stage_id');
+            ->withPivot('stage_id','date_time','structure');
     }
 }

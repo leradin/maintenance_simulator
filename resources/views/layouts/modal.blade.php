@@ -16,7 +16,7 @@
                        
       </div>
       <div class="modal-footer">
-        <button class="btn btn-info" type="button" onClick="$('#validate_modal').validationEngine('hide');">@lang('messages.hide_prompts')</button>
+        <button id="hide_prompts" class="btn btn-info" type="button" onClick="$('#validate_modal').validationEngine('hide');">@lang('messages.hide_prompts')</button>
         <button id="save" class="btn btn-primary" type="submit">@lang('messages.submit')</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">@lang('messages.close')</button>
       </div>

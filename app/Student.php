@@ -26,10 +26,22 @@ class Student extends Model
      * @var array
      */
     protected $fillable = ['enrollment','names','lastnames','degree_id','ascription_id'];
+    
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
 
-    public function practices(){
+    /*public function practices(){
         return $this->belongsToMany('\App\Practice','practice_student_pivot')
             ->withPivot('practice_id');
+    }*/
+
+    public function stages(){
+        return $this->belongsToMany('\App\Stage','stage_student_pivot')
+            ->withPivot('stage_id');
     }
 
     public function degree(){

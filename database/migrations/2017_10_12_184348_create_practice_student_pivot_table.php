@@ -13,14 +13,14 @@ class CreatePracticeStudentPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('practice_student_pivot', function (Blueprint $table) {
+        /*Schema::create('practice_student_pivot', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('practice_id')->unsigned();
             $table->foreign('practice_id')->references('id')->on('practices');
             $table->char('student_enrollment');
             $table->foreign('student_enrollment')->references('enrollment')->on('students');
             $table->timestamps();
-        });
+        });*/
     }
 
     /**

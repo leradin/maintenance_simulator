@@ -4,6 +4,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Redis = require('ioredis');
 var chalk = require('chalk');
+var zmq = require('zeromq')
+  , sock = zmq.socket('pub');
+
+sock.bindSync('tcp://127.0.0.1:7002');
+console.log('Publisher bound to port 7002');
 
 // CONSTANST
 const CHANNEL_NAME = 'test-channel';
@@ -20,6 +25,7 @@ redis.on('message', function(channel, message) {
     console.log(chalk.blue('Message Recieved: '+message));
     message = JSON.parse(message);
     io.emit(channel + ':' + message.event, message.data);
+    sock.send(['ADA', message]);
 });
 
 http.listen(3000, function(){

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExerciseStagePivotTable extends Migration
+class CreateStageStudentPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateExerciseStagePivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('exercise_stage_pivot', function (Blueprint $table) {
+        Schema::create('stage_student_pivot', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('exercise_id')->unsigned();
-            $table->foreign('exercise_id')->references('id')->on('exercises');
             $table->integer('stage_id')->unsigned();
             $table->foreign('stage_id')->references('id')->on('stages');
-            $table->dateTime('date_time');
-            $table->longText('structure');
+            $table->integer('student_id')->unsigned();
+            $table->foreign('student_id')->references('id')->on('students');
         });
     }
 
@@ -31,6 +29,6 @@ class CreateExerciseStagePivotTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exercise_stage_pivot');
+        Schema::dropIfExists('stage_student_pivot');
     }
 }

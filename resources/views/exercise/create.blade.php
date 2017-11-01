@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 
-@section('title', 'Crear Escenario')
+@section('title', 'Crear Ejercicio')
 
 @section('js')
     <script>
@@ -39,7 +39,38 @@
                 }
             });
 
-            $("a").on("click",function(){
+            $('tr td:first-child input[type="checkbox"]').click( function() {
+               console.log($(this).val());
+               console.log($(this).closest('tr').find("td:eq(3) select option:selected").val());
+            });
+
+            $.datepicker.regional['es'] = {
+                closeText: 'Cerrar',
+                prevText: '< Ant',
+                nextText: 'Sig >',
+                currentText: 'Hoy',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+                dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+                weekHeader: 'Sm',
+                dateFormat: 'dd/mm/yy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['es']);
+
+            $("#date_time").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function(date){
+                    notify('Selección','Fecha : '+date);
+                }
+            });
+
+            /*$("a").on("click",function(){
                 var id = $(this).attr("data-id");
                 var name = $(this).attr("data-name");
                 var url = $(this).attr("href");
@@ -167,16 +198,15 @@
                         }
                     });
                 }
-
-            });
+            });*/
 
         });
     </script>
 @endsection
 @section('breadCrumb')
     <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
-    <li><a href="{{ url('stage') }}">@lang('messages.title_stage')</a></li>
-    <li>@lang('messages.title_create_stage')</li>
+    <li><a href="{{ url('stage') }}">@lang('messages.title_exercise')</a></li>
+    <li>@lang('messages.title_create_exercise')</li>
 @endsection
 
 @section('content')
@@ -186,9 +216,9 @@
                 <div class="widget">
                     <div class="head">
                         <div class="icon"><i class="icosg-bookmark"></i></div>
-                        <h2>@lang('messages.title_create_stage')</h2>
+                        <h2>@lang('messages.title_create_exercise')</h2>
                     </div>    
-                    {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'stage.store','autocomplete' =>'off']) !!}    
+                    {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'exercise.store','autocomplete' =>'off']) !!}    
                     <div class="block-fluid">
 
                         <div class="form-group">
@@ -206,33 +236,43 @@
                                 <input type="text" value="{{ old('description') }}" name="description" class="form-control validate[maxSize[100]]" />
                                 <span class="help-block">@lang('messages.required_max_100')</span>
                             </div>
-                        </div> 
+                        </div>
 
                         <div class="form-group">
-                            <div class="col-md-2">@lang('messages.practices')</div>
+                            <div class="col-md-2">@lang('messages.date_time')</div>
+                            <div class="col-md-10">                                                            
+                                <input type="text" value="{{ old('date_time') }}" name="date_time" id="date_time" class="form-control validate[required]"/>
+                            </div>
+                        </div>            
+
+                        <div class="form-group">
+                            <div class="col-md-2">@lang('messages.stages')</div>
                             <div class="col-md-10">
-                                <!--input type="text" name="practice_id" id="practice_id" /-->
                                 <table  id="practices_table" cellpadding="0" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox" class="checkall"/></th>
                                         <th width="30%">@lang('messages.tr_name')</th>
-                                        <th width="20%">@lang('messages.tr_duration')</th>
-                                        <th width="20%">@lang('messages.tr_error_type')</th>
-                                        <th width="20%">@lang('messages.tr_unit_type')</th>
+                                        <th width="50%">@lang('messages.tr_description')</th>
+                                        <th width="10%" class="TAC">@lang('messages.tr_assignment')</th>
                                         <th width="10%" class="TAC">@lang('messages.tr_actions')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($practices as $practice)
+                                    @foreach($stages as $stage)
                                         <tr>
-                                        <td><input type="checkbox" value="{{ $practice->id }}" name="practices_id[]" /></td>
-                                        <td>{{ $practice->name }}</td>
-                                        <td>{{ $practice->duration }}</td>
-                                        <td>{{ $practice->errorType->name }}</td>
-                                        <td>{{ $practice->unitType->name }}</td>
+                                        <td><input type="checkbox" value="{{ $stage->id }}" name="stages_id[]" /></td>
+                                        <td>{{ $stage->name }}</td>
+                                        <td>{{ $stage->description }}</td>
+                                        <td>
+                                            <select name="students_id[]" class="select" style="width: 100%;">
+                                                @foreach($students as $student)
+                                                    <option value="{{ $student->id}}">{{ $student->names}} ({{ $student->lastnames}})</option>
+                                                @endforeach                     
+                                            </select>
+                                        </td>
                                         <td class="TAC">
-                                             <a data-id="{{ $practice->id }}" data-name="{{ $practice->name }}" class="icon-button"><span class="glyphicon glyphicon-info-sign"></span></a>  
+                                             <a data-id="{{ $stage->id }}" data-name="{{ $stage->name }}" class="icon-button"><span class="glyphicon glyphicon-info-sign"></span></a>  
                                         </td>
                                     </tr>   
                                     @endforeach                          

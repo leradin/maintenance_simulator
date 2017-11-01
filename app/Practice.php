@@ -34,10 +34,10 @@ class Practice extends Model
      */
     protected $guarded = ['id'];
 
-    public function students(){
+    /*public function students(){
         return $this->belongsToMany('\App\Student','practice_student_pivot')
-            ->withPivot('student_id');
-    }
+            ->withPivot('enrollment');
+    }*/
 
     public function materials(){
         return $this->belongsToMany('\App\Material','practice_material_pivot')

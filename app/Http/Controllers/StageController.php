@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Stage;
 use Illuminate\Http\Request;
+use Lang;
 
 class StageController extends Controller
 {
@@ -37,7 +38,22 @@ class StageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+        $stage = Stage::create([
+            'name' =>  $request->name,
+            'description' => $request->description,
+        ]);
+
+        if($request->has('practices_id')) {
+            foreach($request->get('practices_id') as $key => $value){
+                $stage->practices()->attach($value);
+            }
+        }
+
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_stage');
+
+        return redirect('/stage')->with('message',$message);
     }
 
     /**
@@ -82,6 +98,17 @@ class StageController extends Controller
      */
     public function destroy(Stage $stage)
     {
-        //
-    }
+        $stage = Stage::find($stage->id);
+        if($stage->practices){
+            foreach ($stage->practices as $practice) {
+                $stage->practices()->detach($practice->id);
+            }
+        }
+        
+        $stage->delete();
+
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_stage');
+
+        return redirect('/stage')->with('message',$message);    }
 }

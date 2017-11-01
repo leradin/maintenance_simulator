@@ -31,6 +31,11 @@ return [
     'title_create_stage' => 'Crear Escenario',
     'title_edit_stage' => 'Editar Escenario',
     'title_delete_stage' => 'Eliminar Escenario',
+    // Exercises
+    'title_exercise' => 'Ejercicios',
+    'title_create_exercise' => 'Crear Ejercicio',
+    'title_edit_exercise' => 'Editar Ejercicio',
+    'title_delete_exercise' => 'Eliminar Ejercicio',
     // Columns Student
     'tr_enrollment' => 'Matrícula',
     'tr_names'  => 'Nombre(s)',
@@ -44,6 +49,8 @@ return [
     'tr_error_type' => 'Tipo Error',
     'tr_unit_type' => 'Tipo Unidad',
     'tr_description' => 'Descripción',
+    // Columns Exercise
+    'tr_assignment' => 'Asignación',
     //Form Student
     'enrollment' => 'Matrícula',
     'names' => 'Nombre(s)',
@@ -74,6 +81,7 @@ return [
     'sedam_fails' => 'Fallas SEDAM',
     'moxa_fails' => 'Fallas MOXA',
     'practices' => 'Prácticas',
+    'stages' => 'Escenarios',
     'script' => 'Rutina',
     'topic' => 'Topico',
     'create_error_type' => 'Agregar Tipo de Error',
@@ -98,6 +106,12 @@ return [
     'step_5_practice' => 'Sensores,Fallas Sedam,Fallas Moxa',
     'success_practice' => 'Práctica Generada Correctamente.',
     'remove_practice' => 'Práctica Eliminada Correctamente.',
+    //*** Steps Stage ***//
+    'success_stage' => 'Escenario Generado Correctamente.',
+    'remove_stage' => 'Escenario Eliminado Correctamente.',
+    //*** Steps Stage ***//
+    'success_exercise' => 'Ejercicio Generado Correctamente.',
+    'remove_exercise' => 'Ejercicio Eliminado Correctamente.',
     //------------------------------
     'step_1' => 'Paso 1',
     'step_2' => 'Paso 2',

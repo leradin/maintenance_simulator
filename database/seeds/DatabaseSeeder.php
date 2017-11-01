@@ -18,5 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ToolTableSeeder::class);
         $this->call(MaterialTableSeeder::class);
         $this->call(InstrumentTableSeeder::class);
+        $this->call(DegreeTableSeeder::class);
+        $this->call(AscriptionTableSeeder::class);
+        $this->call(StudentTableSeeder::class);
     }
 }

@@ -57,9 +57,9 @@ Route::resource('sedam_fail', 'SedamFailController');
 
 Route::resource('moxa_fail', 'MoxaFailController');
 
-Route::get('fire', function () {
+Route::get('fire',function () {
     // this fires the event
-    event(new \App\Events\EventName('Lenin'));
+    event(new \App\Events\EventName("algooo"));
     return "event fired";
 });
 

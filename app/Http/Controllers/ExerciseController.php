@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exercise;
 use Illuminate\Http\Request;
+use Lang;
 
 class ExerciseController extends Controller
 {
@@ -14,7 +15,8 @@ class ExerciseController extends Controller
      */
     public function index()
     {
-        //
+        $exercises = Exercise::all();
+        return view('exercise.index',['exercises' => $exercises]);
     }
 
     /**
@@ -24,7 +26,10 @@ class ExerciseController extends Controller
      */
     public function create()
     {
-        //
+        $stages =  \App\Stage::all();
+        $students =  \App\Student::all();
+        return view('exercise.create',['stages' => $stages,
+                                       'students' => $students]);
     }
 
     /**
@@ -35,7 +40,24 @@ class ExerciseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+        $exercise = Exercise::create([
+            'name' =>  $request->name,
+            'description' => $request->description
+        ]);
+        
+        if($request->has('stages_id')) {
+            foreach($request->get('stages_id') as $key => $value){
+                $exercise->stages()->attach($value,['date_time'=>$request->date_time,'structure'=>'{}']);
+                $stage = \App\Stage::find($value);
+                $stage->students()->attach($request->get('students_id')[$key]);
+            }
+        }
+
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_exercise');
+
+        return redirect('/exercise')->with('message',$message);
     }
 
     /**
@@ -46,7 +68,18 @@ class ExerciseController extends Controller
      */
     public function show(Exercise $exercise)
     {
-        //
+        $exercise = Exercise::with('stages')->find($exercise->id);
+        //return response()->json($exercise->toArray());
+        foreach ($exercise->stages as $stage) {
+            //obteniendo los datos de un task específico
+            //echo $stage->name;
+            //obteniendo datos de la tabla pivot por task
+            //echo ;
+            //return response()->json($stage->pivot->structure);
+            $json  = json_decode($stage->pivot->structure, JSON_PRETTY_PRINT);
+            //$url = route('fire');
+            event(new \App\Events\EventName($json));
+        }
     }
 
     /**

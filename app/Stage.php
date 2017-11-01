@@ -18,7 +18,7 @@ class Stage extends Model
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +37,10 @@ class Stage extends Model
     public function practices(){
         return $this->belongsToMany('\App\Practice','stage_practice_pivot')
             ->withPivot('practice_id');
+    }
+    public function students(){
+        return $this->belongsToMany('\App\Student','stage_student_pivot')
+            ->withPivot('student_id');
     }
 
     public function exercises(){

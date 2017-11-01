@@ -163,17 +163,8 @@ class PracticeController extends Controller
      */
     public function show(Practice $practice)
     {
-        $practice = Practice::find($practice->id);
-        return response()->json($practice->sensors);
-
-        //foreach ($practice->sensors as $sensor) {
-            //obteniendo los datos de un menu específico
-            //echo $sensor->name;
-            //echo $sensor->description;
-            //obteniendo datos de la tabla pivot por menu
-            //echo $menu->pivot->task_id;
-            //echo $menu->pivot->status;
-        //}
+        $practice = Practice::with('materials','tools','instruments','knowledge','objectives','activities','hardwareBehaviors','softwareBehaviors','sensors','sedamFails','moxaFails','unitType','errorType')->find($practice->id);
+        return response()->json($practice->toArray());
     }
 
     /**
