@@ -25,7 +25,7 @@ class Exercise extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description'];
+    protected $fillable = ['name','description','status'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -36,6 +36,10 @@ class Exercise extends Model
 
     public function stages(){
         return $this->belongsToMany('\App\Stage','exercise_stage_pivot')
-            ->withPivot('stage_id','date_time','structure');
+            ->withPivot('stage_id','date_time','structure','table_id');
+    }
+
+    public function unitType(){
+        return $this->belongsTo('App\UnitType');
     }
 }

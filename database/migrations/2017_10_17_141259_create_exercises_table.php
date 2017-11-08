@@ -17,6 +17,7 @@ class CreateExercisesTable extends Migration
             $table->increments('id');
             $table->string('name',50);
             $table->string('description',100)->nullable();
+            $table->integer('status')->unsigned();
             $table->timestamps();
         });
     }

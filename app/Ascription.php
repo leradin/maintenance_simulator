@@ -34,7 +34,7 @@ class Ascription extends Model
      */
     protected $guarded = ['id'];
 
-    public function student(){
-        return $this->belongsTo('\App\Student');
+    public function user(){
+        return $this->belongsTo('\App\User');
     }
 }

@@ -18,7 +18,7 @@
 @endsection
 
 @section('breadCrumb')
-    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
     <li>@lang('messages.title_exercise')</li>
 @endsection
 
@@ -51,10 +51,16 @@
                                         <td>{{ $exercise->name }}</td>
                                         <td>{{ $exercise->description }}</td>
                                         <td class="TAC">
-                                            {!! Form::open(['route' => ['exercise.destroy',$exercise],'method' => 'DELETE']) !!}
-                                                 <a href="{{ route('exercise.show',['exercise' => 1]) }}" class="icon-button"><span class="glyphicon glyphicon-ok"></span></a> 
+                                            @if($exercise->status == 0)
+                                            {!! Form::open(['route' => ['exercise.destroy',$exercise],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este ejercicio?');"]) !!}
+                                                 <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button"><span class="glyphicon glyphicon-play"></span></a>                    
                                                 <button class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
                                             {!!Form::close()!!}
+                                            @elseif($exercise->status == 1)
+                                                <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button"><span class="glyphicon glyphicon-stop "></span></a>
+                                            @else
+                                                <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                            @endif
                                         </td>
                                     </tr>   
                                     @endforeach                          

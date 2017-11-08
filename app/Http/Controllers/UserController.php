@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Lang;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        $users = User::all();
+        return view('user.index',['users' => $users]);
     }
 
     /**
@@ -24,7 +30,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        $degrees = \App\Degree::all();
+        $ascriptions = \App\Ascription::all();
+        return view('user.create',['degrees' => $degrees,'ascriptions' => $ascriptions]);
     }
 
     /**
@@ -35,7 +43,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+        $user = User::create($request->except(['_token','confirm_password']));
+        
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_user');
+
+        return redirect('/user')->with('message',$message);
     }
 
     /**
@@ -80,6 +94,12 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user = User::find($user->id);
+        $user->delete();
+
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_user');
+
+        return redirect('/user')->with('message',$message);
     }
 }

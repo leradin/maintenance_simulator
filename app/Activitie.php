@@ -43,4 +43,19 @@ class Activitie extends Model
         return $this->belongsToMany('\App\Solution','activitie_solution_pivot')
             ->withPivot('activitie_id');
     }
+
+    // override the toArray function (called by toJson)
+    public function toArray() {
+        // get the original array to be displayed
+        $data = parent::toArray();
+
+        // change the value of the 'mime' key
+        if ($this->solutions) {
+            $data['solution'] = $this->solutions->first();//$this->solutions->name;
+        } else {
+            $data['solution'] = null;
+        }
+
+        return $data;
+    }
 }

@@ -25,7 +25,7 @@ class UnitType extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','abbreviation'];
+    protected $fillable = ['name','abbreviation','command'];
 
     /**
      * The attributes that aren't mass assignable.

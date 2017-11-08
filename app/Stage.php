@@ -38,9 +38,9 @@ class Stage extends Model
         return $this->belongsToMany('\App\Practice','stage_practice_pivot')
             ->withPivot('practice_id');
     }
-    public function students(){
-        return $this->belongsToMany('\App\Student','stage_student_pivot')
-            ->withPivot('student_id');
+    public function users(){
+        return $this->belongsToMany('\App\User','stage_user_pivot')
+            ->withPivot('user_id');
     }
 
     public function exercises(){

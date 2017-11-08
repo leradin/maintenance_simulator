@@ -18,7 +18,7 @@
 @endsection
 
 @section('breadCrumb')
-    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
     <li>@lang('messages.title_practice')</li>
 @endsection
 
@@ -55,7 +55,7 @@
                                         <td>{{ $practice->errorType->name }}</td>
                                         <td>{{ $practice->unitType->name }}</td>
                                         <td class="TAC">
-                                            {!! Form::open(['route' => ['practice.destroy',$practice],'method' => 'DELETE']) !!}
+                                            {!! Form::open(['route' => ['practice.destroy',$practice],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar esta práctica?');"]) !!}
                                                 <button class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
                                             {!!Form::close()!!}
                                         </td>

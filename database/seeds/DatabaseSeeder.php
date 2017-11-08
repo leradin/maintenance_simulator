@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        
         $this->call(ErrorTypeTableSeeder::class);
         $this->call(UnitTypeTableSeeder::class);
         $this->call(SensorTableSeeder::class);
@@ -20,6 +20,16 @@ class DatabaseSeeder extends Seeder
         $this->call(InstrumentTableSeeder::class);
         $this->call(DegreeTableSeeder::class);
         $this->call(AscriptionTableSeeder::class);
-        $this->call(StudentTableSeeder::class);
+        $this->call(UserTableSeeder::class);
+        //$this->call(StudentTableSeeder::class);
+        $this->call(ActivitieTableSeeder::class);
+        $this->call(AscriptionTableSeeder::class);
+        $this->call(HardwareBehaviorTableSeeder::class);
+        $this->call(KnowledgeTableSeeder::class);
+        $this->call(MoxaFailsTableSeeder::class);
+        $this->call(ObjectiveTableSeeder::class);
+        $this->call(SedamFailsTableSeeder::class);
+        $this->call(SoftwareBehaviorTableSeeder::class);
+        $this->call(SolutionTableSeeder::class);
     }
 }

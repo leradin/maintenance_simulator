@@ -174,7 +174,7 @@
     </script>
 @endsection
 @section('breadCrumb')
-    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
     <li><a href="{{ url('stage') }}">@lang('messages.title_stage')</a></li>
     <li>@lang('messages.title_create_stage')</li>
 @endsection

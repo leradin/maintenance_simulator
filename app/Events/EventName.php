@@ -23,9 +23,7 @@ class EventName implements ShouldBroadcast
      */
     public function __construct($message)
     {
-        $this->data = array(
-            'power'=> $message
-        );
+        $this->data = array($message);
     }
 
     /**

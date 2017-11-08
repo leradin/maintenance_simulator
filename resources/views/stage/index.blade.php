@@ -18,7 +18,7 @@
 @endsection
 
 @section('breadCrumb')
-    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
     <li>@lang('messages.title_stage')</li>
 @endsection
 
@@ -51,7 +51,7 @@
                                         <td><a href="#">{{ $stage->name }}</a></td>
                                         <td>{{ $stage->description }}</td>
                                         <td class="TAC">
-                                            {!! Form::open(['route' => ['stage.destroy',$stage],'method' => 'DELETE']) !!}
+                                            {!! Form::open(['route' => ['stage.destroy',$stage],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este escenario?');"]) !!}
                                                 <button class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
                                             {!!Form::close()!!}
                                         </td>

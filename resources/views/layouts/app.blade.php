@@ -32,7 +32,7 @@
     </div>
     
 
-    @if(!Request::is('/'))
+    @if(!Request::is('home'))
         <div class="breadCrumb clearfix">    
             <ul id="breadcrumbs">
                 @yield('breadCrumb')

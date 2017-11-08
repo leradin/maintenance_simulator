@@ -19,6 +19,8 @@ class CreateExerciseStagePivotTable extends Migration
             $table->foreign('exercise_id')->references('id')->on('exercises');
             $table->integer('stage_id')->unsigned();
             $table->foreign('stage_id')->references('id')->on('stages');
+            $table->integer('table_id')->unsigned();
+            $table->foreign('table_id')->references('id')->on('unit_types');
             $table->dateTime('date_time');
             $table->longText('structure');
         });

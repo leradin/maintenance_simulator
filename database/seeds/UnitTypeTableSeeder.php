@@ -25,27 +25,27 @@ class UnitTypeTableSeeder extends Seeder
             'created_at' => $date,
             'updated_at' => $date
 	    	),
-	    	array(
-	        'name' => 'Patrulla Costera',
-            'abbreviation' => 'PC',
+            array(
+            'name' => 'Infanteria de Marina',
+            'abbreviation' => 'IM',
             'created_at' => $date,
             'updated_at' => $date
-	    	),
-	    	array(
-	        'name' => 'Patrulla Embarcada',
+            ),
+            array(
+            'name' => 'Patrulla Embarcada',
             'abbreviation' => 'PE',
             'created_at' => $date,
             'updated_at' => $date
-	    	),
-	    	array(
-	        'name' => 'Mando',
+            ),
+            array(
+            'name' => 'Mando',
             'abbreviation' => 'MA',
             'created_at' => $date,
             'updated_at' => $date
-	    	),
+            ),
 	    	array(
-	        'name' => 'Infanteria de Marina',
-            'abbreviation' => 'IM',
+	        'name' => 'Patrulla Costera',
+            'abbreviation' => 'PC',
             'created_at' => $date,
             'updated_at' => $date
 	    	)

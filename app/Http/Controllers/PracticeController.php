@@ -8,6 +8,10 @@ use Lang;
 
 class PracticeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -199,6 +203,7 @@ class PracticeController extends Controller
     public function destroy(Practice $practice)
     {
         $practice = Practice::find($practice->id);
+
         if($practice->materials){
             foreach ($practice->materials as $material) {
                 $practice->materials()->detach($material->id);
@@ -246,9 +251,10 @@ class PracticeController extends Controller
         }
         if($practice->sedamFails){
             foreach ($practice->sedamFails as $sedamFail) {
-                $practice->sedamFails()->detach($sedamFails->id);
+                $practice->sedamFails()->detach($sedamFail->id);
             }
         }
+
         if($practice->moxaFails){
             foreach ($practice->moxaFails as $moxaFail) {
                 $practice->moxaFails()->detach($moxaFail->id);

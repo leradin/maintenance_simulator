@@ -10,10 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/home', 'HomeController@index');
 
 Route::resource('exercise', 'ExerciseController');
 
@@ -59,14 +56,25 @@ Route::resource('moxa_fail', 'MoxaFailController');
 
 Route::get('fire',function () {
     // this fires the event
-    event(new \App\Events\EventName("algooo"));
-    return "event fired";
+    //event(new \App\Events\EventName("algooo"));
+    //return "event fired";
+    $commands = ['cd /Users/leninvladimirramirez/Development/laravel/maintenance_simulator/storage/app/public/grabacion',
+        'screen -d -m ./grabacionMando.sh'
+            ];
+    SSH::run($commands, function($line){
+        echo $line.PHP_EOL;
+    });
 });
 
-Route::get('test', function () {
-    // this checks for the event
-    return view('home');
+Route::get('fire2',function () {
+    $commands = ['cd /Users/leninvladimirramirez/Development/laravel/maintenance_simulator/storage/app/public/grabacion',
+        'screen -d -m ./killgrabacionMando.sh'
+    ];
+    SSH::run($commands, function($line){
+        echo $line.PHP_EOL;
+    });
 });
+
 
 Route::get('studentE/', function(){
 	//if ($this->user_model->email_exists($this->input->get('fieldValue'))) {
@@ -90,4 +98,8 @@ Route::get('studentE/', function(){
     //    echo json_encode(array('email', TRUE));
     //}
 });
+
+
+
+Auth::routes();
 

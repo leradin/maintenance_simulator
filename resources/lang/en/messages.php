@@ -42,6 +42,7 @@ return [
     'tr_lastnames' => 'Apellidos',
     'tr_degree' => 'Grado',
     'tr_ascription' => 'Adscripción',
+    'tr_type' => 'Tipo',
     // Columns Practice
     'tr_name' => 'Nombre',
     'tr_date_time'  => 'Fecha Hora',
@@ -51,12 +52,14 @@ return [
     'tr_description' => 'Descripción',
     // Columns Exercise
     'tr_assignment' => 'Asignación',
+    'tr_table_number' => 'Número de Mesa',
     //Form Student
     'enrollment' => 'Matrícula',
     'names' => 'Nombre(s)',
     'lastnames' => 'Apellidos',
     'degree' => 'Grado',
     'ascription' => 'Adscripción',
+    'type' => 'Tipo',
     'create_degree' => 'Agregar Grado',
     'create_ascription' => 'Agregar Adscripción',
     'abbreviation' => 'Abreviación', 
@@ -109,9 +112,15 @@ return [
     //*** Steps Stage ***//
     'success_stage' => 'Escenario Generado Correctamente.',
     'remove_stage' => 'Escenario Eliminado Correctamente.',
-    //*** Steps Stage ***//
+    //*** Exercise Stage ***//
     'success_exercise' => 'Ejercicio Generado Correctamente.',
     'remove_exercise' => 'Ejercicio Eliminado Correctamente.',
+    'start_exercise' => 'Ejercicio Iniciado Correctamente.',
+    'end_exercise' => 'Ejercicio Finalizado Correctamente.',
+    'fail_exercise' => 'Algún Ejercicio Se Encuentra Iniciado.',
+    //*** User  ***//
+    'success_user' => 'Usuario Generado Correctamente.',
+    'remove_user' => 'Usuario Eliminado Correctamente.',
     //------------------------------
     'step_1' => 'Paso 1',
     'step_2' => 'Paso 2',

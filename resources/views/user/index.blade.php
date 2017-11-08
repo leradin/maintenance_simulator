@@ -2,16 +2,30 @@
 
 
 @section('title', 'Usuarios')
-
+@section('js')
+    <script>
+        $(document).ready(function(){
+            $('#users_table').dataTable({
+                "bPaginate": true,
+                "bSort": true,
+                "sSearch" : true,
+                "oLanguage": {
+                    "sUrl": "http://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+                }
+            });
+        });
+    </script>
+@endsection
 
 @section('breadCrumb')
-    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
     <li>@lang('messages.title_user')</li>
 @endsection
 
 @section('content')
     <div class="row">
             <div class="col-md-12">
+                @include('layouts.message') 
                 <div class="widget">
                     <div class="head">
                         <div class="icon"><span class="icosg-user1"></span></div>
@@ -21,54 +35,44 @@
                         </ul>                         
                     </div>                
                         <div class="block-fluid">
-                            <table class="fTable" cellpadding="0" cellspacing="0" width="100%">
+                            <table id="users_table" cellpadding="0" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox" class="checkall"/></th>
-                                        <th width="25%">Name</th>
-                                        <th width="20%">Product</th>
-                                        <th width="20%">Status</th>
-                                        <th width="20%">Date</th>
-                                        <th width="15%" class="TAC">Actions</th>
+                                        <th width="10%">@lang('messages.tr_enrollment')</th>
+                                        <th width="20%">@lang('messages.tr_names')</th>
+                                        <th width="20%">@lang('messages.tr_lastnames')</th>
+                                        <th width="20%">@lang('messages.tr_degree')</th>
+                                        <th width="20%">@lang('messages.tr_ascription')</th>
+                                        <th width="10%">@lang('messages.tr_type')</th>
+                                        <th width="10%" class="TAC">@lang('messages.tr_actions')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    @foreach($users as $user)
+                                        <tr>
                                         <td><input type="checkbox" name="order[]" value="528"/></td>
-                                        <td><a href="#">Dmitry Ivaniuk</a></td>
-                                        <td>Product #212</td>
-                                        <td><span class="label label-danger">New</span></td>
-                                        <td>24/11/2012</td>
-                                        <td class="TAC">
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-ok"></span></a> 
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-pencil"></span></a>
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <td><a href="#">{{ $user->enrollment }}</a></td>
+                                        <td>{{ $user->names }}</td>
+                                        <td>{{ $user->lastnames }}</td>
+                                        <td>{{ $user->degree->name }}</td>
+                                        <td>{{ $user->ascription->name }}</td>
+                                        <td>
+                                            @if($user->user)
+                                                <span class="label label-info">Sistema</span>
+                                            @else
+                                                <span class="label label-success">Estudiante</span>
+                                            @endif 
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" name="order[]" value="527"/></td>
-                                        <td><a href="#">John Doe</a></td>
-                                        <td>Product #132</td>
-                                        <td><span class="label label-danger">New</span></td>
-                                        <td>24/11/2012</td>
                                         <td class="TAC">
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-ok"></span></a> 
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-pencil"></span></a>
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-trash"></span></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" name="order[]" value="526"/></td>
-                                        <td><a href="#">Alex Fruz</a></td>
-                                        <td>Product #53</td>
-                                        <td><span class="label label-danger">New</span></td>
-                                        <td>23/11/2012</td>
-                                        <td class="TAC">
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-ok"></span></a> 
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-pencil"></span></a>
-                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-trash"></span></a>
+                                            {!! Form::open(['route' => ['user.destroy',$user],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este usuario?');"]) !!}
+                                                <button class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
+                                            {!!Form::close()!!}
+                                            <!--a href="#" class="icon-button"><span class="glyphicon glyphicon-ok"></span></a> 
+                                            <a href="#" class="icon-button"><span class="glyphicon glyphicon-pencil"></span></a-->
                                         </td>
                                     </tr>   
+                                    @endforeach                          
                                 </tbody>
                             </table>                    
                         </div> 
