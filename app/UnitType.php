@@ -38,4 +38,8 @@ class UnitType extends Model
         return $this->belongsTo('\App\Practice');
     }
 
+    //public function stage(){
+    //    return $this->belongsTo('\App\Stage');
+    //}
+
 }

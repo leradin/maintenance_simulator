@@ -19,7 +19,6 @@ class CreatePracticeMoxaFailPivotTable extends Migration
             $table->foreign('practice_id')->references('id')->on('practices');
             $table->integer('moxa_fail_id')->unsigned();
             $table->foreign('moxa_fail_id')->references('id')->on('moxa_fails');
-            $table->timestamps();
         });
     }
 

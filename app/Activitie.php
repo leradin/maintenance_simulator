@@ -45,7 +45,7 @@ class Activitie extends Model
     }
 
     // override the toArray function (called by toJson)
-    public function toArray() {
+    /*public function toArray() {
         // get the original array to be displayed
         $data = parent::toArray();
 
@@ -57,5 +57,5 @@ class Activitie extends Model
         }
 
         return $data;
-    }
+    }*/
 }

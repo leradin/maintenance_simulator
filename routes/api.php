@@ -29,11 +29,13 @@ Route::post('register', 'api\UserController@register');
 
 Route::group(['middleware' => 'auth:api'], function(){
 
+	// details for user
 	Route::post('details', 'api\UserController@details');
-
-	Route::post('exercise/{id}','api\ExerciseController@ver');
-	Route::post('currentExercise','api\ExerciseController@current');
-
+	//details for exercise
+	Route::post('exercise/{user_id}','api\ExerciseController@show');
+	Route::post('finished_exercises','api\ExerciseController@finishedExercises');
 	Route::post('practice/{id}','api\PracticeController@show');
-
+	Route::post('practice_answer','api\PracticeController@practiceAnswer');
+	Route::post('practice_quialify','api\PracticeController@practiceQualify');
+	Route::post('practice_user_answer','api\PracticeController@practiceUserAnswer');
 });

@@ -19,7 +19,6 @@ class CreateStagePracticePivotTable extends Migration
             $table->foreign('stage_id')->references('id')->on('stages');
             $table->integer('practice_id')->unsigned();
             $table->foreign('practice_id')->references('id')->on('practices');
-            $table->timestamps();
         });
     }
 

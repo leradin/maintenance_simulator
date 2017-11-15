@@ -34,8 +34,13 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($value);
     }
 
+    public function practices(){
+        return $this->belongsToMany('\App\Practice','practice_user_pivot')
+            ->withPivot('practice_id','answer','passed');
+    }
+
     public function stages(){
-        return $this->belongsToMany('\App\Stage','stage_student_pivot')
+        return $this->belongsToMany('\App\Stage','stage_user_pivot')
             ->withPivot('stage_id');
     }
 
@@ -45,5 +50,10 @@ class User extends Authenticatable
 
     public function ascription(){
         return $this->hasOne('App\Ascription', 'id', 'ascription_id');
+    }
+
+    public function exercises(){
+        return $this->belongsToMany('\App\Exercise','exercise_stage_pivot')
+            ->withPivot('id','exercise_id','stage_id','practice_id','user_id','date_time','structure','table_id');
     }
 }

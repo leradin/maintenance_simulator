@@ -5,6 +5,12 @@
 @section('js')
     <script>
         $(document).ready(function(){
+            $( "a" ).tooltip({
+                show: {
+                    effect: "slideDown",
+                    delay: 250
+                }
+            });
             $('#exercises_table').dataTable({
                 "bPaginate": true,
                 "bSort": true,
@@ -31,7 +37,7 @@
                         <div class="icon"><span class="icosg-file"></span></div>
                         <h2>@lang('messages.title_exercise')</h2>
                         <ul class="buttons">
-                            <li><a href="{{ url("exercise/create") }}"><span class="icosg-plus"></span></a></li>
+                            <li><a href="{{ url("exercise/create") }}" title="@lang('messages.create_exercise')"><span class="icosg-plus"></span></a></li>
                         </ul>                         
                     </div>                
                         <div class="block-fluid">
@@ -57,9 +63,10 @@
                                                 <button class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
                                             {!!Form::close()!!}
                                             @elseif($exercise->status == 1)
-                                                <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button"><span class="glyphicon glyphicon-stop "></span></a>
+                                                <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.end2_exercise')"><span class="glyphicon glyphicon-stop"></span></a>
+                                                <a href="{{ route('exercise.show',['exercise' => $exercise,'play' => 1]) }}" class="icon-button" title="@lang('messages.see_exercise')"><span class=" glyphicon glyphicon-eye-open"></span></a>
                                             @else
-                                                <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                                <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.info_see_exercise')"><span class="glyphicon glyphicon-info-sign"></span></a>
                                             @endif
                                         </td>
                                     </tr>   

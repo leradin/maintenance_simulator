@@ -36,10 +36,13 @@ class Exercise extends Model
 
     public function stages(){
         return $this->belongsToMany('\App\Stage','exercise_stage_pivot')
-            ->withPivot('stage_id','date_time','structure','table_id');
+            ->withPivot('id','exercise_id','stage_id','user_id','date_time','structure','table_id');
     }
 
-    public function unitType(){
-        return $this->belongsTo('App\UnitType');
+    // New
+    public function users(){
+        return $this->belongsToMany('\App\User','exercise_stage_pivot')
+            ->withPivot('id','exercise_id','stage_id','user_id','date_time','structure','table_id');
     }
+    
 }

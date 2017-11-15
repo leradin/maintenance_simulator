@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePracticeStudentPivotTable extends Migration
+class CreatePracticeUserPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreatePracticeStudentPivotTable extends Migration
      */
     public function up()
     {
-        /*Schema::create('practice_student_pivot', function (Blueprint $table) {
+        Schema::create('practice_user_pivot', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('practice_id')->unsigned();
             $table->foreign('practice_id')->references('id')->on('practices');
-            $table->char('student_enrollment');
-            $table->foreign('student_enrollment')->references('enrollment')->on('students');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->text('answer');
+            $table->boolean('passed')->nullable();
             $table->timestamps();
-        });*/
+        });
     }
 
     /**
@@ -30,6 +32,6 @@ class CreatePracticeStudentPivotTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('practice_student_pivot');
+        Schema::dropIfExists('practice_user_pivot');
     }
 }

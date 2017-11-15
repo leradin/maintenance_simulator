@@ -19,7 +19,6 @@ class CreatePracticeSedamFailPivotTable extends Migration
             $table->foreign('practice_id')->references('id')->on('practices');
             $table->integer('sedam_fail_id')->unsigned();
             $table->foreign('sedam_fail_id')->references('id')->on('sedam_fails');
-            $table->timestamps();
         });
     }
 

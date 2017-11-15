@@ -101,6 +101,7 @@ return [
     'create_sensor'  => 'Agregar Sensor',
     'create_sedam_fail'  => 'Agregar Falla Sedam',
     'create_moxa_fail'  => 'Agregar Falla Moxa', 
+    'start_practice' => 'Iniciar Práctica',
     //*** Steps Practice ***// 
     'step_1_practice' => 'Datos Generales',
     'step_2_practice' => 'Materiales,Herramientas e Instrumentos',
@@ -118,6 +119,14 @@ return [
     'start_exercise' => 'Ejercicio Iniciado Correctamente.',
     'end_exercise' => 'Ejercicio Finalizado Correctamente.',
     'fail_exercise' => 'Algún Ejercicio Se Encuentra Iniciado.',
+    'info_see_exercise' => 'Ver información.',
+    'create_exercise' => 'Crear Ejercicio.',
+    'end2_exercise' => 'Finalizar Ejercicio.',
+    'see_exercise' => 'Ver Ejercicio.',
+    'table' => 'Mesa',
+    'actions' => 'Acciones',
+    //*** Exercise play ***//
+    'enable_disabled' => 'Activar/Desactivar',
     //*** User  ***//
     'success_user' => 'Usuario Generado Correctamente.',
     'remove_user' => 'Usuario Eliminado Correctamente.',

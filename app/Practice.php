@@ -93,8 +93,17 @@ class Practice extends Model
         return $this->belongsToMany('\App\MoxaFail','practice_moxa_fail_pivot')
             ->withPivot('moxa_fail_id');
     }
-    
 
+    public function stages(){
+        return $this->belongsToMany('\App\Stage','stage_practice_pivot')
+            ->withPivot('pratice_id');
+    }
+
+     public function users(){
+        return $this->belongsToMany('\App\User','practice_user_pivot')
+            ->withPivot('user_id','answer','passed','id')->withTimestamps();
+    }
+    
     public function unitType(){
         return $this->belongsTo('\App\UnitType');
     }
@@ -102,4 +111,6 @@ class Practice extends Model
     public function errorType(){
         return $this->belongsTo('\App\ErrorType');
     }
+
+    
 }

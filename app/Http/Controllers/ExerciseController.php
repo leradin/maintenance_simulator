@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exercise;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Lang;
 use SSH;
 
@@ -263,8 +264,10 @@ class ExerciseController extends Controller
             'unit_id' => 2,
             'stage_id' => 4,
             'unit' => $this->unit
-        ]; 
+        ];
+        $route = Route::getCurrentRoute()->getName();
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -318,10 +321,13 @@ class ExerciseController extends Controller
                 $structure['exercise'] = $exercise;
                 $structure['tracks'] = $this->tracks;
                 $structure['stage'] = $this->cabins;
+
                 
+
                 $exercise->stages()->attach($value,['date_time'=>$request->date_time,
                                                     'structure'=>json_encode($structure),
-                                                    'table_id' =>$tableId]);
+                                                    'table_id' =>$tableId,
+                                                    'user_id' => $userId]);
                 $stage = \App\Stage::find($value);
                 $stage->users()->attach($userId);
             }
@@ -339,10 +345,11 @@ class ExerciseController extends Controller
      * @param  \App\Exercise  $exercise
      * @return \Illuminate\Http\Response
      */
-    public function show(Exercise $exercise)
+    public function show(Exercise $exercise,Request $request)
     {
-        
-            $exercise = Exercise::with('stages')->find($exercise->id);
+           
+            $exercise = Exercise::with('stages','unitType')->find($exercise->id);
+            //dd($exercise);
             //start exercise
             if($exercise->status==0){
                 if(!$this->isStartedExercise()){
@@ -358,7 +365,10 @@ class ExerciseController extends Controller
                     }
                     $message['type'] = 'success';
                     $message['status'] = Lang::get('messages.start_exercise');
-                    return redirect('/exercise')->with('message',$message);
+                    //return redirect('/exercise')->with('message',$message);
+                    return view('exercise.play',['message' => $message,
+                                                 'exercise' => $exercise
+                                                ]);
                 }else{
                     $message['type'] = 'error';
                     $message['status'] = Lang::get('messages.fail_exercise');
@@ -366,6 +376,14 @@ class ExerciseController extends Controller
                 }
             // finish exercise
             }else if($exercise->status==1){
+
+                if($request->get('play')){
+                    $message['type'] = 'success';
+                    $message['status'] = Lang::get('messages.start_exercise');
+                    return view('exercise.play',['message' => $message,
+                                                 'exercise' => $exercise
+                                                ]);
+                }
                 $exercise->status = 2;
                 $exercise->save();
 
@@ -407,9 +425,26 @@ class ExerciseController extends Controller
      * @param  \App\Exercise  $exercise
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Exercise $exercise)
-    {
-        //
+    public function destroy(Exercise $exercise){
+        $exercise = Exercise::find($exercise->id);
+
+        if($exercise->stages){
+            foreach ($exercise->stages as $stage) {
+                $exercise->stages()->detach($stage->id);
+                if($stage->users){
+                    foreach ($stage->users as $user) {
+                        $stage->users()->detach($user->id);
+                    }
+                }
+            }
+        }
+        
+        $exercise->delete();
+
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_exercise');
+
+        return redirect('/exercise')->with('message',$message);
     }
 
 
@@ -417,40 +452,41 @@ class ExerciseController extends Controller
         $commands = ['cd /Users/leninvladimirramirez/scripts/logs',
         'screen -d -m ./startLogsMaster.sh'
             ];
-        SSH::run($commands, function($line){
-            echo $line.PHP_EOL;
-        });
-        return true;
+        $this->executeCommand($commands);
     }
 
     private function endLogExercise(){
         $commands = ['cd /Users/leninvladimirramirez/scripts/logs',
         'screen -d -m ./killLogsMaster.sh'
             ];
-        SSH::run($commands, function($line){
-            echo $line.PHP_EOL;
-        });
-        return true;
+        $this->executeCommand($commands);
     }
 
     private function startRecordExercise(){
         $commands = ['cd /Users/leninvladimirramirez/scripts/grabacion',
         'screen -d -m ./grabacionMaster.sh'
             ];
-        SSH::run($commands, function($line){
-            echo $line.PHP_EOL;
-        });
-        return true;
+        $this->executeCommand($commands);
     }
 
     private function endRecordExercise(){
         $commands = ['cd /Users/leninvladimirramirez/scripts/grabacion',
         'screen -d -m ./killgrabacionMaster.sh'
             ];
-        SSH::run($commands, function($line){
-            echo $line.PHP_EOL;
-        });
-        return true;
+        $this->executeCommand($commands);
+    }
+
+    private function executeCommand($commands){
+        
+        try{
+            SSH::run($commands, function($line){
+                echo $line.PHP_EOL;
+            });
+            return true;
+        }
+        catch(\Exception $e){
+            return false;
+        }
     }
 
     private function isStartedExercise(){
