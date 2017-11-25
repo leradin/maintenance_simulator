@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exercise;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Lang;
@@ -265,7 +266,6 @@ class ExerciseController extends Controller
             'stage_id' => 4,
             'unit' => $this->unit
         ];
-        $route = Route::getCurrentRoute()->getName();
     }
 
     /**
@@ -304,6 +304,7 @@ class ExerciseController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+
         $exercise = Exercise::create([
             'name' =>  $request->name,
             'description' => $request->description,
@@ -311,31 +312,29 @@ class ExerciseController extends Controller
         ]);
 
         $exercise['date_time_root'] = "2017-10-09 12:00:00";
-        
+     
         if($request->has('stages_id')) {
             foreach($request->get('stages_id') as $key => $value){
+
                 $tableId = $request->get('tables_id')[$key];
                 $userId = $request->get('users_id')[$key];
-
+           
                 $structure = array('idMesa' => $tableId);
                 $structure['exercise'] = $exercise;
                 $structure['tracks'] = $this->tracks;
                 $structure['stage'] = $this->cabins;
-
                 
-
                 $exercise->stages()->attach($value,['date_time'=>$request->date_time,
                                                     'structure'=>json_encode($structure),
                                                     'table_id' =>$tableId,
                                                     'user_id' => $userId]);
                 $stage = \App\Stage::find($value);
-                $stage->users()->attach($userId);
+                $stage->users()->attach($userId,['exercise_id' => $exercise->id]);
             }
         }
 
         $message['type'] = 'success';
         $message['status'] = Lang::get('messages.success_exercise');
-
         return redirect('/exercise')->with('message',$message);
     }
 
@@ -347,28 +346,34 @@ class ExerciseController extends Controller
      */
     public function show(Exercise $exercise,Request $request)
     {
-           
-            $exercise = Exercise::with('stages','unitType')->find($exercise->id);
-            //dd($exercise);
+            $exercise = Exercise::with('stages')->find($exercise->id);
+            $user; //User::find($exercise->pivot->user_id);
+            //dd($exercise->stages->pivot->user_id);
             //start exercise
             if($exercise->status==0){
                 if(!$this->isStartedExercise()){
-                    $exercise->status = 1;
-                    $exercise->save();
-                    
-                    $this->startLogExercise();
-                    $this->startRecordExercise();
+                    try{
+                        $exercise->status = 1;
+                        $exercise->save();
+                        
+                        $this->startLogExercise();
+                        $this->startRecordExercise();
 
-                    foreach ($exercise->stages as $stage) {
-                        $json  = json_decode($stage->pivot->structure, JSON_PRETTY_PRINT);
-                        event(new \App\Events\EventName($json));
+                        foreach ($exercise->stages as $stage) {
+                            $json  = json_decode($stage->pivot->structure, JSON_PRETTY_PRINT);
+                            event(new \App\Events\EventName($json));
+                        }
+                        $message['type'] = 'success';
+                        $message['status'] = Lang::get('messages.start_exercise');
+                        //return redirect('/exercise')->with('message',$message);
+                        return view('exercise.play',['message' => $message,
+                                                     'exercise' => $exercise
+                                                    ]);
+                    }catch(\Exception $e){
+                        $message['type'] = 'error';
+                        $message['status'] = Lang::get('messages.fail_exercise');
+                        return redirect('/exercise')->with('message',$message);     
                     }
-                    $message['type'] = 'success';
-                    $message['status'] = Lang::get('messages.start_exercise');
-                    //return redirect('/exercise')->with('message',$message);
-                    return view('exercise.play',['message' => $message,
-                                                 'exercise' => $exercise
-                                                ]);
                 }else{
                     $message['type'] = 'error';
                     $message['status'] = Lang::get('messages.fail_exercise');
@@ -393,6 +398,21 @@ class ExerciseController extends Controller
                 $message['type'] = 'success';
                 $message['status'] = Lang::get('messages.end_exercise');
                 return redirect('/exercise')->with('message',$message);
+            }else if($exercise->status==2){
+                foreach ($exercise->stages as $stage) {
+                    $stage['user'] = User::with('Degree','Ascription')->find($stage->pivot->user_id);
+                    //$stage->users()->where('practice_user_pivot.exercise_id', 1);
+                    foreach ($stage->users->where('practice_user_pivot.exercise_id',2) as $item) {
+                        dd($item);
+                    }
+                    /*foreach ($stage->practices as $practice) { 
+                        foreach ($practice->users as $user) {
+                            
+                        }               
+                    }*/
+                }
+                
+                return view('exercise.show',['exercise' => $exercise]);
             }
     }
 
@@ -446,7 +466,6 @@ class ExerciseController extends Controller
 
         return redirect('/exercise')->with('message',$message);
     }
-
 
     private function startLogExercise(){
         $commands = ['cd /Users/leninvladimirramirez/scripts/logs',

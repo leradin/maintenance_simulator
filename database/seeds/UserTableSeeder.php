@@ -67,6 +67,28 @@ class UserTableSeeder extends Seeder
             'user' => false,
             'created_at' => $date,
             'updated_at' => $date
+            ),
+            array(
+            'enrollment' => 'A-111111111',
+            'password' => bcrypt('123456'),
+            'names' => 'Eduardo',
+            'lastnames' => 'Mora Palacios',
+            'degree_id' => 1,
+            'ascription_id' => 1,
+            'user' => false,
+            'created_at' => $date,
+            'updated_at' => $date
+            ),
+            array(
+            'enrollment' => 'A-222222222',
+            'password' => bcrypt('123456'),
+            'names' => 'Jesus',
+            'lastnames' => 'Sosa Medina',
+            'degree_id' => 1,
+            'ascription_id' => 1,
+            'user' => false,
+            'created_at' => $date,
+            'updated_at' => $date
             )
         );
 

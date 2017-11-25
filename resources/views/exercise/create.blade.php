@@ -12,7 +12,7 @@
                 "bSort": false,
                 "sSearch" : true,
                 "oLanguage": {
-                    "sUrl": "http://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+                    "sUrl": "{{ asset('js/plugins/datatables/Spanish.js') }}"
                 }
             });
 
@@ -42,11 +42,31 @@
                 }
             });
 
+           
+            $("input[type='checkbox']").change(function() {
+                var  elements = $(this).closest('tr');//find('.block-fluid').children();//find('table tbody tr td').children();
+                if($(this).is(':checked')){
+                    $.each(elements.children().find('select'),function(index, item) {
+                        var select = item;
+                        //select.classList.remove("select");
+                        select.disabled = false;
+                    });
+                } else {
+                    $.each(elements.children().find('select'),function(index, item) {
+                        var select = item;
+                        select.disabled = true;
+                    });
+                }
+                
+                
+                
+            });
+
         });
     </script>
 @endsection
 @section('breadCrumb')
-    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
     <li><a href="{{ url('exercise') }}">@lang('messages.title_exercise')</a></li>
     <li>@lang('messages.title_create_exercise')</li>
 @endsection
@@ -56,66 +76,66 @@
             <div class="col-md-12">
             @include('layouts.message')                
                 <div class="widget">
-                    <div class="head">
-                        <div class="icon"><i class="icosg-bookmark"></i></div>
+                    <div class="head dark">
+                        <div class="icon"><i class="icos-bookmark"></i></div>
                         <h2>@lang('messages.title_create_exercise')</h2>
                     </div>    
                     {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'exercise.store','autocomplete' =>'off']) !!}    
                     <div class="block-fluid">
 
                         <div class="form-group">
-                            <div class="col-md-2">@lang('messages.name')</div>
+                            <div class="col-md-2 TAR">@lang('messages.name')</div>
                             <div class="col-md-10">
                                 <input type="text" value="{{ old('name') }}" id="name" name="name" class="form-control validate[required,maxSize[50]] text-input" />
-                                <span class="help-block">@lang('messages.required_max_50')</span>
+                                <span class="help-block"><small>@lang('messages.required_max_50')</small></span>
                             </div>
                         </div>
 
      
                         <div class="form-group">
-                            <div class="col-md-2">@lang('messages.description')</div>
+                            <div class="col-md-2 TAR">@lang('messages.description')</div>
                             <div class="col-md-10">
                                 <input type="text" value="{{ old('description') }}" name="description" class="form-control validate[maxSize[100]]" />
-                                <span class="help-block">@lang('messages.required_max_100')</span>
+                                <span class="help-block"><small>@lang('messages.required_max_100')</small></span>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-2">@lang('messages.date_time')</div>
+                            <div class="col-md-2 TAR">@lang('messages.date_time')</div>
                             <div class="col-md-10">                                                            
                                 <input type="text" value="{{ old('date_time') }}" name="date_time" id="date_time" class="form-control validate[required]"/>
                             </div>
                         </div>            
 
                         <div class="form-group">
-                            <div class="col-md-2">@lang('messages.stages')</div>
+                            <div class="col-md-2 TAR">@lang('messages.stages')</div>
                             <div class="col-md-10">
                                 <table  id="practices_table" cellpadding="0" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" class="checkall"/></th>
+                                        <th></th>
                                         <th width="30%">@lang('messages.tr_name')</th>
-                                        <th width="50%">@lang('messages.tr_description')</th>
-                                        <th width="10%" class="TAC">@lang('messages.tr_assignment')</th>
-                                        <th width="10%" class="TAC">@lang('messages.tr_table_number')</th>
+                                        <th width="30%">@lang('messages.tr_description')</th>
+                                        <th width="15%" class="TAC">@lang('messages.tr_assignment')</th>
+                                        <th width="15%" class="TAC">@lang('messages.tr_table_number')</th>
                                         <th width="10%" class="TAC">@lang('messages.tr_actions')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($stages as $stage)
                                         <tr>
-                                        <td><input type="checkbox" value="{{ $stage->id }}" name="stages_id[]" /></td>
+                                        <td><input  type="checkbox" value="{{ $stage->id }}" class="checkbox" name="stages_id[]" /></td>
                                         <td>{{ $stage->name }}</td>
                                         <td>{{ $stage->description }}</td>
                                         <td>
-                                            <select name="users_id[]" class="select" style="width: 100%;">
+                                            <select disabled id="users" name="users_id[]" style="width: 100%;">
                                                 @foreach($users as $user)
                                                     <option value="{{ $user->id}}">{{ $user->names }} {{ $user->lastnames }} ({{ $user->degree->name}})</option>
                                                 @endforeach                     
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="tables_id[]" class="select" style="width: 100%;">
+                                            <select disabled id="tables" name="tables_id[]" style="width: 100%;">
                                                 @foreach($unitTypes as $unitType)
                                                     <option value="{{ $unitType->id}}">{{ $unitType->id }} ({{ $unitType->name }})</option>
                                                 @endforeach                     

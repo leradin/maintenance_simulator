@@ -3,9 +3,6 @@
 @section('title', 'Inicio')
 
 @section('js')
-    <script>
-       
-    </script>
 @endsection
 
 

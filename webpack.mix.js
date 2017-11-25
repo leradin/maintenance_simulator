@@ -67,6 +67,7 @@ mix.combine([
     'public/js/plugins/ibutton/jquery.ibutton.min.js',
     'public/js/plugins/scrollup/jquery.scrollUp.min.js',
     'public/js/plugins/timer/timer.jquery.min.js',
+    'public/js/plugins/jsCookie/src/js.cookie.js',
     'public/js/plugins.js',
     'public/js/charts.js',
     'public/js/actions.js'

@@ -36,7 +36,7 @@ class User extends Authenticatable
 
     public function practices(){
         return $this->belongsToMany('\App\Practice','practice_user_pivot')
-            ->withPivot('practice_id','answer','passed');
+            ->withPivot('id','practice_id','user_id','answer','passed','exercise_id')->withTimestamps();
     }
 
     public function stages(){

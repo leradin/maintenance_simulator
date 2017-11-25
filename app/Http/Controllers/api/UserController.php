@@ -30,35 +30,20 @@ class UserController extends Controller
     public function details(){
         return response()->json(['user' => User::all()]);
     }*/
-        public function login(){
-
+    public function login(){
         if(Auth::attempt(['enrollment' => request('enrollment'), 'password' => request('password')])){
-
             $user = Auth::user();
-
             $success['token'] =  $user->createToken('MyApp')->accessToken;
-
             return response()->json(['success' => $success], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
-
-        }
-
-        else{
-
+        }else{
             return response()->json(['error'=>'Unauthorised'], 401, array('Access-Control-Allow-Origin' => '*'));
-
         }
-
     }
 
-
     /**
-
      * Register api
-
      *
-
      * @return \Illuminate\Http\Response
-
      */
 
     public function register(Request $request){

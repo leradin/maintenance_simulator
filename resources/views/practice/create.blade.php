@@ -344,8 +344,8 @@
     </script>
 @endsection
 @section('breadCrumb')
-    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
-    <li><a href="{{ url('student') }}">@lang('messages.title_practice')</a></li>
+    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('practice') }}">@lang('messages.title_practice')</a></li>
     <li>@lang('messages.title_create_practice')</li>
 @endsection
 
@@ -355,8 +355,8 @@
             <div class="col-md-12">
                 
                 <div class="widget">
-                    <div class="head">
-                        <div class="icon"><i class="icosg-lightning"></i></div>
+                    <div class="head dark">
+                        <div class="icon"><span class="icos-newspaper"></span></div>
                         <h2>@lang('messages.title_create_practice')</h2>
                     </div>                
                     <div class="block-fluid">                
@@ -365,22 +365,22 @@
                                 <fieldset title="@lang('messages.step_1')">                            
                                         <legend>@lang('messages.step_1_practice')</legend>
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.name')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.name')</div>
                                             <div class="col-md-10">
                                                 <input type="text" name="name" class="form-control validate[required,onlyLetterSp,maxSize[255]]"/>
-                                                <span class="help-block">@lang('messages.required_max_255')</span>
+                                                <span class="help-block"><small>@lang('messages.required_max_255')</small></span>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.duration')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.duration')</div>
                                             <div class="col-md-4">                                                            
                                                 <input type="text"  class="form-control validate[required,integer,maxSize[2]]" name="duration" id="duration" value="1"/>
                                             </div>                            
                                         </div> 
 
                                          <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.error_type')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.error_type')</div>
                                             <div class="col-md-4">
                                                 <select id="error_type_id" name="error_type_id" class="form-control validate[required]" style="width: 100%;">
                                                     <option value=""></option>  
@@ -390,7 +390,7 @@
                                                 </select>
                                                 <span class="help-block"><button id="add_error_type" class="btn btn-link" type="button">@lang('messages.create_error_type')</button>  </span>                                                                 
                                             </div>
-                                            <div class="col-md-2">@lang('messages.unit_type')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.unit_type')</div>
                                             <div class="col-md-4">                                                            
                                                 <select id="unit_type_id" name="unit_type_id" class="form-control validate[required]" style="width: 100%;">
                                                     <option value=""></option>  
@@ -406,7 +406,7 @@
                                 <fieldset title="@lang('messages.step_2')">
                                         <legend>@lang('messages.step_2_practice')</legend>
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.material')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.material')</div>
                                             <div class="col-md-10">
                                                 <select name="material_id[]" id="material_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 <option value=""></option>  
@@ -419,7 +419,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.tool')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.tool')</div>
                                             <div class="col-md-10">
                                                 <select name="tool_id[]" id="tool_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 <option value=""></option>  
@@ -432,7 +432,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.instrument')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.instrument')</div>
                                             <div class="col-md-10">
                                                 <select name="instrument_id[]" id="instrument_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 <option value=""></option>  
@@ -449,7 +449,7 @@
                                 <fieldset title="@lang('messages.step_3')">
                                         <legend>@lang('messages.step_3_practice')</legend>
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.knowledge')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.knowledge')</div>
                                             <div class="col-md-10">
                                                 <select name="knowledge_id[]" id="knowledge_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($knowledges as $knowledge)
@@ -462,7 +462,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.software_behavior')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.software_behavior')</div>
                                             <div class="col-md-10">
                                                 <select name="software_behavior_id[]" id="software_behavior_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($softwareBehaviors as $softwareBehavior)
@@ -474,7 +474,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.hardware_behavior')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.hardware_behavior')</div>
                                             <div class="col-md-10">
                                                 <select name="hardware_behavior_id[]" id="hardware_behavior_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($hardwareBehaviors as $hardwareBehavior)
@@ -490,7 +490,7 @@
                                  <fieldset title="@lang('messages.step_4')">
                                         <legend>@lang('messages.step_4_practice')</legend>
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.objective')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.objective')</div>
                                             <div class="col-md-10">
                                                 <select name="objective_id[]" id="objective_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($objectives as $objective)
@@ -503,7 +503,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.activitie')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.activitie')</div>
                                             <div class="col-md-10">
                                                 <select name="activitie_id[]" id="activitie_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($activities as $activitie)
@@ -521,7 +521,7 @@
                                 <fieldset title="@lang('messages.step_5')">
                                         <legend>@lang('messages.step_5_practice')</legend>
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.sensors')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.sensors')</div>
                                             <div class="col-md-10">
                                                 <select name="sensor_id[]" id="sensor_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($sensors as $sensor)
@@ -534,7 +534,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.sedam_fails')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.sedam_fails')</div>
                                             <div class="col-md-10">
                                                 <select name="sedam_fail_id[]" id="sedam_fail_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($sedamFails as $sedamFail)
@@ -547,7 +547,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-2">@lang('messages.moxa_fails')</div>
+                                            <div class="col-md-2 TAR">@lang('messages.moxa_fails')</div>
                                             <div class="col-md-10">
                                                 <select name="moxa_fail_id[]" id="moxa_fail_id" multiple="multiple" class="validate[required]" style="width: 100%;">
                                                 @foreach($moxaFails as $moxaFail)

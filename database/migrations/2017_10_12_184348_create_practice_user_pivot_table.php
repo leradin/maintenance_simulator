@@ -19,6 +19,7 @@ class CreatePracticeUserPivotTable extends Migration
             $table->foreign('practice_id')->references('id')->on('practices');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('exercise_id')->unsigned();
             $table->text('answer');
             $table->boolean('passed')->nullable();
             $table->timestamps();

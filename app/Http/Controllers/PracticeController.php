@@ -202,6 +202,7 @@ class PracticeController extends Controller
      */
     public function destroy(Practice $practice)
     {
+        try{
         $practice = Practice::find($practice->id);
 
         if($practice->materials){
@@ -262,7 +263,11 @@ class PracticeController extends Controller
         }
         
         $practice->delete();
-
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_practice');
+            return redirect('/practice')->with('message',$message);
+        }
         $message['type'] = 'success';
         $message['status'] = Lang::get('messages.remove_practice');
 

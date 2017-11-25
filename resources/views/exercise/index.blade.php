@@ -5,7 +5,7 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            $( "a" ).tooltip({
+            $( "a,button,span" ).tooltip({
                 show: {
                     effect: "slideDown",
                     delay: 250
@@ -16,7 +16,7 @@
                 "bSort": true,
                 "sSearch" : true,
                 "oLanguage": {
-                    "sUrl": "http://cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+                    "sUrl": "{{ asset('js/plugins/datatables/Spanish.js') }}"
                 }
             });
         });
@@ -24,7 +24,7 @@
 @endsection
 
 @section('breadCrumb')
-    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
     <li>@lang('messages.title_exercise')</li>
 @endsection
 
@@ -33,18 +33,17 @@
             <div class="col-md-12">
                @include('layouts.message') 
                 <div class="widget">
-                    <div class="head">
-                        <div class="icon"><span class="icosg-file"></span></div>
+                    <div class="head dark">
+                        <div class="icon"><span class="icos-file"></span></div>
                         <h2>@lang('messages.title_exercise')</h2>
                         <ul class="buttons">
-                            <li><a href="{{ url("exercise/create") }}" title="@lang('messages.create_exercise')"><span class="icosg-plus"></span></a></li>
+                            <li><a href="{{ url("exercise/create") }}" title="@lang('messages.create_exercise')"><span class="icos-plus"></span></a></li>
                         </ul>                         
                     </div>                
                         <div class="block-fluid">
                             <table  id="exercises_table" cellpadding="0" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" class="checkall"/></th>
                                         <th width="40%">@lang('messages.tr_name')</th>
                                         <th width="40%">@lang('messages.tr_description')</th>
                                         <th width="20%" class="TAC">@lang('messages.tr_actions')</th>
@@ -53,7 +52,6 @@
                                 <tbody>
                                     @foreach($exercises as $exercise)
                                         <tr>
-                                        <td><input type="checkbox" name="order[]" /></td>
                                         <td>{{ $exercise->name }}</td>
                                         <td>{{ $exercise->description }}</td>
                                         <td class="TAC">

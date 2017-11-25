@@ -30,7 +30,7 @@
 @import "mystyles.css";
 
 html { height: 100%; }
-body { min-height: 100%; font-family: 'Helvetica Neue','Helvetica',Arial,sans-serif; font-size: 11px; position: relative; background: url('../img/backgrounds/bg_default.jpg') left top repeat;}
+body { min-height: 100%; font-family: 'Helvetica Neue','Helvetica',Arial,sans-serif; font-size: 14px; position: relative; background: url('../img/backgrounds/bg_default.jpg') left top repeat;}
 
 
 /*~Smartphones (portrait and landscape)~*/

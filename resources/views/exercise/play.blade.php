@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Reproduciendo')
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script>
         $(document).ready(function(){
 
@@ -135,7 +134,7 @@
 @endsection
 
 @section('breadCrumb')
-    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
     <li><a href="{{ url('/exercise') }}">@lang('messages.title_exercise')</a></li>
     <li>{{ $exercise->name }} ({{ $exercise->description }})</li>
 @endsection
@@ -165,10 +164,11 @@
                                         <table cellpadding="0" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th width="25%">@lang('messages.name')</th>
-                                                    <th width="25%">@lang('messages.duration')</th>
-                                                    <th width="25%">@lang('messages.unit_type')</th>
-                                                    <th width="25%">@lang('messages.error_type')</th>
+                                                    <th width="20%">@lang('messages.name')</th>
+                                                    <th width="20%">@lang('messages.duration')</th>
+                                                    <th width="20%">@lang('messages.unit_type')</th>
+                                                    <th width="20%">@lang('messages.error_type')</th>
+                                                    <th width="20%">@lang('messages.student')</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -177,6 +177,7 @@
                                                     <td><h1 id="{{ $stage->pivot->table_id }}{{ $practice->id }}">{{ $practice->duration }}</h1></td>
                                                     <td><h1>{{ $practice->unitType->name }}</h1></td>
                                                     <td><h1>{{ $practice->errorType->name }}</h1></td>
+                                                    <td><h1></h1></td>
                                                 </tr>                                    
                                             </tbody>
                                         </table>     

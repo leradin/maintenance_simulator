@@ -36,6 +36,7 @@ return [
     'title_create_exercise' => 'Crear Ejercicio',
     'title_edit_exercise' => 'Editar Ejercicio',
     'title_delete_exercise' => 'Eliminar Ejercicio',
+    'title_detail_exercise' => 'Detalle Ejercicio',
     // Columns Student
     'tr_enrollment' => 'Matrícula',
     'tr_names'  => 'Nombre(s)',
@@ -69,6 +70,7 @@ return [
     'duration' => 'Duración (Hrs)',
     'date_time' => 'Fecha Hora',
     'unit_type' => 'Tipo Unidad',
+    'student' => 'Estudiante',
     'error_type' => 'Tipo Error',
     'activitie' => 'Actividad',
     'software_behavior' => 'Comportamiento Software',
@@ -110,9 +112,11 @@ return [
     'step_5_practice' => 'Sensores,Fallas Sedam,Fallas Moxa',
     'success_practice' => 'Práctica Generada Correctamente.',
     'remove_practice' => 'Práctica Eliminada Correctamente.',
+    'error_practice' => 'No se puede eliminar la practica, ya que existe algún escenario relacionado.',
     //*** Steps Stage ***//
     'success_stage' => 'Escenario Generado Correctamente.',
     'remove_stage' => 'Escenario Eliminado Correctamente.',
+    'error_stage' => 'No se puede eliminar el escenario, ya que existe algún ejercicio relacionado.',
     //*** Exercise Stage ***//
     'success_exercise' => 'Ejercicio Generado Correctamente.',
     'remove_exercise' => 'Ejercicio Eliminado Correctamente.',
@@ -123,6 +127,9 @@ return [
     'create_exercise' => 'Crear Ejercicio.',
     'end2_exercise' => 'Finalizar Ejercicio.',
     'see_exercise' => 'Ver Ejercicio.',
+    'print_exercise' => 'Imprimir Ejercicio',
+    'created_at' => 'Fecha Creación',
+    'students' => 'Estudiantes',
     'table' => 'Mesa',
     'actions' => 'Acciones',
     //*** Exercise play ***//
@@ -130,6 +137,7 @@ return [
     //*** User  ***//
     'success_user' => 'Usuario Generado Correctamente.',
     'remove_user' => 'Usuario Eliminado Correctamente.',
+    'error_user' => 'No se puede eliminar el usuario, ya que existe algún ejercicio relacionado.',
     //------------------------------
     'step_1' => 'Paso 1',
     'step_2' => 'Paso 2',

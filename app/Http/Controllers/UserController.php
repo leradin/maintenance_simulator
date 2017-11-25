@@ -94,12 +94,16 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user = User::find($user->id);
-        $user->delete();
-
+        try{
+            $user = User::find($user->id);
+            $user->delete();
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_user');
+            return redirect('/user')->with('message',$message);
+        }
         $message['type'] = 'success';
         $message['status'] = Lang::get('messages.remove_user');
-
         return redirect('/user')->with('message',$message);
     }
 }

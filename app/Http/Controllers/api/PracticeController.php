@@ -22,64 +22,46 @@ class PracticeController extends Controller
     }
 
     public function practiceAnswer(Request $request){
-    	$practice = Practice::find($request->practice_id);
-    	$practice->users()->attach($request->user_id,['practice_id'=>$practice->id, 'answer'=>$request->answer]);
-    	
+        $practice = Practice::with('users')->find($request->practice_id);
+
+    	$practice->users()->attach($request->user_id,['practice_id'=>$practice->id, 
+                                                      'answer'=>$request->answer,
+                                                      'exercise_id' => $request->exercise_id]);
     	if($practice)
-			return response()->json(['success' => $request->all()], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
+			return response()->json(['success' =>$request->all()], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
 		else
 			return response()->json(['error'=>'Not Found'], 404, array('Access-Control-Allow-Origin' => '*'));
     }
 
     public function practiceQualify(Request $request){
         $practice = Practice::find($request->practice_id);
-        $user = $practice->users()->orderBy('id', 'desc')->get()->last();
-        $response = $practice->users()->wherePivot('id',$user->pivot->id)->updateExistingPivot($request->user_id,['passed' => intval($request->pass)],false);
-        return response()->json(['success' => ["response" => $response]], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
+        $response = $practice->users()->wherePivot('exercise_id',$request->exercise_id)->updateExistingPivot($request->user_id,['passed' => intval($request->pass)],false);
+        //
+        return response()->json(['success' => ["response" => $practice->users()->wherePivot('exercise_id',$request->exercise_id)->get()]], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
     }
 
     public function practiceUserAnswer(Request $request){
-        $response = array();
-
-        //$exercise = Exercise::find($request->exercise_id);
-        $exercises= Exercise::where('id',$request->exercise_id)
-                                ->where('status', '2')
-                                ->get();
-        //$response["exercise"] = $exercise;
-        foreach ($exercises as $exercise) {
-        //    $response["exercise"] = $exercise->doesntHave('stages')->get();
-            foreach ($exercise->stages as $stage) {
-                if($stage->id == $request->stage_id){
-                    //$response[$stage->id] = $stage;
-                    foreach ($stage->users as $user) {
-                        if($user->id == $request->user_id){
-                            //$response[] = $user;
-                            foreach ($user->practices as $practice) {
-                                $response[] = $practice;
-                            }
-                        }
+         $exercise =  \App\Exercise::find($request->exercise_id);
+    
+        foreach ($exercise->stages as $stage) {
+            $stage ['unitType'] = (\App\UnitType::find($stage->pivot->table_id));
+            $stage ['user'] = (\App\User::find($stage->pivot->user_id));
+            foreach ($stage->practices as $practice) {
+                $user = \App\User::find($stage->pivot->user_id);
+                $practice['user'] = $user;
+                foreach ($user->practices as $practice2) {
+                    if($practice2->pivot->exercise_id == $stage->pivot->exercise_id 
+                        && $user->id == $practice2->pivot->user_id 
+                            && $practice->id == $practice2->pivot->practice_id)
+                    {
+                        $practice['answer'] = $practice2->pivot->answer;
+                        $practice['passed'] = $practice2->pivot->passed;
                     }
                 }
-                //$stage2 = Stage::where('id',$request->stage_id)->get();
-                //$response["exercise"]["stage"] = $stage2;
-
             }
         }
-        
-        //$stage = User::find($user_id)->books()->where('bookname', '=', 'www')->first();
-        /*foreach ($exercise->stages as $stage) {
-            if($stage->id == $request->stage_id){
-                $response["exercise"][$stage->id] = $stage;
-                break;
-            }
-            
-            //foreach ($stage->users as $user) {
-            //    $user = User::find($request->stage_id);
-            //}
-        }*/
-        //$stage = Stage::find($request->stage_id);
        
-        return response()->json(['success' => ["response" => $response]], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
+    return response()->json(['success' => ["response" => $exercise]], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
 
 
         //$stage_id;

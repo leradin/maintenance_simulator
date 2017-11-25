@@ -95,8 +95,8 @@
 
     <div class="header">
         <a href="index.html" class="logo centralize"></a>
-    </div>    
-    
+    </div>
+       
     <div class="login" id="login">
         <div class="wrap">
             <h1>Administración</h1>

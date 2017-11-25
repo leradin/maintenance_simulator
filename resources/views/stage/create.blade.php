@@ -13,6 +13,13 @@
               }
             });
 
+            $("a,button,span").tooltip({
+                show: {
+                    effect: "slideDown",
+                    delay: 250
+                }
+            });
+
             // complete validation form
             function validationComplete(form, status){
                 if(status){
@@ -174,7 +181,7 @@
     </script>
 @endsection
 @section('breadCrumb')
-    <li><a href="{{ url('/home') }}">@lang('messages.title_home')</a></li>
+    <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
     <li><a href="{{ url('stage') }}">@lang('messages.title_stage')</a></li>
     <li>@lang('messages.title_create_stage')</li>
 @endsection
@@ -184,8 +191,8 @@
             <div class="col-md-12">
             @include('layouts.message')                
                 <div class="widget">
-                    <div class="head">
-                        <div class="icon"><i class="icosg-bookmark"></i></div>
+                    <div class="head dark">
+                        <div class="icon"><span class="icos-bookmark"></span></div>
                         <h2>@lang('messages.title_create_stage')</h2>
                     </div>    
                     {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'stage.store','autocomplete' =>'off']) !!}    
@@ -195,7 +202,7 @@
                             <div class="col-md-2">@lang('messages.name')</div>
                             <div class="col-md-10">
                                 <input type="text" value="{{ old('name') }}" id="name" name="name" class="form-control validate[required,maxSize[50]] text-input" />
-                                <span class="help-block">@lang('messages.required_max_50')</span>
+                                <span class="help-block"><small>@lang('messages.required_max_50')</small></span>
                             </div>
                         </div>
 
@@ -204,7 +211,7 @@
                             <div class="col-md-2">@lang('messages.description')</div>
                             <div class="col-md-10">
                                 <input type="text" value="{{ old('description') }}" name="description" class="form-control validate[maxSize[100]]" />
-                                <span class="help-block">@lang('messages.required_max_100')</span>
+                                <span class="help-block"><small>@lang('messages.required_max_100')</small></span>
                             </div>
                         </div> 
 
@@ -232,7 +239,7 @@
                                         <td>{{ $practice->errorType->name }}</td>
                                         <td>{{ $practice->unitType->name }}</td>
                                         <td class="TAC">
-                                             <a data-id="{{ $practice->id }}" data-name="{{ $practice->name }}" class="icon-button"><span class="glyphicon glyphicon-info-sign"></span></a>  
+                                             <a data-id="{{ $practice->id }}" title="Ver información" data-name="{{ $practice->name }}" class="icon-button"><span class="glyphicon glyphicon-info-sign"></span></a>  
                                         </td>
                                     </tr>   
                                     @endforeach                          

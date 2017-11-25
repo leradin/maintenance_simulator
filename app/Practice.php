@@ -101,7 +101,7 @@ class Practice extends Model
 
      public function users(){
         return $this->belongsToMany('\App\User','practice_user_pivot')
-            ->withPivot('user_id','answer','passed','id')->withTimestamps();
+            ->withPivot('id','practice_id','user_id','answer','passed','exercise_id')->withTimestamps();
     }
     
     public function unitType(){

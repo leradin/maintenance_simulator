@@ -68,7 +68,57 @@ class StageController extends Controller
      */
     public function show(Stage $stage)
     {
-        //
+        $stage = Stage::find($stage->id);
+        foreach ($stage->practices as $practice) {
+            $practice->unitType;
+            $practice->errorType;
+            if($practice->materials){
+                foreach ($practice->materials as $material) {
+                }
+            }
+            if($practice->tools){
+                foreach ($practice->tools as $tool) {
+                }
+            }
+            if($practice->instruments){
+                foreach ($practice->instruments as $instrument) {
+                }
+            }
+            if($practice->knowledge){
+                foreach ($practice->knowledge as $knowledge_) {
+                }
+            }
+            if($practice->objectives){
+                foreach ($practice->objectives as $objective) {
+                }
+            }
+            if($practice->activities){
+                foreach ($practice->activities as $activitie) {
+                }
+            }
+            if($practice->hardwareBehaviors){
+                foreach ($practice->hardwareBehaviors as $hardwareBehavior) {
+                }
+            }
+            if($practice->softwareBehaviors){
+                foreach ($practice->softwareBehaviors as $softwareBehavior) {
+                }
+            }
+            if($practice->sensors){
+                foreach ($practice->sensors as $sensor) {
+                }
+            }
+            if($practice->sedamFails){
+                foreach ($practice->sedamFails as $sedamFail) {
+                }
+            }
+
+            if($practice->moxaFails){
+                foreach ($practice->moxaFails as $moxaFail) {
+                }
+            }
+        }
+        return \Response::json($stage);
     }
 
     /**
@@ -102,14 +152,21 @@ class StageController extends Controller
      */
     public function destroy(Stage $stage)
     {
-        $stage = Stage::find($stage->id);
-        if($stage->practices){
-            foreach ($stage->practices as $practice) {
-                $stage->practices()->detach($practice->id);
+        try{
+
+            $stage = Stage::find($stage->id);
+            if($stage->practices){
+                foreach ($stage->practices as $practice) {
+                    $stage->practices()->detach($practice->id);
+                }
             }
+            
+            $stage->delete();
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_stage');
+            return redirect('/stage')->with('message',$message);
         }
-        
-        $stage->delete();
 
         $message['type'] = 'success';
         $message['status'] = Lang::get('messages.remove_stage');

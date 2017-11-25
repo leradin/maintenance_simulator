@@ -7,12 +7,12 @@
             <div class="dropdown">
                 <div class="label"><span class="icos-user2"></span></div>
                 <div class="body" style="width: 160px;">
-                    <div class="itemLink">
+                    <!--div class="itemLink">
                         <a href="#"><span class="glyphicon glyphicon-cog"></span> @lang('messages.settings')</a>
                     </div>
                     <div class="itemLink">
                         <a href="#"><span class="glyphicon glyphicon-comment"></span> @lang('messages.messages')</a>
-                    </div>                    
+                    </div-->                    
                     <div class="itemLink">
                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -25,7 +25,7 @@
                     </div>                                        
                 </div>                
             </div>            
-            <div class="popup">
+            <!--div class="popup">
                 <div class="label"><span class="icos-search1"></span></div>
                 <div class="body">
                     <div class="arrow"></div>
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div-->
             <div class="popup">
                 <div class="label"><span class="icos-cog"></span></div>
                 <div class="body">
