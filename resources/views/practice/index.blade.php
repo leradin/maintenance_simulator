@@ -184,7 +184,7 @@
            @include('layouts.message') 
             <div class="widget">
                 <div class="head dark">
-                    <div class="icon"><span class="icos-newspaper"></span></div>
+                    <div class="icon"><span class="icos-copy"></span></div>
                     <h2>@lang('messages.title_practice')</h2>
                     <ul class="buttons">
                         <li><a href="{{ url("practice/create") }}" title="Crear Práctica"><span class="icos-plus"></span></a></li>

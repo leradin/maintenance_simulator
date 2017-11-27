@@ -137,7 +137,7 @@
                         <div class="form-group">
                             <div class="col-md-2 TAR">@lang('messages.enrollment')</div>
                             <div class="col-md-10">
-                                <input type="text" id="enrollment" name="enrollment" class="form-control validate[required,maxSize[10]] text-input" />
+                                <input type="text" id="enrollment" name="enrollment" class="form-control validate[required,maxSize[10]] text-input" value="{{ old('enrollment') }}" />
                                 <span class="help-block"><small>@lang('messages.required_max_10')</small></span>
                             </div>
                         </div>
@@ -145,13 +145,13 @@
                          <div class="form-group">
                             <div class="col-md-2 TAR">@lang('messages.password')</div>
                             <div class="col-md-4">
-                                <input type="password" name="password" class="form-control validate[required,minSize[6],maxSize[20]]" id="password"/>
+                                <input type="password" name="password" class="form-control validate[required,minSize[6],maxSize[20]]" id="password" value="{{ old('password') }}"/>
                                 <span class="help-block"><small>@lang('messages.required_min_password') @lang('messages.required_max_password')</small></span>
                             </div>
 
                             <div class="col-md-2 TAR">@lang('messages.confirm_password')</div>
                             <div class="col-md-4">
-                                <input type="password" name="confirm_password" class="form-control validate[required,equals[password]]"/>
+                                <input type="password" name="confirm_password" class="form-control validate[required,equals[password]]" value="{{ old('confirm_password') }}"/>
                                 <span class="help-block"><small>@lang('messages.required_confirm_password')</small></span>
                             </div>
                         </div>
@@ -197,14 +197,15 @@
                         <div class="form-group">                       
                             <div class="col-md-2 TAR">@lang('messages.type'):</div>
                             <div class="col-md-4">
-                                <nobr><input type="radio" class="form-control validate[required]" name="user" value="1"/> Sistema </nobr> <nobr><input type="radio" class="form-control validate[required]" name="user" value="0"/> Estudiante</nobr>
+                                <nobr><input type="radio" class="form-control validate[required]" name="user" value="1"  @if(old('user') ==  1) checked="checked" @endif /> Sistema </nobr> <nobr><input type="radio" class="form-control validate[required]" name="user" value="0" @if(old('user') ==  0) checked="checked" @endif /> Estudiante</nobr>
                                 <span class="help-block"></span>
                             </div>                        
                         </div>
 
                         <div class="toolbar bottom TAR">
                             <div class="btn-group">
-                                <button class="btn btn-info" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
+                                <button class="btn btn-link" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
+                                <a href="{{url()->previous()}}" class="btn btn-danger">@lang('messages.cancel')</a>
                                 <button class="btn btn-primary" type="submit">@lang('messages.submit')</button>
                             </div>
                         </div>

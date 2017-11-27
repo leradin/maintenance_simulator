@@ -59,7 +59,7 @@
     <script type='text/javascript' src='js/plugins/maskedinput/jquery.maskedinput-1.3.min.js'></script>
     <script type='text/javascript' src='js/plugins/multiselect/jquery.multi-select.min.js'></script>    
     
-    <script type='text/javascript' src='js/plugins/validationEngine/languages/jquery.validationEngine-en.js'></script>
+    <script type='text/javascript' src='js/plugins/validationEngine/languages/jquery.validationEngine-es.js'></script>
     <script type='text/javascript' src='js/plugins/validationEngine/jquery.validationEngine.js'></script>        
     <script type='text/javascript' src='js/plugins/stepywizard/jquery.stepy.js'></script>
         
@@ -107,20 +107,19 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                     <input type="text" id="enrollment" name="enrollment" value="{{ old('enrollment') }}" placeholder="Matrícula" class="form-control validate[required]"/>
                 </div> 
-                 @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('enrollment') }}</strong>
-                                    </span>
-                                @endif                                                
-                <div class="input-group"{{ $errors->has('password') ? ' has-error' : '' }}>
+
+                 
+                                                                
+                <div class="input-group{{ $errors->has('enrollment') ? ' has-error' : '' }}">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-exclamation-sign"></i></span>
                     <input type="password" name="password" value="Somepassword" placeholder="Contraseña" class="form-control validate[required]"/>
+
                 </div>
-                @if ($errors->has('password'))
+                 @if ($errors->has('enrollment'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
+                        <strong>{{ $errors->first('enrollment') }}</strong>
                     </span>
-                @endif          
+                @endif       
                 <div class="dr"><span></span></div>                                
             </div>                
             <div class="row">

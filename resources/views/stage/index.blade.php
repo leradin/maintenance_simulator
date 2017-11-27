@@ -28,6 +28,8 @@
                 }
             });
 
+     
+
             // button show practice
             $('a').on('click',function(){
                 var id = $(this).attr('data-id');
@@ -137,7 +139,7 @@
                @include('layouts.message') 
                 <div class="widget">
                     <div class="head dark">
-                        <div class="icon"><span class="icos-bookmark"></span></div>
+                        <div class="icon"><span class="icos-newspaper"></span></div>
                         <h2>@lang('messages.title_stage')</h2>
                         <ul class="buttons">
                             <li><a href="{{ url("stage/create") }}" title="Crear Escenario"><span class="icos-plus"></span></a></li>

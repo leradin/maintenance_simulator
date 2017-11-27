@@ -303,7 +303,18 @@ class ExerciseController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+
+        if($this->noDupes($request->get('users_id'))){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_user_duplicate');
+            return back()->withInput()->with('message',$message);
+        }
+
+        if($this->noDupes($request->get('tables_id'))){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_table_duplicate');
+            return back()->withInput()->with('message',$message);
+        }
 
         $exercise = Exercise::create([
             'name' =>  $request->name,
@@ -506,6 +517,10 @@ class ExerciseController extends Controller
         catch(\Exception $e){
             return false;
         }
+    }
+
+    private function noDupes(array $array) {
+        return count($array) > count(array_unique($array));
     }
 
     private function isStartedExercise(){

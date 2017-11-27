@@ -55,7 +55,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="middle">                                     
-                    <div class="button tip" title="" data-original-title="@lang('messages.print_exercise')">
+                    <div class="button tip" onClick="window.print();return false" title="" data-original-title="@lang('messages.print_exercise')">
                         <a href="#">
                             <span class="icomg-printer"></span>
                             <span class="text">@lang('messages.print_exercise')</span>
@@ -64,35 +64,17 @@
             </div>
                 
             <div class="widget">
-                {{ $exercise }}
                     <div class="block invoice">    
                         <h1>{{ $exercise->name }} #{{ $exercise->id }}</h1>
-                        <span class="date">@lang('messages.date_time'): {{ $exercise->created_at }}</span>
+                        <span class="date">@lang('messages.created_date_time'): {{ $exercise->created_at }}</span>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-12">
                                 <h4>@lang('messages.description')</h4>
                                 <address>
                                     {{ $exercise->description }}
                                 </address>
                             </div>
-                            <div class="col-md-3">
-                                <h4>To Enterprise</h4>
-                                <address>
-                                    <strong>Enterprise, Inc.</strong><br>
-                                    321 Streeet, Suite 300<br>
-                                    San Francisco, CA 94107<br>
-                                    <abbr title="Phone">P:</abbr> +38 (123) 456-7890
-                                </address>                                
-                            </div>
-                            <div class="col-md-3"></div>
-                            <div class="col-md-3">
-                                <h4>Invoice</h4>
-                                <p><strong>Date invoice:</strong> Dec 20, 2012</p>
-                                <p><strong>Payment due:</strong> Dec 29, 2012</p>
-                                <div class="highlight">
-                                    <strong>Amount Due:</strong> $2,351.50 <em>USD</em>
-                                </div>
-                            </div>
+                           
                         </div>
                         
                         <h3>@lang('messages.stages')</h3>                        
@@ -107,6 +89,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php ($countPracticePositive = 0)
+                                @php ($countPracticeNegative = 0)
+                                    
                                 @foreach ($exercise->stages as $stage)
                                     <tr>
                                         <td>{{ $stage->name }} </td>
@@ -115,7 +100,26 @@
                                         <td>
                                             <ul>
                                                 @foreach ($stage->practices as $practice)
-                                                    <li>{{ $practice->name }}</li>
+                                                    <li>{{ $practice->name }} </li>
+                                                        @foreach ($practice->users as $user)
+                                                            @if($user->pivot->exercise_id == $exercise->id &&
+                                                                $user->pivot->user_id == $stage->user->id )
+                                                                <ul>
+                                                                 <li>@lang('messages.answer') : {{ $user->pivot->answer }}
+                                                                </li>
+                                                                <li>@lang('messages.qualify') : 
+                                                                    @if($user->pivot->passed === 1) 
+                                                                        @lang('messages.positive_qualify')
+                                                                        @php ($countPracticePositive++)
+                                                                    @else
+                                                                        @lang('messages.negative_qualify')
+                                                                        @php ($countPracticeNegative++)
+                                                                    @endif
+                                                                </li>
+                                                                </ul>
+                                                                @break;
+                                                            @endif 
+                                                        @endforeach    
                                                 @endforeach
                                             </ul>
                                         </td>
@@ -130,9 +134,9 @@
                             <div class="col-md-9"></div>
                             <div class="col-md-3">
                                 <div class="total">
-                                    <p><strong><span>Subtotal:</span> $2,351.50 <em>USD</em></strong></p>
+                                    <p><strong><span>@lang('messages.practices_number_negative_qualify') : </span> {{ $countPracticeNegative }} </strong></p>
                                     <div class="highlight">
-                                        <strong><span>Total:</span> $2,351.50 <em>USD</em></strong>
+                                        <strong><span>@lang('messages.practices_number_positive_qualify') : </span> {{ $countPracticePositive }} </strong>
                                     </div>
                                 </div>
                             </div>

@@ -122,22 +122,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($stages as $stage)
+                                    @foreach($stages as $index => $stage)
+                                        @php
+                                            $indexUser = $index;
+                                            $index = $index+1;
+                                        @endphp
                                         <tr>
-                                        <td><input  type="checkbox" value="{{ $stage->id }}" class="checkbox" name="stages_id[]" /></td>
+                                        <td><input class="validate[minCheckbox[1]]" data-errormessage-range-underflow="@lang('messages.required_at_least_1_stage')" type="checkbox" value="{{ $stage->id }}" class="checkbox" name="stages_id[]" {{ (is_array(old('stages_id')) && in_array(($index), old('stages_id'))) ? ' checked' : '' }} /></td>
                                         <td>{{ $stage->name }}</td>
                                         <td>{{ $stage->description }}</td>
                                         <td>
-                                            <select disabled id="users" name="users_id[]" style="width: 100%;">
+                                            <select @if((is_array(old('stages_id'))) && (in_array(($index), old('stages_id')))) '' @else disabled @endif id="users" name="users_id[]" style="width: 100%;">
                                                 @foreach($users as $user)
-                                                    <option value="{{ $user->id}}">{{ $user->names }} {{ $user->lastnames }} ({{ $user->degree->name}})</option>
+                                                    <option value="{{ $user->id}}" {{(old('users_id.'.$indexUser) == $user->id?'selected':'')}}>{{ $user->names }} {{ $user->lastnames }} ({{ $user->degree->name}})</option>
                                                 @endforeach                     
                                             </select>
                                         </td>
                                         <td>
-                                            <select disabled id="tables" name="tables_id[]" style="width: 100%;">
+                                            <select @if((is_array(old('stages_id'))) && (in_array(($index), old('stages_id')))) '' @else disabled @endif id="tables" name="tables_id[]" style="width: 100%;">
                                                 @foreach($unitTypes as $unitType)
-                                                    <option value="{{ $unitType->id}}">{{ $unitType->id }} ({{ $unitType->name }})</option>
+                                                    <option value="{{ $unitType->id}}" {{(old('tables_id.'.$indexUser) == $unitType->id?'selected':'')}}>{{ $unitType->id }} ({{ $unitType->name }})</option>
                                                 @endforeach                     
                                             </select>
                                         </td>
@@ -152,7 +156,8 @@
                         </div>  
                         <div class="toolbar bottom TAR">
                             <div class="btn-group">
-                                <button class="btn btn-info" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
+                                <button class="btn btn-link" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
+                                <a href="{{url()->previous()}}" class="btn btn-danger">@lang('messages.cancel')</a>
                                 <button class="btn btn-primary" type="submit">@lang('messages.submit')</button>
                             </div>
                         </div>

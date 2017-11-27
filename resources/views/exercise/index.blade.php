@@ -4,6 +4,10 @@
 @section('title', 'Ejercicios')
 @section('js')
     <script>
+        function alertme() {
+                alert("sssss");
+
+            }
         $(document).ready(function(){
             $( "a,button,span" ).tooltip({
                 show: {
@@ -19,6 +23,26 @@
                     "sUrl": "{{ asset('js/plugins/datatables/Spanish.js') }}"
                 }
             });
+
+            $("#stopExercise").click(function(){
+                Cookies.remove('durations');
+                var url = $(this).attr('href');
+                window.open(url,"_self");
+                return false;
+            })
+            
+
+            /*$('#playExercise').on('click',function(event) { 
+                // Some Function 
+                event.preventDefault();
+                event.stopPropagation();
+                var url = $(this).attr('href'); // Get url from the <a> href attribute  
+                alert(url);
+                window.open(url,"_self"); // Open the url in the current window. Set to "_blank" instead of "_self" to open in a new window.
+
+                event.preventDefault(); // Prevent default action (e.g. following the link)
+                return false;
+            });*/
         });
     </script>
 @endsection
@@ -34,7 +58,7 @@
                @include('layouts.message') 
                 <div class="widget">
                     <div class="head dark">
-                        <div class="icon"><span class="icos-file"></span></div>
+                        <div class="icon"><span class="icos-bookmark"></span></div>
                         <h2>@lang('messages.title_exercise')</h2>
                         <ul class="buttons">
                             <li><a href="{{ url("exercise/create") }}" title="@lang('messages.create_exercise')"><span class="icos-plus"></span></a></li>
@@ -61,7 +85,7 @@
                                                 <button class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
                                             {!!Form::close()!!}
                                             @elseif($exercise->status == 1)
-                                                <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.end2_exercise')"><span class="glyphicon glyphicon-stop"></span></a>
+                                                <a id="stopExercise" href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.end2_exercise')"><span class="glyphicon glyphicon-stop"></span></a>
                                                 <a href="{{ route('exercise.show',['exercise' => $exercise,'play' => 1]) }}" class="icon-button" title="@lang('messages.see_exercise')"><span class=" glyphicon glyphicon-eye-open"></span></a>
                                             @else
                                                 <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.info_see_exercise')"><span class="glyphicon glyphicon-info-sign"></span></a>

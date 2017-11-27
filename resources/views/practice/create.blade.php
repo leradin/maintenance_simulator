@@ -329,6 +329,7 @@
                 errorImage:     true,
                 nextLabel:      'Siguiente',
                 titleClick:     true,
+                finishButton:   true,    
                 back: function(index) {                                                                
                 //if(!$("#wizard_validate").validationEngine('validate')) return false; //uncomment if u need to validate on back click                
                 }, 
@@ -356,7 +357,7 @@
                 
                 <div class="widget">
                     <div class="head dark">
-                        <div class="icon"><span class="icos-newspaper"></span></div>
+                        <div class="icon"><span class="icos-copy"></span></div>
                         <h2>@lang('messages.title_create_practice')</h2>
                     </div>                
                     <div class="block-fluid">                
@@ -402,6 +403,7 @@
                                             </div>                            
                                         </div>                                
                                 </fieldset>
+                                
 
                                 <fieldset title="@lang('messages.step_2')">
                                         <legend>@lang('messages.step_2_practice')</legend>
@@ -560,7 +562,7 @@
                                         </div>
  
                                 </fieldset>
-
+                                
                                 <input type="submit" class="btn btn-primary finish" value="@lang('messages.submit')" />
                         {!!Form::close()!!}  
                     </div>

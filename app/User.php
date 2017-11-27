@@ -41,7 +41,7 @@ class User extends Authenticatable
 
     public function stages(){
         return $this->belongsToMany('\App\Stage','stage_user_pivot')
-            ->withPivot('stage_id');
+            ->withPivot('stage_id','exercise_id');
     }
 
     public function degree(){

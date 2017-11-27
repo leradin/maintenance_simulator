@@ -44,12 +44,19 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
-        $user = User::create($request->except(['_token','confirm_password']));
-        
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.success_user');
+        try{
+            $user = User::create($request->except(['_token','confirm_password']));
+            
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.success_user');
 
-        return redirect('/user')->with('message',$message);
+            return redirect('/user')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_duplicate_enrollment_in_user');
+            return back()->withInput()
+                                  ->with('message',$message);
+        }
     }
 
     /**

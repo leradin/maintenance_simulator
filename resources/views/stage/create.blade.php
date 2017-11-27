@@ -192,7 +192,7 @@
             @include('layouts.message')                
                 <div class="widget">
                     <div class="head dark">
-                        <div class="icon"><span class="icos-bookmark"></span></div>
+                        <div class="icon"><span class="icos-newspaper"></span></div>
                         <h2>@lang('messages.title_create_stage')</h2>
                     </div>    
                     {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'stage.store','autocomplete' =>'off']) !!}    
@@ -233,7 +233,7 @@
                                 <tbody>
                                     @foreach($practices as $practice)
                                         <tr>
-                                        <td><input type="checkbox" value="{{ $practice->id }}" name="practices_id[]" /></td>
+                                        <td><input type="checkbox" value="{{ $practice->id }}" name="practices_id[]" class="validate[minCheckbox[1]]" data-errormessage-range-underflow="@lang('messages.required_at_least_1_practice')" /></td>
                                         <td>{{ $practice->name }}</td>
                                         <td>{{ $practice->duration }}</td>
                                         <td>{{ $practice->errorType->name }}</td>
@@ -249,7 +249,8 @@
                         </div>  
                         <div class="toolbar bottom TAR">
                             <div class="btn-group">
-                                <button class="btn btn-info" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
+                                <button class="btn btn-link" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
+                                <a href="{{url()->previous()}}" class="btn btn-danger">@lang('messages.cancel')</a>
                                 <button class="btn btn-primary" type="submit">@lang('messages.submit')</button>
                             </div>
                         </div>

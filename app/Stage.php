@@ -41,7 +41,7 @@ class Stage extends Model
 
     public function users(){
         return $this->belongsToMany('\App\User','stage_user_pivot')
-            ->withPivot('user_id')->withTimestamps();
+            ->withPivot('user_id','exercise_id')->withTimestamps();
     }
 
     public function exercises(){
