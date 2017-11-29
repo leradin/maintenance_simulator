@@ -55,10 +55,9 @@ Route::resource('sedam_fail', 'SedamFailController');
 Route::resource('moxa_fail', 'MoxaFailController');
 
 Route::get('/send_kinect',function(Request $request){
-    event(new \App\Events\EventName($request->all()));
+    event(new \App\Events\RequestEvent($request->all()));
     return $request->all();
 });
-
 
 Auth::routes();
 

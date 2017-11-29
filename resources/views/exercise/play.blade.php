@@ -14,32 +14,32 @@
             var cookies = {};
             var date = Date();
             //var date = new Date("November 26, 2017 18:28:00");
-            console.log("new Date "+ date);
+            //console.log("new Date "+ date);
             if(Cookies.get('durations')){
                 $.each(JSON.parse(Cookies.get('durations')), function (index, value) {
                     cookies[index] =  value; 
-                    console.log("timestamp "+index+" "+value);
+                    //console.log("timestamp "+index+" "+value);
                     var differenceNowVsInitPractice = Math.abs(Date.parse(date)-Date.parse(value));
                     var dateNowVsInitPractice = new Date(differenceNowVsInitPractice);
-                    console.log(parseMillisecondsIntoReadableTime(dateNowVsInitPractice.getTime()));
+                    //console.log(parseMillisecondsIntoReadableTime(dateNowVsInitPractice.getTime()));
 
                     var d = new moment(parseMillisecondsIntoReadableTime(dateNowVsInitPractice.getTime()),'hh:mm:ss');
-                    console.log("moment"+d+d.local().toDate());
+                    //console.log("moment"+d+d.local().toDate());
                     //console.log(sd_2.getHours());
                     //console.log(sd_2.getHours()+":"+sd_2.getMinutes()+":"+sd_2.getSeconds());
                     //console.log("a "+sd_2.toUTCString().replace("UTC","GMT"));
                     //console.log("b "+sd_2.getHours());
                     //console.log("c "+sd_2.getMinutes());
-                    console.log($('#'+index).text());
+                    //console.log($('#'+index).text());
                     var d2 = new moment($('#'+index).text(),'hh:mm:ss');
-                    console.log("moment"+d2+d2.local().toDate());
+                    //console.log("moment"+d2+d2.local().toDate());
 
 
                     /**/
-                    console.log("-a-a-"+Math.abs(d.local().toDate()-d2.local().toDate()));
+                    //console.log("-a-a-"+Math.abs(d.local().toDate()-d2.local().toDate()));
                     var sd_3 = new Date(Math.abs(d.local().toDate()-d2.local().toDate()));
-                    console.log(sd_3);
-                    console.log(parseMillisecondsIntoReadableTime(sd_3.getTime()));
+                    //console.log(sd_3);
+                    //console.log(parseMillisecondsIntoReadableTime(sd_3.getTime()));
                     var timeOut = new moment(parseMillisecondsIntoReadableTime(sd_3.getTime()),'hh:mm:ss');
                     /**/
                     if(d > d2){
@@ -51,6 +51,7 @@
                         duration = duration.replace(":","m");
                         duration += "s";
                         initTimer(element,duration,$("#button"+index));
+                        $("#button"+index).addClass("disabled");
                     }
                     /*var str         = $('#'+index).text();
                     str=str.replace(":","h");

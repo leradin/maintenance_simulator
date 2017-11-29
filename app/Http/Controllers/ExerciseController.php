@@ -253,7 +253,7 @@ class ExerciseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->cabins[1] = [
+        $this->cabins['cabins']['1'] = [
             'init_position' => array(
                     "lat" => "19.450317561626434",
                     "lon"=> "-94.3505859375"

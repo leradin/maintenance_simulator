@@ -223,7 +223,8 @@ $(document).ready(function(){
         if(null != navigation){
             subNavigation = navigation;
         }else
-            subNavigation = 'fixed';
+            //subNavigation = 'fixed';
+            subNavigation = 'collapsible';
     
     var bw = $("body").width();
     if(bw <= 1152 && bw > 320){        

@@ -5,6 +5,7 @@
 
 @section('js')
     <script>
+
         $(document).ready(function(){
             
             var table = $('#practices_table').dataTable({
@@ -57,10 +58,9 @@
                         select.disabled = true;
                     });
                 }
-                
-                
-                
             });
+
+            
 
         });
     </script>
