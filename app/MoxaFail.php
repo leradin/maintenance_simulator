@@ -25,7 +25,7 @@ class MoxaFail extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description','topic'];
+    protected $fillable = ['name','description','topic','sensor'];
 
     /**
      * The attributes that aren't mass assignable.

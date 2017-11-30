@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SedamFail extends Model
+class IpAddress extends Model
 {
-    /**
+     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'sedam_fails';
+    protected $table = 'ip_addresses';
 
     /**
      * Indicates if the model should be timestamped.
@@ -25,7 +25,7 @@ class SedamFail extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description','file_name','module_name'];
+    protected $fillable = ['ip','unit_type_id'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -34,8 +34,7 @@ class SedamFail extends Model
      */
     protected $guarded = ['id'];
 
-    public function practices(){
-        return $this->belongsToMany('\App\Practice','practice_sedam_fail_pivot')
-            ->withPivot('practice_id');
+    public function unitType(){
+        return $this->belongsTo('\App\IpAddress');
     }
 }

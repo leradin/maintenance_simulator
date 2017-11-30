@@ -36,9 +36,14 @@ redis.on('message', function(channel, message) {
 		sockConfig.send(['ADA', JSON.stringify(modifyMessage.data.data[0])]);
 		console.log(chalk.red('Message 2 Recieved: '+JSON.stringify(modifyMessage.data.data[0])));
     }else if(channel === CHANEL_NAME_REQUEST){
-    	modifyMessage.data.data[0].active= JSON.parse(modifyMessage.data.data[0].active);
-    	sockRequest.send(['SET_ACTIVE', JSON.stringify(modifyMessage.data.data[0])]);
-    	console.log(chalk.red('Message 2 Recieved: '+JSON.stringify(modifyMessage.data.data[0])));
+        try{
+            modifyMessage.data.data[0].active = JSON.parse(modifyMessage.data.data[0].active);
+            sockRequest.send(['SET_ACTIVE', JSON.stringify(modifyMessage.data.data[0])]);
+            console.log(chalk.red('Message SET_ACTIVE Recieved: '+JSON.stringify(modifyMessage.data.data[0])));
+        }catch(err){
+            sockRequest.send([JSON.stringify(modifyMessage.data.data[0].topic), JSON.stringify(modifyMessage.data.data[0])]);
+            console.log(chalk.red('Message MOXA_CHANGE_IP Recieved: '+JSON.stringify(modifyMessage.data.data[0])));
+        }
     }
     
 });

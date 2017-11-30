@@ -16,42 +16,48 @@ class SedamFailsTableSeeder extends Seeder
             array(
             'name' => 'error de configuracion script para gps',
             'description' => 'modificacion de archivo xml respecto a los puertos a configurar',
-            'script' => 'EDIT_CONFIG_FILES',
+            'file_name' => 'SEDAM.xml',
+            'module_name' => 'Sensor_Manager',
             'created_at' => $date,
             'updated_at' => $date
             ),
  			array(
             'name' => 'error de configuracion script para anemometro',
             'description' => 'modificacion de archivo xml respecto a los puertos a configurar',
-            'script' => 'EDIT_CONFIG_FILES',
+            'file_name' => 'SEDAM.xml',
+            'module_name' => 'Sensor_Manager',
             'created_at' => $date,
             'updated_at' => $date
             ),
  			array(
             'name' => 'error de configuracion script para ais',
             'description' => 'modificacion de archivo xml respecto a los puertos a configurar',
-            'script' => 'EDIT_CONFIG_FILES',
+            'file_name' => 'SEDAM.xml',
+            'module_name' => 'Sensor_Manager',
             'created_at' => $date,
             'updated_at' => $date
             ),
  		    array(
             'name' => 'error de configuracion script para ecosonda',
             'description' => 'modificacion de archivo xml respecto a los puertos a configurar',
-            'script' => 'EDIT_CONFIG_FILES',
+            'file_name' => 'SEDAM.xml',
+            'module_name' => 'Sensor_Manager',
             'created_at' => $date,
             'updated_at' => $date
             ),
  			array(
             'name' => 'error de configuracion script para gyro',
             'description' => 'modificacion de archivo xml respecto a los puertos a configurar',
-            'script' => 'EDIT_CONFIG_FILES',
+            'file_name' => 'SEDAM.xml',
+            'module_name' => 'Sensor_Manager',
             'created_at' => $date,
             'updated_at' => $date
             ),
 			array(
             'name' => 'error de configuracion script para radar',
             'description' => 'modificacion de archivo xml respecto a los puertos a configurar',
-            'script' => 'EDIT_CONFIG_FILES',
+            'file_name' => 'SEDAM.xml',
+            'module_name' => 'Sensor_Manager',
             'created_at' => $date,
             'updated_at' => $date
             )

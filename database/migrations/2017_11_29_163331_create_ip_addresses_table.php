@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMoxaFailTable extends Migration
+class CreateIpAddressesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateMoxaFailTable extends Migration
      */
     public function up()
     {
-        Schema::create('moxa_fails', function (Blueprint $table) {
+        Schema::create('ip_addresses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',50);
-            $table->string('description',100)->nullable();
-            $table->char('topic',50);
-            $table->char('sensor',50);
-
+            $table->ipAddress('ip');
+            $table->integer('unit_type_id')->unsigned();
+            $table->foreign('unit_type_id')->references('id')->on('unit_types')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateMoxaFailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('moxa_fails');
+        Schema::dropIfExists('ip_addresses');
     }
 }

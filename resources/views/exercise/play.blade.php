@@ -136,18 +136,29 @@
                     var objectSendKinematic = {};
                         objectSendKinematic.idMesa = tableId;
                     switch(errorType) {
-                        case 0:
+                        case 0: // for sensor
                             objectSendKinematic.sensor = sensorName;
                             objectSendKinematic.active = enable;
                             actions(objectSendKinematic);  
                             break;
-                        case 1:
-                            var topic = $(this).attr('data-topic');
-                            console.log(topic);
+                        case 1: // for sedam
+                            var fileName = $(this).attr('data-file_name');
+                            var moduleName = $(this).attr('data-module_name');
+                            var ipAddress = $(this).attr('data-ip_address');
+                            var unit = $(this).attr('data-unit');
+                            objectSendKinematic.fileName = fileName;
+                            objectSendKinematic.moduleName = moduleName;
+                            objectSendKinematic.unidad = unit;
+                            objectSendKinematic.ip = ipAddress;
+                            objectSendKinematic.status = (enable ? 'good' : 'bad');
                             actions(objectSendKinematic);
                             break;
-                        case 2:
+                        case 2: // for moxxa
                             var topic = $(this).attr('data-topic');
+                            var sensor = $(this).attr('data-sensor');
+                            objectSendKinematic.topic = topic;
+                            objectSendKinematic.portName = sensor;
+                            objectSendKinematic.portNumber = 3004;
                             objectSendKinematic.moxaType = 'INTERNAL';
                             actions(objectSendKinematic);
                             break;
@@ -352,14 +363,14 @@
                                                 <div class="col-md-4">
                                                     <span class="top title">Fallas Sedam : </span> 
                                                     @foreach ($practice->sedamFails as $sedamFail)
-                                                        <button type="button" data-topic="{{ $sedamFail->script }}" data-error="1" data-table_id="{{ $stage->pivot->table_id }}" title="{{ $sedamFail->description }}" class="btn btn-warning">{{ $sedamFail->name }}</button>
+                                                        <button type="button" data-file_name="{{ $sedamFail->file_name }}" data-module_name="{{ $sedamFail->module_name }}" data-error="1" data-table_id="{{ $stage->pivot->table_id }}" data-ip_address="{{ $practice->unitType->ipAddress->ip }}" data-unit="{{ $practice->unitType->abbreviation }}"  title="{{ $sedamFail->description }}" class="btn btn-warning">{{ $sedamFail->name }}</button>
                                                     @endforeach
                                                 </div>
                                         
                                                 <div class="col-md-4">
                                                     <span class="top title">Fallas Moxa : </span> 
                                                     @foreach ($practice->moxaFails as $moxaFail)
-                                                        <button type="button" data-topic="{{ $moxaFail->topic }}" data-error="2" data-table_id="{{ $stage->pivot->table_id }}" title="{{ $moxaFail->description }}" class="btn btn-warning">{{ $moxaFail->name }}</button>
+                                                        <button type="button" data-topic="{{ $moxaFail->topic }}"  data-error="2" data-table_id="{{ $stage->pivot->table_id }}" data-sensor="{{ $moxaFail->sensor }}" title="{{ $moxaFail->description }}" class="btn btn-warning">{{ $moxaFail->name }}</button>
                                                     @endforeach
                                                 </div>
                                         </div>

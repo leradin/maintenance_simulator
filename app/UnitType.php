@@ -38,6 +38,11 @@ class UnitType extends Model
         return $this->belongsTo('\App\Practice');
     }
 
+    public function ipAddress()
+    {
+        return $this->hasOne('\App\IpAddress','unit_type_id','id');
+    }
+
     //public function stage(){
     //    return $this->belongsTo('\App\Stage');
     //}

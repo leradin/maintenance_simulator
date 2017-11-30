@@ -17,6 +17,7 @@ class MoxaFailsTableSeeder extends Seeder
             'name' => 'error de configuracion puerto para gps',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
             'topic' => 'MOXA_CHANGE_PORT',
+            'sensor' => 'GPS',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -24,6 +25,7 @@ class MoxaFailsTableSeeder extends Seeder
             'name' => 'error de configuracion puerto para anemometro',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
             'topic' => 'MOXA_CHANGE_PORT',
+            'sensor' => 'ANEMOMETRO',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -31,6 +33,7 @@ class MoxaFailsTableSeeder extends Seeder
             'name' => 'error de configuracion script para ais',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
             'topic' => 'MOXA_CHANGE_PORT',
+            'sensor' => 'AIS',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -38,6 +41,7 @@ class MoxaFailsTableSeeder extends Seeder
             'name' => 'error de configuracion script para ecosonda',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
             'topic' => 'MOXA_CHANGE_PORT',
+            'sensor' => 'ECOSONDA',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -45,6 +49,7 @@ class MoxaFailsTableSeeder extends Seeder
             'name' => 'error de configuracion script para gyro',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
             'topic' => 'MOXA_CHANGE_PORT',
+            'sensor' => 'GYRO',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -52,6 +57,7 @@ class MoxaFailsTableSeeder extends Seeder
             'name' => 'error de configuracion script para radar',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
             'topic' => 'MOXA_CHANGE_PORT',
+            'sensor' => 'RADAR',
             'created_at' => $date,
             'updated_at' => $date
             )

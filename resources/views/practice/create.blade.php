@@ -13,6 +13,7 @@
               }
             });
 
+
             // select selected
             var select_id = "";
             var action = "";
@@ -143,10 +144,17 @@
             // buils segment form for catalog "Sedam Fail"
             function buildFormFieldsInCommonInModal4(){
                 htmlBody = '<div class="form-group">'+
-                                '<div class="col-md-2">@lang('messages.script')</div>'+
+                                '<div class="col-md-2">@lang('messages.file_name')</div>'+
                                 '<div class="col-md-10">'+
-                                    '<input type="text" name="script" class="form-control validate[required,onlyLetterSp,maxSize[150]]"/>'+
-                                    '<span class="help-block">@lang('messages.required_max_150')</span>'+
+                                    '<input type="text" name="file_name" class="form-control validate[required,onlyLetterSp,maxSize[100]]"/>'+
+                                    '<span class="help-block">@lang('messages.required_max_100')</span>'+
+                                '</div>'+
+                            '</div>';
+                htmlBody += '<div class="form-group">'+
+                                '<div class="col-md-2">@lang('messages.module_name')</div>'+
+                                '<div class="col-md-10">'+
+                                    '<input type="text" name="module_name" class="form-control validate[required,onlyLetterSp,maxSize[100]]"/>'+
+                                    '<span class="help-block">@lang('messages.required_max_100')</span>'+
                                 '</div>'+
                             '</div>';
                 return htmlBody;
@@ -159,6 +167,25 @@
                                 '<div class="col-md-10">'+
                                     '<input type="text" name="topic" class="form-control validate[required,onlyLetterSp,maxSize[50]]"/>'+
                                     '<span class="help-block">@lang('messages.required_max_50')</span>'+
+                                '</div>'+
+                            '</div>';
+                htmlBody += '<div class="form-group">'+
+                                '<div class="col-md-2">@lang('messages.sensor')</div>'+
+                                '<div class="col-md-10">'+
+                                    '<input type="text" name="sensor" class="form-control validate[required,onlyLetterSp,maxSize[50]]"/>'+
+                                    '<span class="help-block">@lang('messages.required_max_50')</span>'+
+                                '</div>'+
+                            '</div>';
+                return htmlBody;
+            }
+
+            // buils segment form for catalog "Unit Type"
+            function buildFormFieldsInCommonInModal6(){
+                htmlBody = '<div class="form-group">'+
+                                '<div class="col-md-2">@lang('messages.ip_address')</div>'+
+                                '<div class="col-md-10">'+
+                                    '<input type="text" id="ip" name="ip" class="form-control validate[required,custom[ipv4]] text-input"/>'+
+                                    '<span class="help-block">@lang('messages.required_ip_address')</span>'+
                                 '</div>'+
                             '</div>';
                 return htmlBody;
@@ -185,7 +212,7 @@
                         break;
                     case 'add_unit_type':
                         titleHeader = "Agregar Tipo de Unidad";
-                        htmlBody = buildFormFieldsInCommonInModal1();
+                        htmlBody = buildFormFieldsInCommonInModal1()+buildFormFieldsInCommonInModal6();
                         action = "{{ route('unit_type.store') }}";
                         select_id = "#unit_type_id";
                         FORM = 0;
@@ -396,7 +423,7 @@
                                                 <select id="unit_type_id" name="unit_type_id" class="form-control validate[required]" style="width: 100%;">
                                                     <option value=""></option>  
                                                     @foreach($unitTypes as $unitType)
-                                                        <option value="{{ $unitType->id}}">{{ $unitType->name}} ({{ $unitType->abbreviation}})</option>
+                                                        <option value="{{ $unitType->id}}">{{ $unitType->name}} ({{ $unitType->abbreviation}}) {{ $unitType->ipAddress->ip}}</option>
                                                     @endforeach                                   
                                                 </select>
                                                 <span class="help-block"><button id="add_unit_type" class="btn btn-link" type="button">@lang('messages.create_unit_type')</button>  </span>

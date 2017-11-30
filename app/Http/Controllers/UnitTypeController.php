@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\UnitType;
+use App\IpAddress;
 use Illuminate\Http\Request;
 
 class UnitTypeController extends Controller
@@ -39,7 +40,12 @@ class UnitTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $unitType = UnitType::create($request->except('_token'));
+        //return \Response::json($request->all());
+       
+        $unitType = UnitType::create($request->except(['_token','ip']));
+        $ipAddress = IpAddress::create(['ip' => $request->ip,
+                                        'unit_type_id' => $unitType->id]);
+        $unitType->ipAddress()->save($ipAddress);
         if($request->ajax()){
             return \Response::json($unitType);
         }

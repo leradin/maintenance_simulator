@@ -17,7 +17,8 @@ class CreateSedamFailsTable extends Migration
             $table->increments('id');
             $table->string('name',50);
             $table->string('description',100)->nullable();
-            $table->char('script',150)->nullable();
+            $table->char('file_name',100)->nullable();
+            $table->char('module_name',100)->nullable();
             $table->timestamps();
         });
     }
