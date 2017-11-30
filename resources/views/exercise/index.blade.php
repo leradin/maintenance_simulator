@@ -4,12 +4,9 @@
 @section('title', 'Ejercicios')
 @section('js')
     <script>
-        function alertme() {
-                alert("sssss");
-
-            }
+        
         $(document).ready(function(){
-            $( "a,button,span" ).tooltip({
+            $("a,button,span").tooltip({
                 show: {
                     effect: "slideDown",
                     delay: 250
@@ -25,11 +22,28 @@
             });
 
             $("#stopExercise").click(function(){
+                if (!confirm('@lang('messages.question_end_exercise')')){
+                    return false;
+                }else{
+                   removeAllCookies();
+                }
+            });
+
+            $("#restartExercise").click(function(){
+                if (!confirm('@lang('messages.question_restart_exercise')')){
+                    return false;
+                }else{
+                   removeAllCookies();
+                }
+            });
+            
+
+            function removeAllCookies(){
                 Cookies.remove('durations');
                 var url = $(this).attr('href');
                 window.open(url,"_self");
                 return false;
-            })
+            }
             
 
             /*$('#playExercise').on('click',function(event) { 
@@ -80,14 +94,16 @@
                                         <td>{{ $exercise->description }}</td>
                                         <td class="TAC">
                                             @if($exercise->status == 0)
-                                            {!! Form::open(['route' => ['exercise.destroy',$exercise],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este ejercicio?');"]) !!}
-                                                 <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button"><span class="glyphicon glyphicon-play"></span></a>                    
-                                                <button class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
+                                            {!! Form::open(['route' => ['exercise.destroy',$exercise],'method' => 'DELETE']) !!}
+                                                 <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" onclick="if (! confirm('@lang('messages.question_start_exercise')')) { return false; }" title="@lang('messages.tooltip_start_exercise')"><span class="glyphicon glyphicon-play"></span></a>                    
+                                                <button class="icon-button btn btn-link" title="@lang('messages.tooltip_delete_exercise')" onclick="if (! confirm('@lang('messages.question_delete_exercise')')) { return false; }" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
                                             {!!Form::close()!!}
+
                                             @elseif($exercise->status == 1)
-                                                <a id="stopExercise" href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.end2_exercise')"><span class="glyphicon glyphicon-stop"></span></a>
+                                                <a id="stopExercise" href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.end2_exercise')" ><span class="glyphicon glyphicon-stop"></span></a>
                                                 <a href="{{ route('exercise.show',['exercise' => $exercise,'play' => 1]) }}" class="icon-button" title="@lang('messages.see_exercise')"><span class=" glyphicon glyphicon-eye-open"></span></a>
-                                            @else
+                                                <a id="restartExercise" href="{{ route('exercise.show',['exercise' => $exercise,'restart' => 1]) }}" class="icon-button" title="@lang('messages.tooltip_restart_exercise')"><span class="glyphicon glyphicon-refresh"></span></a>
+                                            @elseif($exercise->status == 2)
                                                 <a href="{{ route('exercise.show',['exercise' => $exercise->id]) }}" class="icon-button" title="@lang('messages.info_see_exercise')"><span class="glyphicon glyphicon-info-sign"></span></a>
                                             @endif
                                         </td>

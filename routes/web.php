@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 */
 Route::get('/', 'HomeController@index');
 
+Auth::routes();
+
 Route::resource('exercise', 'ExerciseController');
 
 Route::resource('stage', 'StageController');
@@ -56,10 +58,39 @@ Route::resource('moxa_fail', 'MoxaFailController');
 
 Route::get('/send_kinect',function(Request $request){
     event(new \App\Events\RequestEvent($request->all()));
-    return $request->all();
+    return response()->json($request->all());
 });
 
-Auth::routes();
+Route::get('/start_practice','ExerciseController@startPractice');
+
+/*Route::get('/test',function(){
+    $data = Cookie::get('practices');
+    dd($data);
+});
+
+Route::get('/test2',function(){
+    //Cookie::forget('practices');
+    Cookie::queue(Cookie::forget('practices'));
+});
+
+Route::get('/start_practice',function(Request $request){
+    $practice = \App\Practice::with('users')->find($request->practice_id);
+    $practice->users()->attach($request->user_id,['practice_id'=>$practice->id, 
+                                                  'exercise_id' => $request->exercise_id]);
+    if($practice)
+        
+        //if(Session::has('practices')){
+            //$practices = \Session::get('practices');
+        //}else{
+            //$practices = array();
+            //array_push($practices, [$request->exercise_id.'|'.$request->user_id => $request->practice_id]);
+            //\Session::put('practices',$practices);
+        //}
+        return response()->json(['success' => $practice], 200,array('Access-Control-Allow-Origin' => '*'));
+    else
+        return response()->json(['error'=>'Not Found'], 404, array('Access-Control-Allow-Origin' => '*'));
+});*/
+
 
 /*Route::get('/test',function(Request $request){
     $exercise =  \App\Exercise::find($request->exercise_id);

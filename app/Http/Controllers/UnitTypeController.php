@@ -46,6 +46,8 @@ class UnitTypeController extends Controller
         $ipAddress = IpAddress::create(['ip' => $request->ip,
                                         'unit_type_id' => $unitType->id]);
         $unitType->ipAddress()->save($ipAddress);
+
+        $unitType = $unitType::with('ipAddress')->find($unitType->id);
         if($request->ajax()){
             return \Response::json($unitType);
         }

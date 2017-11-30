@@ -12,7 +12,7 @@
 		<div class="widget">
 	        <div class="profile clearfix">
 	            <div class="image">
-	                <img src="img/examples/users/dmitry_b.jpg" class="img-thumbnail">
+	                <img src="{{ asset('img/backgrounds/background.png') }}" class="img-thumbnail">
 	            </div>                        
 	            <div class="info">
 	                <h2>{{  Auth::user()->names }} {{  Auth::user()->lastnames }}</h2>

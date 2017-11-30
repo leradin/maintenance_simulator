@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Lang;
 use SSH;
+use Cookie;
+use Carbon\Carbon;
+
 
 class ExerciseController extends Controller
 {
@@ -288,7 +291,7 @@ class ExerciseController extends Controller
     {
         $stages =  \App\Stage::all();
         $users =  \App\User::where('user', 0)->get();
-        $unitTypes = \App\unitType::all();
+        $unitTypes = \App\UnitType::all();
         return view('exercise.create',[ 'stages' => $stages,
                                         'users' => $users,
                                         'unitTypes' => $unitTypes
@@ -367,8 +370,8 @@ class ExerciseController extends Controller
                         $exercise->status = 1;
                         $exercise->save();
                         
-                        $this->startLogExercise();
-                        $this->startRecordExercise();
+                        //$this->startLogExercise();
+                        //$this->startRecordExercise();
 
                         foreach ($exercise->stages as $stage) {
                             $json  = json_decode($stage->pivot->structure, JSON_PRETTY_PRINT);
@@ -400,11 +403,28 @@ class ExerciseController extends Controller
                                                  'exercise' => $exercise
                                                 ]);
                 }
+                if($request->get('restart')){
+                    $exercise->status = 0;
+                    $exercise->save();
+                    $this->killExercise($exercise);
+                    $message['type'] = 'success';
+                    $message['status'] = Lang::get('messages.restart_exercise');
+                    return redirect('/exercise')->with('message',$message); 
+                }
+
+
                 $exercise->status = 2;
                 $exercise->save();
+                $this->killExercise($exercise);
+                /*foreach ($exercise->stages as $stage) {
+                    $kill['idMesa'] = $stage->pivot->table_id; 
+                    $kill['topic'] = 'KILL';
+                    event(new \App\Events\RequestEvent($kill));
+                }*/
+                //dd($exercise->stages()->get()->first()->pivot->table_id);
 
-                $this->endLogExercise();
-                $this->endRecordExercise();
+                //$this->endLogExercise();
+                //$this->endRecordExercise();
 
                 $message['type'] = 'success';
                 $message['status'] = Lang::get('messages.end_exercise');
@@ -414,7 +434,7 @@ class ExerciseController extends Controller
                     $stage['user'] = User::with('Degree','Ascription')->find($stage->pivot->user_id);
                     //$stage->users()->where('practice_user_pivot.exercise_id', 1);
                     foreach ($stage->users->where('practice_user_pivot.exercise_id',2) as $item) {
-                        dd($item);
+                        //dd($item);
                     }
                     /*foreach ($stage->practices as $practice) { 
                         foreach ($practice->users as $user) {
@@ -478,7 +498,25 @@ class ExerciseController extends Controller
         return redirect('/exercise')->with('message',$message);
     }
 
-    private function startLogExercise(){
+    public function startPractice(Request $request){
+        $practice = \App\Practice::with('users')->find($request->practice_id);
+        $practice->users()->attach($request->user_id,['practice_id'=>$practice->id, 
+                                                  'exercise_id' => $request->exercise_id]);
+        if($practice){
+            if(Cookie::get('practices')){
+                $practices = Cookie::get('practices');
+            }else{
+                $practices = array();
+            }
+            array_push($practices, [$request->exercise_id.'|'.$request->table_id.'|'.$request->user_id.'|'.$request->practice_id => $request->time]);
+                Cookie::queue('practices', $practices, $request->time,'/',null, false, true);
+            return response()->json(['success' => $practice], 200,array('Access-Control-Allow-Origin' => '*'));
+        }else{
+            return response()->json(['error'=>'Not Found'], 404, array('Access-Control-Allow-Origin' => '*'));
+        }
+    }
+
+    /*private function startLogExercise(){
         $commands = ['cd /Users/leninvladimirramirez/scripts/logs',
         'screen -d -m ./startLogsMaster.sh'
             ];
@@ -516,6 +554,15 @@ class ExerciseController extends Controller
         }
         catch(\Exception $e){
             return false;
+        }
+    }*/
+
+    private function killExercise(Exercise $exercise){
+        Cookie::queue(Cookie::forget('practices'));
+        foreach ($exercise->stages as $stage) {
+            $kill['idMesa'] = $stage->pivot->table_id; 
+            $kill['topic'] = 'KILL';
+            event(new \App\Events\RequestEvent($kill));
         }
     }
 

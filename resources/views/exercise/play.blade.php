@@ -2,6 +2,10 @@
 @section('title', 'Reproduciendo')
 @section('js')
     <script>
+        const KINEMATIC_ACTIONS = 0;
+        const PRACTICE_ACTIONS = 1;
+        const KILL_TABLE_ACTIONS = 1;
+
         $(document).ready(function(){
 
             // config ajax
@@ -70,7 +74,7 @@
 
             
 
-            $( "button" ).tooltip({
+            $( "button,a" ).tooltip({
                 show: {
                     effect: "slideDown",
                     delay: 250
@@ -100,67 +104,107 @@
               return h + ':' + m + ':' + s;
             }
 
+            $("#restartExercise").click(function(){
+                if (!confirm('@lang('messages.question_restart_exercise')')){
+                    return false;
+                }else{
+                   removeAllCookies();
+                }
+            });
+
             $('button').on('click',function(event) {
                 event.stopPropagation(); // prevent default bootstrap behavior
                 var tableId = $(this).attr('data-table_id');
                 var practiceId = parseInt($(this).attr('data-practice_id'));
+                var exerciseId = parseInt($(this).attr('data-exercise_id'));
+                var userId = parseInt($(this).attr('data-user_id'));
                 var sensorName = $(this).text();
                 var status = $(this).attr('data-status');
                 var errorType = parseInt($(this).attr("data-error"));
-
+                console.log("Exercise ID "+exerciseId);
+                console.log("Table ID "+tableId);
+                console.log("Practice ID "+practiceId);
+                console.log("User ID "+userId);
                 if(status >= 0){
                     var element = $('#'+tableId+practiceId);//$(this).parents('.block, .accordion').find("tbody tr td:eq(1) h1").get(practiceId-1);
                     var duration = $('#'+tableId+practiceId).text(); //$(this).parents('.block, .accordion').find("tbody tr td:eq(1) h1").eq(practiceId-1).text();
                     if(status == 0){
-                         if(confirmed()){
+                        var objectSendPractice = {};
+                        objectSendPractice.exercise_id = exerciseId;
+                        objectSendPractice.practice_id = practiceId;
+                        objectSendPractice.user_id = userId;
+                        objectSendPractice.table_id = tableId;
+                        objectSendPractice.time = parseInt(duration.substr(0,2))*60;
+                        console.log(parseInt(duration.substr(0,2))*60);
+                        if(confirmed()){
                             cookies[tableId+practiceId] = Date();
                             Cookies.set('durations', cookies);
                             $(this).removeClass("btn-primary").addClass("btn-danger").text("Finalizar Práctica");
                             initTimer(element,(duration.substr(0,2)+'h'),$(this));
                             $(this).attr("data-status", "1");
+                            console.log(duration);
+                            actions(objectSendPractice,PRACTICE_ACTIONS); 
                         }
                     }else if(status == 1){
                         $(this).addClass("disabled");
                         endTimer(element);
                         $(this).attr("data-status", "2");
+                        actions(objectSendPractice,PRACTICE_ACTIONS); 
                     }
                 }else{
+                    console.log("dwddsdsd");
                     var enable = false;
+                   
+
+
                     if($(this).hasClass('btn-danger')){
-                    $(this).removeClass("btn-danger").addClass("btn-success");
-                        enable = true;  
+                        $(this).removeClass("btn-danger").addClass("btn-success");
+                        enable = true;
                     }else{
-                        $(this).removeClass("btn-success").addClass("btn-danger"); 
-                        enable = false;    
+                        $(this).removeClass("btn-success").addClass("btn-danger");
+                        enable = false;
                     } 
+                    
+                    if(userId){
+                        return false;
+                    }  
+
+                    // for error type
                     var objectSendKinematic = {};
                         objectSendKinematic.idMesa = tableId;
                     switch(errorType) {
                         case 0: // for sensor
                             objectSendKinematic.sensor = sensorName;
                             objectSendKinematic.active = enable;
-                            actions(objectSendKinematic);  
+                            actions(objectSendKinematic,KINEMATIC_ACTIONS);  
                             break;
                         case 1: // for sedam
                             var fileName = $(this).attr('data-file_name');
                             var moduleName = $(this).attr('data-module_name');
                             var ipAddress = $(this).attr('data-ip_address');
                             var unit = $(this).attr('data-unit');
+                            var topic = $(this).attr('data-topic');
+                            var  newConfigJSON = [{ port: '0000', ip: '172.16.212.13', name: 'GPS' },
+                                { port: '999', ip: '172.16.212.55', name: 'Gyro' },
+                                { port: '1111', name: 'SoundDeeper' }];
+
                             objectSendKinematic.fileName = fileName;
                             objectSendKinematic.moduleName = moduleName;
                             objectSendKinematic.unidad = unit;
+                            objectSendKinematic.newConfigJSON = newConfigJSON;
                             objectSendKinematic.ip = ipAddress;
                             objectSendKinematic.status = (enable ? 'good' : 'bad');
-                            actions(objectSendKinematic);
+                            objectSendKinematic.topic = topic;
+                            actions(objectSendKinematic,KINEMATIC_ACTIONS);
                             break;
                         case 2: // for moxxa
                             var topic = $(this).attr('data-topic');
                             var sensor = $(this).attr('data-sensor');
-                            objectSendKinematic.topic = topic;
-                            objectSendKinematic.portName = sensor;
-                            objectSendKinematic.portNumber = 3004;
+                            //objectSendKinematic.portName = sensor;
+                            //objectSendKinematic.portNumber = 3004;
                             objectSendKinematic.moxaType = 'INTERNAL';
-                            actions(objectSendKinematic);
+                            objectSendKinematic.topic = topic;
+                            actions(objectSendKinematic,KINEMATIC_ACTIONS);
                             break;
                     } 
                 }
@@ -174,6 +218,19 @@
                     return false;
                 } 
             }
+
+            $('a').on('click',function(event){
+                event.stopPropagation(); // prevent default bootstrap behavior
+                var tableId = $(this).attr('data-table_id');
+                if(confirmed()){
+                    var objectKillTable = {};
+                    objectKillTable.table_id = tableId;
+                    actions(objectKillTable,KILL_TABLE_ACTIONS);
+                }
+                event.preventDefault();
+            });
+            
+
 
             function initTimer(element,duration,elementButton){
                 $(element).timer({
@@ -195,16 +252,24 @@
                 $(element).timer('pause');
             }
             
-            function actions(objectSendKinematic){
+            function actions(objectSend,typeActions){
+                console.log("in");
+                var url = "";
+                if(typeActions ==  KINEMATIC_ACTIONS || typeActions ==  KILL_TABLE_ACTIONS){
+                    url = "{{ url('send_kinect') }}";
+                }if(typeActions == PRACTICE_ACTIONS){
+                    url = "{{ url('start_practice') }}";
+                }
                 $.ajax({
-                    url: "{{ url('send_kinect') }}",
+                    url: url,
                     type : "GET",
-                    data: objectSendKinematic,
-                    dataType : 'text',
+                    data: objectSend,
+                    dataType : 'json',
                     success : function(json) {
                         console.log(json);
                     },
                     error : function(xhr, status) {
+                        console.log(xhr);
                     },
                     complete : function(xhr, status) {
                     }
@@ -230,8 +295,11 @@
                         <div class="icon"><i class="icos-paragraph-justify"></i></div>
                         <h2>{{ $stage->name }} @lang('messages.table') #{{ $stage->pivot->table_id }}</h2>
                         <ul class="buttons">                                                        
-                            <li><a href="#" class="cblock"><span class="icos-menu"></span></a></li>
+                            <li><a href="#" title="@lang('messages.minimize_window')" class="cblock"><span class="icos-menu"></span></a></li>
                         </ul>
+                        <ul class="buttons">                                     
+                            <li><a href="" data-table_id="{{ $stage->pivot->table_id }}" title="@lang('messages.end_table')"><span class="icos-exit"></span></a></li>
+                        </ul> 
                     </div>                        
                     <div class="block accordion" data-collapse="eblock_1">
                         @if(count($stage->practices) > 0)
@@ -363,7 +431,7 @@
                                                 <div class="col-md-4">
                                                     <span class="top title">Fallas Sedam : </span> 
                                                     @foreach ($practice->sedamFails as $sedamFail)
-                                                        <button type="button" data-file_name="{{ $sedamFail->file_name }}" data-module_name="{{ $sedamFail->module_name }}" data-error="1" data-table_id="{{ $stage->pivot->table_id }}" data-ip_address="{{ $practice->unitType->ipAddress->ip }}" data-unit="{{ $practice->unitType->abbreviation }}"  title="{{ $sedamFail->description }}" class="btn btn-warning">{{ $sedamFail->name }}</button>
+                                                        <button type="button" data-file_name="{{ $sedamFail->file_name }}" data-module_name="{{ $sedamFail->module_name }}" data-error="1" data-table_id="{{ $stage->pivot->table_id }}" data-ip_address="{{ $practice->unitType->ipAddress->ip }}" data-unit="{{ $practice->unitType->abbreviation }}" data-topic="{{ $sedamFail->topic }}"  title="{{ $sedamFail->description }}" class="btn btn-warning">{{ $sedamFail->name }}</button>
                                                     @endforeach
                                                 </div>
                                         
@@ -382,7 +450,7 @@
                                     <!-- Start -->
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button id="button{{ $stage->pivot->table_id }}{{ $practice->id }}" data-table_id="{{ $stage->pivot->table_id }}" data-practice_id="{{ $practice->id }}" data-status="0" class="btn btn-default btn-lg btn-block btn-primary" type="button">@lang('messages.start_practice')</button>  
+                                            <button id="button{{ $stage->pivot->table_id }}{{ $practice->id }}" data-table_id="{{ $stage->pivot->table_id }}" data-practice_id="{{ $practice->id }}" data-status="0" class="btn btn-default btn-lg btn-block btn-primary" data-exercise_id="{{ $exercise->id }}" data-user_id="{{ $stage->users()->where('exercise_id',$exercise->id)->get()->first()->id }}" type="button">@lang('messages.start_practice')</button>  
                                         </div>
                                     </div>
                                 </div>

@@ -21,6 +21,7 @@ class UserTableSeeder extends Seeder
             'degree_id' => 1,
             'ascription_id' => 1,
             'user' => true,
+            'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -32,6 +33,7 @@ class UserTableSeeder extends Seeder
             'degree_id' => 1,
             'ascription_id' => 1,
             'user' => true,
+            'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -43,6 +45,7 @@ class UserTableSeeder extends Seeder
             'degree_id' => 1,
             'ascription_id' => 1,
             'user' => true,
+            'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -54,6 +57,7 @@ class UserTableSeeder extends Seeder
             'degree_id' => 1,
             'ascription_id' => 1,
             'user' => false,
+            'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -65,6 +69,7 @@ class UserTableSeeder extends Seeder
             'degree_id' => 1,
             'ascription_id' => 1,
             'user' => false,
+            'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -76,6 +81,7 @@ class UserTableSeeder extends Seeder
             'degree_id' => 1,
             'ascription_id' => 1,
             'user' => false,
+            'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
             ),
@@ -87,6 +93,7 @@ class UserTableSeeder extends Seeder
             'degree_id' => 1,
             'ascription_id' => 1,
             'user' => false,
+            'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
             )

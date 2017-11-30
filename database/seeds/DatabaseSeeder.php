@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SedamFailsTableSeeder::class);
         $this->call(SoftwareBehaviorTableSeeder::class);
         $this->call(SolutionTableSeeder::class);
+        $this->call(PracticeTableSeeder::class);
     }
 }

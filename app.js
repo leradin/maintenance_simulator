@@ -39,10 +39,12 @@ redis.on('message', function(channel, message) {
         try{
             modifyMessage.data.data[0].active = JSON.parse(modifyMessage.data.data[0].active);
             sockRequest.send(['SET_ACTIVE', JSON.stringify(modifyMessage.data.data[0])]);
-            console.log(chalk.red('Message SET_ACTIVE Recieved: '+JSON.stringify(modifyMessage.data.data[0])));
+            console.log(chalk.red(JSON.stringify(modifyMessage.data.data[0])));
         }catch(err){
-            sockRequest.send([JSON.stringify(modifyMessage.data.data[0].topic), JSON.stringify(modifyMessage.data.data[0])]);
-            console.log(chalk.red('Message MOXA_CHANGE_IP Recieved: '+JSON.stringify(modifyMessage.data.data[0])));
+            //modifyMessage.data.data[0].portNumber = JSON.parse(modifyMessage.data.data[0].portNumber);
+            sockRequest.send([modifyMessage.data.data[0].topic, JSON.stringify(modifyMessage.data.data[0])]);
+            //sockRequest.send(['EDIT_CONFIG_FILES',JSON.stringify(modifyMessage.data.data[0])]);
+            console.log(chalk.red(JSON.stringify(modifyMessage.data.data[0])));
         }
     }
     

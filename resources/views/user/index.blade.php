@@ -53,25 +53,27 @@
                                 </thead>
                                 <tbody>
                                     @foreach($users as $user)
+                                        @if(auth()->user() != $user)
                                         <tr>
-                                        <td>{{ $user->enrollment }}</td>
-                                        <td>{{ $user->names }}</td>
-                                        <td>{{ $user->lastnames }}</td>
-                                        <td>{{ $user->degree->name }}</td>
-                                        <td>{{ $user->ascription->name }}</td>
-                                        <td class="TAC dark">
-                                            @if($user->user)
-                                                <span class="icosg-user1" title="Sistema"></span>
-                                            @else
-                                                <span class="icosg-user2" title="Estudiante"></span>
-                                            @endif 
-                                        </td>
-                                        <td class="TAC">
-                                            {!! Form::open(['route' => ['user.destroy',$user],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este usuario?');"]) !!}
-                                                <button title="Eliminar" class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
-                                            {!!Form::close()!!}
-                                        </td>
-                                    </tr>   
+                                            <td>{{ $user->enrollment }}</td>
+                                            <td>{{ $user->names }}</td>
+                                            <td>{{ $user->lastnames }}</td>
+                                            <td>{{ $user->degree->name }}</td>
+                                            <td>{{ $user->ascription->name }}</td>
+                                            <td class="TAC dark">
+                                                @if($user->user)
+                                                    <span class="icosg-user1" title="Sistema"></span>
+                                                @else
+                                                    <span class="icosg-user2" title="Estudiante"></span>
+                                                @endif 
+                                            </td>
+                                            <td class="TAC">
+                                                {!! Form::open(['route' => ['user.destroy',$user],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este usuario?');"]) !!}
+                                                    <button title="Eliminar" class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
+                                                {!!Form::close()!!}
+                                            </td>
+                                        </tr>
+                                        @endif   
                                     @endforeach                          
                                 </tbody>
                             </table>                    

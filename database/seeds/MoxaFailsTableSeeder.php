@@ -16,7 +16,7 @@ class MoxaFailsTableSeeder extends Seeder
             array(
             'name' => 'error de configuracion puerto para gps',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
-            'topic' => 'MOXA_CHANGE_PORT',
+            'topic' => 'MOXA_CHANGE_IP',
             'sensor' => 'GPS',
             'created_at' => $date,
             'updated_at' => $date
@@ -24,7 +24,7 @@ class MoxaFailsTableSeeder extends Seeder
  			array(
             'name' => 'error de configuracion puerto para anemometro',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
-            'topic' => 'MOXA_CHANGE_PORT',
+            'topic' => 'MOXA_CHANGE_IP',
             'sensor' => 'ANEMOMETRO',
             'created_at' => $date,
             'updated_at' => $date
@@ -32,7 +32,7 @@ class MoxaFailsTableSeeder extends Seeder
  			array(
             'name' => 'error de configuracion script para ais',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
-            'topic' => 'MOXA_CHANGE_PORT',
+            'topic' => 'MOXA_CHANGE_IP',
             'sensor' => 'AIS',
             'created_at' => $date,
             'updated_at' => $date
@@ -40,7 +40,7 @@ class MoxaFailsTableSeeder extends Seeder
  			array(
             'name' => 'error de configuracion script para ecosonda',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
-            'topic' => 'MOXA_CHANGE_PORT',
+            'topic' => 'MOXA_CHANGE_IP',
             'sensor' => 'ECOSONDA',
             'created_at' => $date,
             'updated_at' => $date
@@ -48,7 +48,7 @@ class MoxaFailsTableSeeder extends Seeder
  			array(
             'name' => 'error de configuracion script para gyro',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
-            'topic' => 'MOXA_CHANGE_PORT',
+            'topic' => 'MOXA_CHANGE_IP',
             'sensor' => 'GYRO',
             'created_at' => $date,
             'updated_at' => $date
@@ -56,7 +56,7 @@ class MoxaFailsTableSeeder extends Seeder
 			array(
             'name' => 'error de configuracion script para radar',
             'description' => 'modificacion de moxa respecto a los puertos a configurar',
-            'topic' => 'MOXA_CHANGE_PORT',
+            'topic' => 'MOXA_CHANGE_IP',
             'sensor' => 'RADAR',
             'created_at' => $date,
             'updated_at' => $date

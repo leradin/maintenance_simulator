@@ -3,6 +3,14 @@
 // resources/lang/es/messages.php
 
 return [
+    // App
+    'app_name' =>'Administración',
+    // Login
+    'enrollment' => 'Matrícula',
+    'password' => 'Contraseña',
+    'remember' => 'Recordarme',
+    'not_authorized' => 'No tiene permisos para ingresar a este módulo',
+    // Menus
     'menu_home' => 'Inicio',
     'menu_exercise' => 'Ejercicios',
     'menu_stage' => 'Escenarios',
@@ -125,12 +133,22 @@ return [
     'success_exercise' => 'Ejercicio Generado Correctamente.',
     'remove_exercise' => 'Ejercicio Eliminado Correctamente.',
     'start_exercise' => 'Ejercicio Iniciado Correctamente.',
+    'restart_exercise' => 'Ejercicio Reiniciado Correctamente.',
     'end_exercise' => 'Ejercicio Finalizado Correctamente.',
     'fail_exercise' => 'Algún Ejercicio Se Encuentra Iniciado.',
     'info_see_exercise' => 'Ver información.',
+    'tooltip_restart_exercise' => 'Reiniciar Ejercicio.',
+    'tooltip_start_exercise' => 'Iniciar Ejercicio.',
+    'tooltip_delete_exercise' => 'Eliminar Ejercicio.',
     'create_exercise' => 'Crear Ejercicio.',
     'end2_exercise' => 'Finalizar Ejercicio.',
     'see_exercise' => 'Ver Ejercicio.',
+    'question_start_exercise' => '¿Desea iniciar este ejercicio?',
+    'question_delete_exercise' => '¿Desea eliminar este ejercicio?',
+    'question_end_exercise' => '¿Desea finalizar este ejercicio?',
+    'question_restart_exercise' => '¿Desea reiniciar este ejercicio?',
+    'end_table' => 'Finalizar mesa',
+    'minimize_window' => 'Minimizar Ventana',
     'print_exercise' => 'Imprimir Ejercicio',
     'created_at' => 'Fecha Creación',
     'students' => 'Estudiantes',
