@@ -146,20 +146,27 @@
                             var moduleName = $(this).attr('data-module_name');
                             var ipAddress = $(this).attr('data-ip_address');
                             var unit = $(this).attr('data-unit');
+                            var topic = $(this).attr('data-topic');
+                            var  newConfigJSON = [{ port: '0000', ip: '172.16.212.13', name: 'GPS' },
+                                { port: '999', ip: '172.16.212.55', name: 'Gyro' },
+                                { port: '1111', name: 'SoundDeeper' }];
+
                             objectSendKinematic.fileName = fileName;
                             objectSendKinematic.moduleName = moduleName;
                             objectSendKinematic.unidad = unit;
+                            objectSendKinematic.newConfigJSON = newConfigJSON;
                             objectSendKinematic.ip = ipAddress;
                             objectSendKinematic.status = (enable ? 'good' : 'bad');
+                            objectSendKinematic.topic = topic;
                             actions(objectSendKinematic);
                             break;
                         case 2: // for moxxa
                             var topic = $(this).attr('data-topic');
                             var sensor = $(this).attr('data-sensor');
-                            objectSendKinematic.topic = topic;
-                            objectSendKinematic.portName = sensor;
-                            objectSendKinematic.portNumber = 3004;
+                            //objectSendKinematic.portName = sensor;
+                            //objectSendKinematic.portNumber = 3004;
                             objectSendKinematic.moxaType = 'INTERNAL';
+                            objectSendKinematic.topic = topic;
                             actions(objectSendKinematic);
                             break;
                     } 
@@ -363,7 +370,7 @@
                                                 <div class="col-md-4">
                                                     <span class="top title">Fallas Sedam : </span> 
                                                     @foreach ($practice->sedamFails as $sedamFail)
-                                                        <button type="button" data-file_name="{{ $sedamFail->file_name }}" data-module_name="{{ $sedamFail->module_name }}" data-error="1" data-table_id="{{ $stage->pivot->table_id }}" data-ip_address="{{ $practice->unitType->ipAddress->ip }}" data-unit="{{ $practice->unitType->abbreviation }}"  title="{{ $sedamFail->description }}" class="btn btn-warning">{{ $sedamFail->name }}</button>
+                                                        <button type="button" data-file_name="{{ $sedamFail->file_name }}" data-module_name="{{ $sedamFail->module_name }}" data-error="1" data-table_id="{{ $stage->pivot->table_id }}" data-ip_address="{{ $practice->unitType->ipAddress->ip }}" data-unit="{{ $practice->unitType->abbreviation }}" data-topic="{{ $sedamFail->topic }}"  title="{{ $sedamFail->description }}" class="btn btn-warning">{{ $sedamFail->name }}</button>
                                                     @endforeach
                                                 </div>
                                         
