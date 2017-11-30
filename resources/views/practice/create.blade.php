@@ -144,6 +144,13 @@
             // buils segment form for catalog "Sedam Fail"
             function buildFormFieldsInCommonInModal4(){
                 htmlBody = '<div class="form-group">'+
+                                '<div class="col-md-2">@lang('messages.topic')</div>'+
+                                '<div class="col-md-10">'+
+                                    '<input type="text" name="topic" class="form-control validate[required,onlyLetterSp,maxSize[50]]"/>'+
+                                    '<span class="help-block">@lang('messages.required_max_50')</span>'+
+                                '</div>'+
+                            '</div>';
+                htmlBody += '<div class="form-group">'+
                                 '<div class="col-md-2">@lang('messages.file_name')</div>'+
                                 '<div class="col-md-10">'+
                                     '<input type="text" name="file_name" class="form-control validate[required,onlyLetterSp,maxSize[100]]"/>'+

@@ -25,7 +25,7 @@ class SedamFail extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description','file_name','module_name'];
+    protected $fillable = ['name','description','topic','file_name','module_name'];
 
     /**
      * The attributes that aren't mass assignable.
