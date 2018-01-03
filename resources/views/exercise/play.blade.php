@@ -195,7 +195,7 @@
                             objectSendKinematic.ip = ipAddress;
                             objectSendKinematic.status = (enable ? 'good' : 'bad');
                             objectSendKinematic.topic = topic;
-                            actions(objectSendKinematic,KINEMATIC_ACTIONS);
+                            actions(objectSendKinematic);
                             break;
                         case 2: // for moxxa
                             var topic = $(this).attr('data-topic');
@@ -204,7 +204,7 @@
                             //objectSendKinematic.portNumber = 3004;
                             objectSendKinematic.moxaType = 'INTERNAL';
                             objectSendKinematic.topic = topic;
-                            actions(objectSendKinematic,KINEMATIC_ACTIONS);
+                            actions(objectSendKinematic);
                             break;
                     } 
                 }
