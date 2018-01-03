@@ -43,10 +43,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
+        
         try{
             $user = User::create($request->except(['_token','confirm_password']));
-            
             $message['type'] = 'success';
             $message['status'] = Lang::get('messages.success_user');
 

@@ -133,7 +133,7 @@
                     </div>    
                     {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'user.store','autocomplete' =>'off']) !!}    
                     <div class="block-fluid">
-
+                        <input type="hidden" id="session_id" name="session_id" value="0" />
                         <div class="form-group">
                             <div class="col-md-2 TAR">@lang('messages.enrollment')</div>
                             <div class="col-md-10">
@@ -205,7 +205,7 @@
                         <div class="toolbar bottom TAR">
                             <div class="btn-group">
                                 <button class="btn btn-link" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
-                                <a href="{{url()->previous()}}" class="btn btn-danger">@lang('messages.cancel')</a>
+                                <a href="{{ url('exercise') }}" class="btn btn-danger">@lang('messages.cancel')</a>
                                 <button class="btn btn-primary" type="submit">@lang('messages.submit')</button>
                             </div>
                         </div>

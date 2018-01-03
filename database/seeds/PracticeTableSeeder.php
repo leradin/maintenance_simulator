@@ -64,6 +64,22 @@ class PracticeTableSeeder extends Seeder
             array(6),
             array(2)
         );
+        $activities = array(
+            array(1,4,5),
+            array(1,4,5),
+            array(1,4,5),
+            array(1,4,5),
+            array(1,4,5),
+            array(1,4,5),
+            array(1,2,6),
+            array(1,2,7),
+            array(1,2,8),
+            array(1,2,8),
+            array(1,2,8),
+            array(1,2,8),
+            array(1,2,8),
+            array(1,2,8)
+        );
     	$data = array(
     		array(
 	        'name' => 'Error NMEA_FILTER GPS por configuracion de recepcion de tramas de GPS',
@@ -185,6 +201,7 @@ class PracticeTableSeeder extends Seeder
                 $newPractice->knowledge()->attach($knowledges[$index]);
                 $newPractice->objectives()->attach($objectives[$index]);
                 $newPractice->softwareBehaviors()->attach($softwareBehaviors[$index]);
+                $newPractice->activities()->attach($activities[$index]);
         }
     }
 }

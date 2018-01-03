@@ -246,7 +246,7 @@
                         <div class="toolbar bottom TAR">
                             <div class="btn-group">
                                 <button class="btn btn-link" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
-                                <a href="{{url()->previous()}}" class="btn btn-danger">@lang('messages.cancel')</a>
+                                <a href="{{ url('exercise') }}" class="btn btn-danger">@lang('messages.cancel')</a>
                                 <button class="btn btn-primary" type="submit">@lang('messages.submit')</button>
                             </div>
                         </div>
