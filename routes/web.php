@@ -74,6 +74,12 @@ Route::get('/settings', 'SettingsController@index')->name('settings');
 /* API View */
 Route::get('/client','ClientController@index')->middleware('auth');
 
+Route::get('/pdf',function(){
+    $pdf = App::make('dompdf.wrapper');
+    $pdf->loadHTML('<h1>Test</h1>');
+    return $pdf->stream();
+});
+
 
 
 /*Route::get('/test',function(){
