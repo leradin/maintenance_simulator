@@ -99,9 +99,15 @@ class ActivitieController extends Controller
      */
     public function destroy(Activitie $activitie)
     {
-        $activitie->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_activitie');
-        return redirect('/activitie')->with('message',$message);
+        try{
+            $activitie->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_activitie');
+            return redirect('/activitie')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_activitie');
+            return redirect('/activitie')->with('message',$message);
+        }
     }
 }

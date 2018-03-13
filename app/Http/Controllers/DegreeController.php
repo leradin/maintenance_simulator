@@ -95,9 +95,15 @@ class DegreeController extends Controller
      */
     public function destroy(Degree $degree)
     {
-        $degree->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_degree');
-        return redirect('/degree')->with('message',$message);
+        try{
+            $degree->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_degree');
+            return redirect('/degree')->with('message',$message);
+        }catch (\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_grade');
+            return redirect('/degree')->with('message',$message);
+        }
     }
 }

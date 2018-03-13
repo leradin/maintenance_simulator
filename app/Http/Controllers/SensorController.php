@@ -96,9 +96,15 @@ class SensorController extends Controller
      */
     public function destroy(Sensor $sensor)
     {
-        $sensor->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_sensor');
-        return redirect('/sensor')->with('message',$message);
+        try{
+            $sensor->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_sensor');
+            return redirect('/sensor')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_sensor');
+            return redirect('/sensor')->with('message',$message);
+        }
     }
 }

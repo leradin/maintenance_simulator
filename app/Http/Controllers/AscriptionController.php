@@ -96,9 +96,15 @@ class AscriptionController extends Controller
      */
     public function destroy(Ascription $ascription)
     {
-        $ascription->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_ascription');
-        return redirect('/ascription')->with('message',$message);
+        try{
+            $ascription->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_ascription');
+            return redirect('/ascription')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_ascription');
+            return redirect('/ascription')->with('message',$message);
+        }
     }
 }

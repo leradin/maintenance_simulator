@@ -96,9 +96,15 @@ class SoftwareBehaviorController extends Controller
      */
     public function destroy(SoftwareBehavior $softwareBehavior)
     {
-        $softwareBehavior->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_software_behavior');
-        return redirect('/software_behavior')->with('message',$message);
+        try{
+            $softwareBehavior->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_software_behavior');
+            return redirect('/software_behavior')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_behaviors_software');
+            return redirect('/software_behavior')->with('message',$message);
+        }
     }
 }

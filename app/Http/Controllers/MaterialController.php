@@ -96,9 +96,15 @@ class MaterialController extends Controller
      */
     public function destroy(Material $material)
     {
-        $material->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_material');
-        return redirect('/material')->with('message',$message);
+        try{
+            $material->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_material');
+            return redirect('/material')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_material');
+            return redirect('/material')->with('message',$message);
+        }
     }
 }

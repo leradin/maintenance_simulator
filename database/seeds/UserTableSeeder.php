@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
             'updated_at' => $date
             ),
             array(
-            'enrollment' => 'A-87654321',
+            'enrollment' => 'B-12345678',
             'password' => bcrypt('123456'),
             'names' => 'Juan Francisco',
             'lastnames' => 'Robles Camacho',
@@ -38,7 +38,7 @@ class UserTableSeeder extends Seeder
             'updated_at' => $date
             ),
             array(
-            'enrollment' => 'A-87652321',
+            'enrollment' => 'C-12345678',
             'password' => bcrypt('123456'),
             'names' => 'Israel',
             'lastnames' => 'Rodriguez Paredez',
@@ -50,7 +50,7 @@ class UserTableSeeder extends Seeder
             'updated_at' => $date
             ),
             array(
-            'enrollment' => 'A-87354321',
+            'enrollment' => 'D-12345678',
             'password' => bcrypt('123456'),
             'names' => 'Carlos',
             'lastnames' => 'Barron Garcia',
@@ -62,7 +62,7 @@ class UserTableSeeder extends Seeder
             'updated_at' => $date
             ),
             array(
-            'enrollment' => 'A-87354999',
+            'enrollment' => 'E-12345678',
             'password' => bcrypt('123456'),
             'names' => 'Enrique',
             'lastnames' => 'Carvajal Lopéz',
@@ -74,7 +74,7 @@ class UserTableSeeder extends Seeder
             'updated_at' => $date
             ),
             array(
-            'enrollment' => 'A-111111111',
+            'enrollment' => 'F-12345678',
             'password' => bcrypt('123456'),
             'names' => 'Eduardo',
             'lastnames' => 'Mora Palacios',
@@ -86,7 +86,7 @@ class UserTableSeeder extends Seeder
             'updated_at' => $date
             ),
             array(
-            'enrollment' => 'A-222222222',
+            'enrollment' => 'G-12345678',
             'password' => bcrypt('123456'),
             'names' => 'Jesus',
             'lastnames' => 'Sosa Medina',

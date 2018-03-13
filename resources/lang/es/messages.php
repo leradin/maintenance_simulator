@@ -374,5 +374,22 @@ return [
     // Errors
     'error_enrollment_duplicate' => 'Matrícula ya existe',
     'error_table_duplicate' => 'No se puede repetir números de mesa en el ejercicio',
-    'error_user_duplicate' => 'No se puede repetir estudiantes en el ejercicio'   
+    'error_user_duplicate' => 'No se puede repetir estudiantes en el ejercicio',
+    'error_delete_material' => 'No se puede eliminar este material, ya que se encuentra relacionado en algún escenario',
+    'error_delete_grade' => 'No se puede eliminar este grado, ya que se encuentra relacionado con algún usuario',
+    'error_delete_ascription' => 'No se puede eliminar esta ascripción, ya que se encuentra relacionado con algún usuario',
+    'error_delete_error_type' => 'No se puede eliminar este tipo error, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_unit_type' => 'No se puede eliminar este tipo de unidad, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_tool' => 'No se puede eliminar esta herramienta, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_instrument' => 'No se puede eliminar este instrumento, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_knowledge' => 'No se puede eliminar este conocimiento, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_behaviors_software' => 'No se puede eliminar este comportamiento de software, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_behaviors_hardware' => 'No se puede eliminar este comportamiento de hardware, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_objective' => 'No se puede eliminar este objetivo, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_activitie' => 'No se puede eliminar esta actividad, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_objective' => 'No se puede eliminar este objetivo, ya que se encuentra relacionado con alguna práctica',
+    'error_delete_solution' => 'No se puede eliminar esta solución, ya que se encuentra relacionado con algúna actividad',
+    'error_delete_sensor' => 'No se puede eliminar este sensor, ya que se encuentra relacionado con algúna práctica',
+    'error_delete_sedam_fail' => 'No se puede eliminar esta falla sedam, ya que se encuentra relacionado con algúna práctica',
+    'error_delete_moxa_fail' => 'No se puede eliminar esta falla moxa, ya que se encuentra relacionado con algúna práctica',
 ];
