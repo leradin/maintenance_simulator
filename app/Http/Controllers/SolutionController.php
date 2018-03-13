@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Solution;
 use Illuminate\Http\Request;
+use Lang;
 
 class SolutionController extends Controller
 {
@@ -16,10 +17,13 @@ class SolutionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $solutions = Solution::all();
-        return \Response::json($solutions);
+        if($request->ajax()){
+            return \Response::json($solutions);
+        }
+        return view('catalog.solution.index',['solutions' => $solutions]);
     }
 
     /**
@@ -29,7 +33,7 @@ class SolutionController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.solution.create');
     }
 
     /**
@@ -44,7 +48,9 @@ class SolutionController extends Controller
         if($request->ajax()){
             return \Response::json($solution);
         }
-        return $solution;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_solution');
+        return redirect('/solution')->with('message',$message);
     }
 
     /**
@@ -66,7 +72,7 @@ class SolutionController extends Controller
      */
     public function edit(Solution $solution)
     {
-        //
+        return view('catalog.solution.edit',['solution' => $solution]);
     }
 
     /**
@@ -78,7 +84,11 @@ class SolutionController extends Controller
      */
     public function update(Request $request, Solution $solution)
     {
-        //
+        $solution->fill($request->except(['_token']));
+        $solution->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_solution');
+        return redirect('/solution')->with('message',$message);
     }
 
     /**
@@ -89,6 +99,9 @@ class SolutionController extends Controller
      */
     public function destroy(Solution $solution)
     {
-        //
+        $solution->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_solution');
+        return redirect('/solution')->with('message',$message);
     }
 }

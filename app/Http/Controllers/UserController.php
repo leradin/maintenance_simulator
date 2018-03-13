@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::orderBy('created_at', 'desc')->get();
         return view('user.index',['users' => $users]);
     }
 
@@ -28,11 +28,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $degrees = \App\Degree::all();
-        $ascriptions = \App\Ascription::all();
-        return view('user.create',['degrees' => $degrees,'ascriptions' => $ascriptions]);
+    public function create(){
+        return view('user.create',['degrees' => $this->getDegreesCompact(),'ascriptions' => $this->getAscriptionsCompact()]);
     }
 
     /**
@@ -41,9 +38,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        
+    public function store(Request $request){
         try{
             $user = User::create($request->except(['_token','confirm_password']));
             $message['type'] = 'success';
@@ -75,9 +70,8 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
-    {
-        //
+    public function edit(User $user){
+        return view('user.edit',['degrees' => $this->getDegreesCompact(),'ascriptions' => $this->getAscriptionsCompact(),'user' => $user]);
     }
 
     /**
@@ -87,9 +81,12 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
-    {
-        //
+    public function update(Request $request, User $user){
+        $user->fill($request->except(['_token','confirm_password']));
+        $user->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_user');
+        return redirect('/user')->with('message',$message);
     }
 
     /**
@@ -111,5 +108,15 @@ class UserController extends Controller
         $message['type'] = 'success';
         $message['status'] = Lang::get('messages.remove_user');
         return redirect('/user')->with('message',$message);
+    }
+
+    private function getDegreesCompact(){
+        $degrees = \App\Degree::get()->pluck('name_abbreviation','id');
+        return $degrees;
+    }
+
+    private function getAscriptionsCompact(){
+        $ascriptions = \App\Ascription::get()->pluck('name_abbreviation','id');
+        return $ascriptions;
     }
 }

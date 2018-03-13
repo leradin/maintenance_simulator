@@ -304,19 +304,15 @@ class ExerciseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-
+    public function store(Request $request){
         if($this->noDupes($request->get('users_id'))){
-            $message['type'] = 'error';
-            $message['status'] = Lang::get('messages.error_user_duplicate');
+            $message = $this->returnMessageFrontEnd('error',Lang::get('messages.error_user_duplicate'));
             return back()->withInput()->with('message',$message);
         }
 
         if($this->noDupes($request->get('tables_id'))){
-            $message['type'] = 'error';
-            $message['status'] = Lang::get('messages.error_table_duplicate');
-            return back()->withInput()->with('message',$message);
+             $message = $this->returnMessageFrontEnd('error',Lang::get('messages.error_table_duplicate'));
+             return back()->withInput()->with('message',$message);
         }
 
         $exercise = Exercise::create([
@@ -347,8 +343,7 @@ class ExerciseController extends Controller
             }
         }
 
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.success_exercise');
+        $message = $this->returnMessageFrontEnd('success',Lang::get('messages.success_exercise'));
         return redirect('/exercise')->with('message',$message);
     }
 
@@ -516,46 +511,16 @@ class ExerciseController extends Controller
         }
     }
 
-    /*private function startLogExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/logs',
-        'screen -d -m ./startLogsMaster.sh'
-            ];
-        $this->executeCommand($commands);
+    public function finishPractice(Request $request){
+        $practice = \App\Practice::find($request->practice_id);
+        $response = $practice->users()->wherePivot('exercise_id',$request->exercise_id)->updateExistingPivot($request->user_id,['answer' => 'Práctica Finalizada por el Administrador'],false);
     }
 
-    private function endLogExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/logs',
-        'screen -d -m ./killLogsMaster.sh'
-            ];
-        $this->executeCommand($commands);
+    private function returnMessageFrontEnd($typeMessage,$messageLang){
+        $message['type'] = $typeMessage;
+        $message['status'] = $messageLang;
+        return $message;
     }
-
-    private function startRecordExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/grabacion',
-        'screen -d -m ./grabacionMaster.sh'
-            ];
-        $this->executeCommand($commands);
-    }
-
-    private function endRecordExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/grabacion',
-        'screen -d -m ./killgrabacionMaster.sh'
-            ];
-        $this->executeCommand($commands);
-    }
-
-    private function executeCommand($commands){
-        
-        try{
-            SSH::run($commands, function($line){
-                echo $line.PHP_EOL;
-            });
-            return true;
-        }
-        catch(\Exception $e){
-            return false;
-        }
-    }*/
 
     private function killExercise(Exercise $exercise){
         Cookie::queue(Cookie::forget('practices'));

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Sensor;
 use Illuminate\Http\Request;
+use Lang;
 
 class SensorController extends Controller
 {
@@ -18,7 +19,8 @@ class SensorController extends Controller
      */
     public function index()
     {
-        //
+        $sensors = Sensor::all();
+        return view('catalog.sensor.index',['sensors' => $sensors]);
     }
 
     /**
@@ -28,7 +30,7 @@ class SensorController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.sensor.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class SensorController extends Controller
         if($request->ajax()){
             return \Response::json($sensor);
         }
-        return $sensor;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_sensor');
+        return redirect('/sensor')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class SensorController extends Controller
      */
     public function edit(Sensor $sensor)
     {
-        //
+        return view('catalog.sensor.edit',['sensor' => $sensor]);
     }
 
     /**
@@ -77,7 +81,11 @@ class SensorController extends Controller
      */
     public function update(Request $request, Sensor $sensor)
     {
-        //
+        $sensor->fill($request->except(['_token']));
+        $sensor->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_sensor');
+        return redirect('/sensor')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,9 @@ class SensorController extends Controller
      */
     public function destroy(Sensor $sensor)
     {
-        //
+        $sensor->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_sensor');
+        return redirect('/sensor')->with('message',$message);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ascription;
 use Illuminate\Http\Request;
+use Lang;
 
 class AscriptionController extends Controller
 {
@@ -18,7 +19,8 @@ class AscriptionController extends Controller
      */
     public function index()
     {
-        //
+        $ascriptions = Ascription::all();
+        return view('catalog.ascription.index',['ascriptions' => $ascriptions]);
     }
 
     /**
@@ -28,7 +30,7 @@ class AscriptionController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.ascription.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class AscriptionController extends Controller
         if($request->ajax()){
             return \Response::json($ascription);
         }
-        return $ascription;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_ascription');
+        return redirect('/ascription')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class AscriptionController extends Controller
      */
     public function edit(Ascription $ascription)
     {
-        //
+        return view('catalog.ascription.edit',['ascription' => $ascription]);
     }
 
     /**
@@ -77,7 +81,11 @@ class AscriptionController extends Controller
      */
     public function update(Request $request, Ascription $ascription)
     {
-        //
+        $ascription->fill($request->except(['_token']));
+        $ascription->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_ascription');
+        return redirect('/ascription')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,9 @@ class AscriptionController extends Controller
      */
     public function destroy(Ascription $ascription)
     {
-        //
+        $ascription->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_ascription');
+        return redirect('/ascription')->with('message',$message);
     }
 }

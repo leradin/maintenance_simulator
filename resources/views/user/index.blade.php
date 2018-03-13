@@ -3,7 +3,7 @@
 @section('js')
     <script>
         $(document).ready(function(){
-            $( "button,span" ).tooltip({
+            $( "button,span,a" ).tooltip({
                 show: {
                     effect: "slideDown",
                     delay: 250
@@ -43,11 +43,12 @@
                                 <thead>
                                     <tr>
                                         <th width="10%">@lang('messages.tr_enrollment')</th>
-                                        <th width="20%">@lang('messages.tr_names')</th>
-                                        <th width="20%">@lang('messages.tr_lastnames')</th>
-                                        <th width="20%">@lang('messages.tr_degree')</th>
+                                        <th width="15%">@lang('messages.tr_names')</th>
+                                        <th width="10%">@lang('messages.tr_lastnames')</th>
+                                        <th width="15%">@lang('messages.tr_degree')</th>
                                         <th width="20%">@lang('messages.tr_ascription')</th>
                                         <th width="10%">@lang('messages.tr_type')</th>
+                                        <th width="10%">@lang('messages.tr_created_at')</th>
                                         <th width="10%" class="TAC">@lang('messages.tr_actions')</th>
                                     </tr>
                                 </thead>
@@ -62,15 +63,21 @@
                                             <td>{{ $user->ascription->name }}</td>
                                             <td class="TAC dark">
                                                 @if($user->user)
-                                                    <span class="icosg-user1" title="Sistema"></span>
+                                                    <span class="icosg-user1" title="@lang('messages.text_system')"></span>@lang('messages.text_system')
                                                 @else
-                                                    <span class="icosg-user2" title="Estudiante"></span>
+                                                    <span class="icosg-user2" title="@lang('messages.text_student')"></span>@lang('messages.text_student')
                                                 @endif 
                                             </td>
+                                            <td>{{ $user->created_at }}</td>
                                             <td class="TAC">
-                                                {!! Form::open(['route' => ['user.destroy',$user],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este usuario?');"]) !!}
-                                                    <button title="Eliminar" class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
-                                                {!!Form::close()!!}
+                                                @if (!$user->user)
+                                                    {!! Form::open(['route' => ['user.destroy',$user],'method' => 'DELETE','onsubmit' => "return confirm('¿Deseas eliminar este usuario?');"]) !!}
+                                                        <a href="{{ route('user.edit',$user) }}" title="@lang('messages.button_edit')" class="icon-button"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                        <button title="@lang('messages.button_delete')" class="icon-button btn btn-link" type="submit"><span class="glyphicon glyphicon-trash"></span></button> 
+                                                    {!!Form::close()!!}
+                                                @else
+                                                    @lang('messages.not_permission')
+                                                @endif
                                             </td>
                                         </tr>
                                         @endif   

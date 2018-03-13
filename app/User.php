@@ -34,6 +34,11 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($value);
     }
 
+    public function getNameAbbreviationAttribute(){
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+
     public function practices(){
         return $this->belongsToMany('\App\Practice','practice_user_pivot')
             ->withPivot('id','practice_id','user_id','answer','passed','exercise_id')->withTimestamps();

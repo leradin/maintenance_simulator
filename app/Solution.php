@@ -25,7 +25,7 @@ class Solution extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name','description'];
 
     /**
      * The attributes that aren't mass assignable.

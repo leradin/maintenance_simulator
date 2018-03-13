@@ -56,12 +56,25 @@ Route::resource('sedam_fail', 'SedamFailController');
 
 Route::resource('moxa_fail', 'MoxaFailController');
 
+Route::get('catalog', function () {
+    return view('catalog.index', ['name' => 'James']);
+});
+
 Route::get('/send_kinect',function(Request $request){
     event(new \App\Events\RequestEvent($request->all()));
     return response()->json($request->all());
 });
 
 Route::get('/start_practice','ExerciseController@startPractice');
+Route::get('/finish_practice','ExerciseController@finishPractice');
+
+/* API Controller */
+Route::get('/settings', 'SettingsController@index')->name('settings');
+
+/* API View */
+Route::get('/client','ClientController@index')->middleware('auth');
+
+
 
 /*Route::get('/test',function(){
     $data = Cookie::get('practices');

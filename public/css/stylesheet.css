@@ -59,7 +59,7 @@
         -webkit-box-shadow: inset 0 1px #4D6383, 2px 0 4px rgba(0, 0, 0, 0.1),0px 1px 4px rgba(0, 0, 0, 0.2);
         box-shadow: inset 0 1px #4D6383, 2px 0 4px rgba(0, 0, 0, 0.1), 0px 1px 4px rgba(0, 0, 0, 0.2);}
 
-.header .logo{background: url("../img/logo.png") center center no-repeat; width: 103px; height: 35px; margin: 2px 0px; float: left;}
+.header .logo{background: url("../img/logo.png") center center no-repeat; width: 73px; height: 35px; margin: 2px 0px; float: left;}
 
     /* buttons */    
     .buttons{float: right; padding: 3px 15px 0px 10px;}

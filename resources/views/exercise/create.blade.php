@@ -67,10 +67,10 @@
                         dataType : 'json',
                         async : false,
                         success : function(json) {
-                            console.log(json);
+                            json.description = (json.description == null) ? '' : '('+json.description+')';
                             $('#modal').modal('show');
-                            $('.modal-title').text("Escenario : "+json.name+'('+json.description+')');
-                            var htmlBody = '<h2>'+json.name+'('+json.description+')</h2><br />';
+                            $('.modal-title').text("Escenario : "+json.name+' '+json.description+' ');
+                            var htmlBody = '<h2>'+json.name+' '+json.description+' </h2><br />';
                                                 $.each(json.practices, function(index,value) {
                                                     htmlBody += '<h3>Práctica '+(index+1)+'</h3>';
                                                     htmlBody += '<table cellpadding="0" cellspacing="0" width="100%"><thead><tr><th>Nombre</th><th>Duración</th><th>Tipo de Error</th><th>Tipo de Unidad</th></tr></thead><tbody><tr><td>'+value.name+'</td><td>'+value.duration+'</td><td>'+value.error_type.name+'</td><td>'+value.unit_type.name+'</td></tr></tbody></table><h3>Detalles</h3>';

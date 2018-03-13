@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Material;
 use Illuminate\Http\Request;
+use Lang;
 
 class MaterialController extends Controller
 {
@@ -18,7 +19,8 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        //
+        $materials = Material::all();
+        return view('catalog.material.index',['materials' => $materials]);
     }
 
     /**
@@ -28,7 +30,7 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.material.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class MaterialController extends Controller
         if($request->ajax()){
             return \Response::json($material);
         }
-        return $material;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_material');
+        return redirect('/material')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class MaterialController extends Controller
      */
     public function edit(Material $material)
     {
-        //
+        return view('catalog.material.edit',['material' => $material]);
     }
 
     /**
@@ -77,7 +81,11 @@ class MaterialController extends Controller
      */
     public function update(Request $request, Material $material)
     {
-        //
+        $material->fill($request->except(['_token']));
+        $material->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_material');
+        return redirect('/material')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,9 @@ class MaterialController extends Controller
      */
     public function destroy(Material $material)
     {
-        //
+        $material->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_material');
+        return redirect('/material')->with('message',$message);
     }
 }

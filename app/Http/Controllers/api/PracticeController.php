@@ -15,7 +15,7 @@ class PracticeController extends Controller{
      public function show(Request $request){
     	$practice = Practice::with('materials','tools','instruments','knowledge','objectives','activities','hardwareBehaviors','softwareBehaviors','sensors','sedamFails','moxaFails','unitType','errorType')->find($request->practice_id);
 
-        $practice['user'] = $practice->users()->where('user_id',$request->user_id)->get()->first();
+        $practice['user'] = $practice->users()->where('user_id',$request->user_id)->get()->last();
 
     	if($practice)
 			return response()->json(['success' => $practice], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
@@ -29,7 +29,7 @@ class PracticeController extends Controller{
     	/*$practice->users()->attach($request->user_id,['practice_id'=>$practice->id, 
                                                       'answer'=>$request->answer,
                                                       'exercise_id' => $request->exercise_id]);*/
-        $practice->users()->wherePivot('exercise_id',$request->exercise_id)->updateExistingPivot($request->user_id,['answer' => $request->answer],false);
+        $practice->users()->wherePivot('exercise_id',$request->exercise_id)->updateExistingPivot($request->user_id,['answer' => $request->answer],true);
     	if($practice)
 			return response()->json(['success' =>$request->all()], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
 		else

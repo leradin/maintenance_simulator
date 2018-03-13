@@ -73,4 +73,8 @@ class UserController extends Controller
         $user = Auth::user();
         return response()->json(['success' => $user], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
     }
+
+    public function index(){
+        return User::all();
+    }
 }

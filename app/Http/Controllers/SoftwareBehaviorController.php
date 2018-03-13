@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SoftwareBehavior;
 use Illuminate\Http\Request;
+use Lang;
 
 class SoftwareBehaviorController extends Controller
 {
@@ -18,7 +19,8 @@ class SoftwareBehaviorController extends Controller
      */
     public function index()
     {
-        //
+        $softwareBehaviors = SoftwareBehavior::all();
+        return view('catalog.softwareBehavior.index',['softwareBehaviors' => $softwareBehaviors]);
     }
 
     /**
@@ -28,7 +30,7 @@ class SoftwareBehaviorController extends Controller
      */
     public function create()
     {
-        //
+         return view('catalog.softwareBehavior.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class SoftwareBehaviorController extends Controller
         if($request->ajax()){
             return \Response::json($softwareBehavior);
         }
-        return $softwareBehavior;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_software_behavior');
+        return redirect('/software_behavior')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class SoftwareBehaviorController extends Controller
      */
     public function edit(SoftwareBehavior $softwareBehavior)
     {
-        //
+        return view('catalog.softwareBehavior.edit',['softwareBehavior' => $softwareBehavior]);
     }
 
     /**
@@ -77,7 +81,11 @@ class SoftwareBehaviorController extends Controller
      */
     public function update(Request $request, SoftwareBehavior $softwareBehavior)
     {
-        //
+        $softwareBehavior->fill($request->except(['_token']));
+        $softwareBehavior->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_software_behavior');
+        return redirect('/software_behavior')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,9 @@ class SoftwareBehaviorController extends Controller
      */
     public function destroy(SoftwareBehavior $softwareBehavior)
     {
-        //
+        $softwareBehavior->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_software_behavior');
+        return redirect('/software_behavior')->with('message',$message);
     }
 }

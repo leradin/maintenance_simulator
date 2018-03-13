@@ -49,6 +49,15 @@ class Stage extends Model
             ->withPivot('id','exercise_id','stage_id','user_id','date_time','structure','table_id');
     }
 
+    public function getDescriptionAttribute($value)
+    {
+        if(empty($value)){
+            return "Sin descripción";
+        }
+        return $value;
+        
+    }
+
     //public function unitType(){
     //    return $this->belongsTo('App\UnitType');
     //}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SedamFail;
 use Illuminate\Http\Request;
+use Lang;
 
 class SedamFailController extends Controller
 {
@@ -18,7 +19,8 @@ class SedamFailController extends Controller
      */
     public function index()
     {
-        //
+        $sedamFails = SedamFail::all();
+        return view('catalog.SedamFail.index',['sedamFails' => $sedamFails]);
     }
 
     /**
@@ -28,7 +30,7 @@ class SedamFailController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.sedamFail.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class SedamFailController extends Controller
         if($request->ajax()){
             return \Response::json($sedamFail);
         }
-        return $sedamFail;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_sedam_fail');
+        return redirect('/sedam_fail')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class SedamFailController extends Controller
      */
     public function edit(SedamFail $sedamFail)
     {
-        //
+        return view('catalog.sedamFail.edit',['sedamFail' => $sedamFail]);
     }
 
     /**
@@ -77,7 +81,11 @@ class SedamFailController extends Controller
      */
     public function update(Request $request, SedamFail $sedamFail)
     {
-        //
+        $sedamFail->fill($request->except(['_token']));
+        $sedamFail->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_sedam_fail');
+        return redirect('/sedam_fail')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,9 @@ class SedamFailController extends Controller
      */
     public function destroy(SedamFail $sedamFail)
     {
-        //
+        $sedamFail->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_sedam_fail');
+        return redirect('/sedam_fail')->with('message',$message);
     }
 }

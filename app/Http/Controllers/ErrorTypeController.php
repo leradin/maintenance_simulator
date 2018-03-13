@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ErrorType;
 use Illuminate\Http\Request;
+use Lang;
 
 class ErrorTypeController extends Controller
 {
@@ -18,7 +19,8 @@ class ErrorTypeController extends Controller
      */
     public function index()
     {
-        //
+        $errorTypes = ErrorType::all();
+        return view('catalog.errorType.index',['errorTypes' => $errorTypes]);
     }
 
     /**
@@ -28,7 +30,7 @@ class ErrorTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.errorType.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class ErrorTypeController extends Controller
         if($request->ajax()){
             return \Response::json($errorType);
         }
-        return $errorType;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_error_type');
+        return redirect('/error_type')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class ErrorTypeController extends Controller
      */
     public function edit(ErrorType $errorType)
     {
-        //
+        return view('catalog.errorType.edit',['errorType' => $errorType]);
     }
 
     /**
@@ -77,7 +81,11 @@ class ErrorTypeController extends Controller
      */
     public function update(Request $request, ErrorType $errorType)
     {
-        //
+        $errorType->fill($request->except(['_token']));
+        $errorType->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_error_type');
+        return redirect('/error_type')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,9 @@ class ErrorTypeController extends Controller
      */
     public function destroy(ErrorType $errorType)
     {
-        //
+        $errorType->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_error_type');
+        return redirect('/error_type')->with('message',$message);
     }
 }

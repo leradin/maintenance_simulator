@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Knowledge;
 use Illuminate\Http\Request;
+use Lang;
 
 class KnowledgeController extends Controller
 {
@@ -18,7 +19,8 @@ class KnowledgeController extends Controller
      */
     public function index()
     {
-        //
+        $knowledges = Knowledge::all();
+        return view('catalog.knowledge.index',['knowledges' => $knowledges]);
     }
 
     /**
@@ -28,7 +30,7 @@ class KnowledgeController extends Controller
      */
     public function create()
     {
-        //
+         return view('catalog.knowledge.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class KnowledgeController extends Controller
         if($request->ajax()){
             return \Response::json($knowledge);
         }
-        return $knowledge;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_knowledge');
+        return redirect('/knowledge')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class KnowledgeController extends Controller
      */
     public function edit(Knowledge $knowledge)
     {
-        //
+        return view('catalog.knowledge.edit',['knowledge' => $knowledge]);
     }
 
     /**
@@ -77,7 +81,11 @@ class KnowledgeController extends Controller
      */
     public function update(Request $request, Knowledge $knowledge)
     {
-        //
+        $knowledge->fill($request->except(['_token']));
+        $knowledge->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_knowledge');
+        return redirect('/knowledge')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,9 @@ class KnowledgeController extends Controller
      */
     public function destroy(Knowledge $knowledge)
     {
-        //
+        $knowledge->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_knowledge');
+        return redirect('/knowledge')->with('message',$message);
     }
 }

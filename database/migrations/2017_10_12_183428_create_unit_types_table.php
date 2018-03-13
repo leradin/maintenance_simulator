@@ -17,6 +17,8 @@ class CreateUnitTypesTable extends Migration
             $table->increments('id');
             $table->string('name',50);
             $table->char('abbreviation',10);
+            $table->integer('ip_address_id')->unsigned();
+            $table->foreign('ip_address_id')->references('id')->on('ip_addresses')->onDelete('cascade');
             $table->timestamps();
         });
     }

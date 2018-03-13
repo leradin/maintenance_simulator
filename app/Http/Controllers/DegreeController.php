@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Degree;
 use Illuminate\Http\Request;
+use Lang;
 
 class DegreeController extends Controller
 {
@@ -16,9 +17,9 @@ class DegreeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $degrees = Degree::all();
+        return view('catalog.degree.index',['degrees' => $degrees]);
     }
 
     /**
@@ -28,7 +29,7 @@ class DegreeController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.degree.create');
     }
 
     /**
@@ -43,7 +44,9 @@ class DegreeController extends Controller
         if($request->ajax()){
             return \Response::json($degree);
         }
-        return $degree;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_degree');
+        return redirect('/degree')->with('message',$message);
     }
 
     /**
@@ -65,7 +68,7 @@ class DegreeController extends Controller
      */
     public function edit(Degree $degree)
     {
-        //
+        return view('catalog.degree.edit',['degree' => $degree]);
     }
 
     /**
@@ -77,7 +80,11 @@ class DegreeController extends Controller
      */
     public function update(Request $request, Degree $degree)
     {
-        //
+        $degree->fill($request->except(['_token']));
+        $degree->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_degree');
+        return redirect('/degree')->with('message',$message);
     }
 
     /**
@@ -88,6 +95,9 @@ class DegreeController extends Controller
      */
     public function destroy(Degree $degree)
     {
-        //
+        $degree->delete();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.remove_degree');
+        return redirect('/degree')->with('message',$message);
     }
 }
