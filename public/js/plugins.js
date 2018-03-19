@@ -164,13 +164,42 @@ $(document).ready(function(){
         $("#validate, #validate_custom").validationEngine('attach',{promptPosition : "topLeft"});
     
     // Datepicker
+    // ----------------- DEFINICIÓN DE IDIOMA ----------------------
+    // http://reviblog.net/2014/01/07/jquery-ui-datepicker-poner-el-calendario-en-espanol-euskera-o-cualquier-otro-idioma/
+    $.datepicker.regional['es'] = {
+      closeText: 'Cerrar',
+      prevText: '<Ant',
+      nextText: 'Sig>',
+      currentText: 'Hoy',
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+      dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+      dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+      dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+      weekHeader: 'Sm',
+      dateFormat: 'yy-mm-dd',
+      firstDay: 1,
+      isRTL: false,
+      showMonthAfterYear: false,
+      yearSuffix: ''
+    };
+
+    $.datepicker.setDefaults($.datepicker.regional['es']);
     $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
     
     if($("#datepicker").length > 0){
         
         $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd',
                                        onSelect: function(date){
-                                            notify('Datepicker', 'Date: '+date)
+                                            notify('Seleccionada', 'Fecha : '+date)
+                                     }});
+    }
+
+    if($("#datepicker2").length > 0){
+        
+        $( "#datepicker2" ).datepicker({dateFormat: 'yy-mm-dd',
+                                       onSelect: function(date){
+                                            notify('Seleccionada', 'Fecha: '+date)
                                      }});
     }
         

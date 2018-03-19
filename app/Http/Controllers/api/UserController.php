@@ -29,7 +29,7 @@ class UserController extends Controller
     }
     public function details(){
         return response()->json(['user' => User::all()]);
-    }*/
+    }
     public function login(){
         if(Auth::attempt(['enrollment' => request('enrollment'), 'password' => request('password')])){
             $user = Auth::user();
@@ -37,6 +37,16 @@ class UserController extends Controller
             return response()->json(['success' => $success], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
         }else{
             return response()->json(['error'=>'Unauthorised'], 401, array('Access-Control-Allow-Origin' => '*'));
+        }
+    }*/
+    public function login(){
+        if(Auth::attempt(['enrollment' => request('enrollment'), 'password' => request('password')])){
+            $user = Auth::user(['enrollment' => request('enrollment'), 'password' => request('password')]);
+            $success['token'] =  $user->createToken('Laravel')->accessToken;
+            return response()->json(['success' => $success], $this->successStatus);
+        }
+        else{
+            return response()->json(['error'=>'Unauthorised'], 401);
         }
     }
 

@@ -34,6 +34,7 @@ return [
     'menu_sensors' => 'Sensores',
     'menu_sedam_fails' => 'Fallas SEDAM',
     'menu_moxa_fails' => 'Fallas MOXA',
+    'menu_report' => 'Reportes',
     'title_user' => 'Usuarios',
     'title_create_user' => 'Crear Usuario',
     'title_edit_user' => 'Editar Usuario',
@@ -68,6 +69,16 @@ return [
     'title_edit_exercise' => 'Editar Ejercicio',
     'title_delete_exercise' => 'Eliminar Ejercicio',
     'title_detail_exercise' => 'Detalle Ejercicio',
+     // Reports
+    'title_report' => 'Reportes',
+    'report_print' => 'Imprimir Reporte',
+    'tr_exercise_name' => 'Ejercicio',
+    'tr_stage_name' => 'Escenario',
+    'tr_practice_names' => 'Practicas',
+    'search_by'  => '<b>Busqueda por</b>',
+    'exercise' => 'Ejercicio',
+    'student' => 'Estudiante',
+    'date' => 'Fechas',
     // Columns Student
     'tr_enrollment' => 'Matrícula',
     'tr_names'  => 'Nombre(s)',
@@ -352,6 +363,9 @@ return [
     'password' => 'Contraseña',
     'confirm_password' => 'Confirmar Contraseña',
     'email' => "Correo Electronico",
+    // PlaceHolder
+    'start_date' => 'Fecha Inicio',
+    'finish_date' => 'Fecha Final',
     // Forms Required
     'required_max_10' => 'Máximo 10 caracteres',
     'required_max_20' => 'Máximo 20 caracteres',
@@ -371,6 +385,7 @@ return [
     'submit' => 'Enviar',
     'cancel' => 'Cancelar',
     'hide_prompts' => 'Ocultar indicaciones',
+    'search' => 'Buscar',
     // Errors
     'error_enrollment_duplicate' => 'Matrícula ya existe',
     'error_table_duplicate' => 'No se puede repetir números de mesa en el ejercicio',

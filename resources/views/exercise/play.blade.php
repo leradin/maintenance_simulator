@@ -4,8 +4,8 @@
     <script>
         const KINEMATIC_ACTIONS = 0;
         const PRACTICE_ACTIONS = 1;
-        const KILL_TABLE_ACTIONS = 1;
         const KILL_FINISH_PRACTICE = 2;
+        const KILL_TABLE_ACTIONS = 3;
 
         $(document).ready(function(){
             // Configuration ajax
@@ -134,7 +134,7 @@
                 }
             });
 
-            $('a').on('click',function(event){
+            $('a.kill_table').on('click',function(event){
                 event.stopPropagation(); // prevent default bootstrap behavior
                 var tableId = $(this).attr('data-table_id');
                 if(tableId !== undefined){
@@ -260,7 +260,7 @@
 
 @section('breadCrumb')
     <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
-    <li><a href="{{ url('/exercise') }}">@lang('messages.title_exercise')</a></li>
+    <li><a href="{{ url('exercise') }}">@lang('messages.title_exercise')</a></li>
     <li>{{ $exercise->name }} @isset($exercise->description) ({{ $exercise->description }}) @endisset</li>
 @endsection
 
@@ -276,9 +276,9 @@
                         <ul class="buttons">                                                        
                             <li><a href="#" title="@lang('messages.minimize_window')" class="cblock"><span class="icos-menu"></span></a></li>
                         </ul>
-                        <ul class="buttons">                                     
-                            <li><a href="" data-table_id="{{ $stage->pivot->table_id }}" title="@lang('messages.end_table')"><span class="icos-exit"></span></a></li>
-                        </ul> 
+                        <!--ul class="buttons">                                     
+                            <li><a  data-table_id="{ { $stage->pivot->table_id }}" title="@ lang('messages.end_table')" class="kill_table"><span class="icos-exit"></span></a></li>
+                        </ul--> 
                     </div>                        
                     <div class="block accordion" data-collapse="eblock_1">
                         @if(count($stage->practices) > 0)
