@@ -96,9 +96,15 @@ class HardwareBehaviorController extends Controller
      */
     public function destroy(HardwareBehavior $hardwareBehavior)
     {
-        $hardwareBehavior->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_hardware_behavior');
-        return redirect('/hardware_behavior')->with('message',$message);
+        try{
+            $hardwareBehavior->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_hardware_behavior');
+            return redirect('/hardware_behavior')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.error_delete_behaviors_hardware');
+            return redirect('/hardware_behavior')->with('message',$message);
+        }
     }
 }

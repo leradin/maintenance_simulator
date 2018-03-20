@@ -114,9 +114,15 @@ class UnitTypeController extends Controller
      */
     public function destroy(UnitType $unitType)
     {
-        $unitType->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_unit_type');
-        return redirect('/unit_type')->with('message',$message);
+        try{
+            $unitType->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_unit_type');
+            return redirect('/unit_type')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_unit_type');
+            return redirect('/unit_type')->with('message',$message);
+        }
     }
 }

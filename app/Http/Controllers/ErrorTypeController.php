@@ -96,9 +96,17 @@ class ErrorTypeController extends Controller
      */
     public function destroy(ErrorType $errorType)
     {
-        $errorType->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_error_type');
-        return redirect('/error_type')->with('message',$message);
+        try{
+            $errorType->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_error_type');
+            return redirect('/error_type')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_error_type');
+            return redirect('/error_type')->with('message',$message);
+            
+        }
+
     }
 }

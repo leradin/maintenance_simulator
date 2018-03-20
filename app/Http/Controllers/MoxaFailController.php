@@ -96,9 +96,15 @@ class MoxaFailController extends Controller
      */
     public function destroy(MoxaFail $moxaFail)
     {
-        $moxaFail->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_moxa_fail');
-        return redirect('/moxa_fail')->with('message',$message);
+        try{
+            $moxaFail->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_moxa_fail');
+            return redirect('/moxa_fail')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_moxa_fail');
+            return redirect('/moxa_fail')->with('message',$message);
+        }
     }
 }

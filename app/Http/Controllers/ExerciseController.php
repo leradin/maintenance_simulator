@@ -361,10 +361,7 @@ class ExerciseController extends Controller
             //start exercise
             if($exercise->status==0){
                 if(!$this->isStartedExercise()){
-                    try{
-                        $exercise->status = 1;
-                        $exercise->save();
-                        
+                    try{                        
                         //$this->startLogExercise();
                         //$this->startRecordExercise();
 
@@ -374,6 +371,9 @@ class ExerciseController extends Controller
                         }
                         $message['type'] = 'success';
                         $message['status'] = Lang::get('messages.start_exercise');
+
+                        $exercise->status = 1;
+                        $exercise->save();
                         //return redirect('/exercise')->with('message',$message);
                         return view('exercise.play',['message' => $message,
                                                      'exercise' => $exercise
@@ -401,7 +401,7 @@ class ExerciseController extends Controller
                 if($request->get('restart')){
                     $exercise->status = 0;
                     $exercise->save();
-                    $this->killExercise($exercise);
+                    $this->killExercise($exercise,true);
                     $message['type'] = 'success';
                     $message['status'] = Lang::get('messages.restart_exercise');
                     return redirect('/exercise')->with('message',$message); 
@@ -522,12 +522,19 @@ class ExerciseController extends Controller
         return $message;
     }
 
-    private function killExercise(Exercise $exercise){
+    private function killExercise(Exercise $exercise,$restart = false){
         Cookie::queue(Cookie::forget('practices'));
         foreach ($exercise->stages as $stage) {
             $kill['idMesa'] = $stage->pivot->table_id; 
             $kill['topic'] = 'KILL';
             event(new \App\Events\RequestEvent($kill));
+            if($restart){
+                foreach ($stage->practices as $practice) {
+                    $practice->users()->
+                        wherePivot('exercise_id',$exercise->id)->
+                        wherePivot('practice_id',$practice->id)->detach();
+                }
+            }
         }
     }
 

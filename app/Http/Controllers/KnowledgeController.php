@@ -96,9 +96,15 @@ class KnowledgeController extends Controller
      */
     public function destroy(Knowledge $knowledge)
     {
-        $knowledge->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_knowledge');
-        return redirect('/knowledge')->with('message',$message);
+        try{
+            $knowledge->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_knowledge');
+            return redirect('/knowledge')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_knowledge');
+            return redirect('/knowledge')->with('message',$message);
+        }
     }
 }

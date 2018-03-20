@@ -96,9 +96,15 @@ class InstrumentController extends Controller
      */
     public function destroy(Instrument $instrument)
     {
-        $instrument->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_instrument');
-        return redirect('/instrument')->with('message',$message);
+        try{
+            $instrument->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_instrument');
+            return redirect('/instrument')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_instrument');
+            return redirect('/instrument')->with('message',$message);
+        }
     }
 }

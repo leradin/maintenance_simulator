@@ -69,6 +69,8 @@ mix.combine([
     'public/js/plugins/timer/timer.jquery.min.js',
     'public/js/plugins/jsCookie/src/js.cookie.js',
     'public/js/plugins/moment/moment-with-locales.js',
+    'public/js/plugins/timepicker/dist/jquery-ui-timepicker-addon.min.js',
+    'public/js/plugins/timepicker/dist/i18n/jquery-ui-timepicker-addon-i18n.js',
     'public/js/plugins.js',
     'public/js/charts.js',
     'public/js/actions.js'

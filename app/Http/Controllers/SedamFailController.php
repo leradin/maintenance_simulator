@@ -96,9 +96,15 @@ class SedamFailController extends Controller
      */
     public function destroy(SedamFail $sedamFail)
     {
-        $sedamFail->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_sedam_fail');
-        return redirect('/sedam_fail')->with('message',$message);
+        try{
+            $sedamFail->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_sedam_fail');
+            return redirect('/sedam_fail')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_sedam_fail');
+            return redirect('/sedam_fail')->with('message',$message);
+        }
     }
 }

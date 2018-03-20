@@ -96,9 +96,15 @@ class ObjectiveController extends Controller
      */
     public function destroy(Objective $objective)
     {
-        $objective->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_objective');
-        return redirect('/objective')->with('message',$message);
+        try{
+            $objective->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_objective');
+            return redirect('/objective')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_objective');
+            return redirect('/objective')->with('message',$message);
+        }
     }
 }

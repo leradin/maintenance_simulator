@@ -96,9 +96,15 @@ class ToolController extends Controller
      */
     public function destroy(Tool $tool)
     {
-        $tool->delete();
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.remove_tool');
-        return redirect('/tool')->with('message',$message);
+        try{
+            $tool->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_tool');
+            return redirect('/tool')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_tool');
+            return redirect('/tool')->with('message',$message);
+        }
     }
 }
