@@ -17,7 +17,7 @@ class User extends Authenticatable
      */
 
     protected $fillable = [
-        'names','lastnames' ,'enrollment', 'password','degree_id','ascription_id','user'
+        'names','lastnames' ,'enrollment', 'password','degree_id','ascription_id','user','session_id'
     ];
 
     /**
@@ -33,6 +33,11 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    public function getFullNameAttribute(){
+        return "{$this->degree->name} {$this->names} {$this->lastnames}  ({$this->ascription->name})";
+    }
+
 
     public function practices(){
         return $this->belongsToMany('\App\Practice','practice_user_pivot')

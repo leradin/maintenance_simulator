@@ -25,7 +25,7 @@ class IpAddress extends Model
      *
      * @var array
      */
-    protected $fillable = ['ip','unit_type_id'];
+    protected $fillable = ['ip'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -35,6 +35,6 @@ class IpAddress extends Model
     protected $guarded = ['id'];
 
     public function unitType(){
-        return $this->belongsTo('\App\IpAddress');
+        return $this->belongsTo('\App\IpAddress','unit_type_id','id');
     }
 }

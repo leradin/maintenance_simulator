@@ -34,9 +34,10 @@
                             dataType : 'json',
                             success : function(json) {
                                 var fieldSecond = ((FORM == 0) ? json.abbreviation : json.description);
+                                var fieldThird = (json.ip_address ? json.ip_address.ip : '');
                                 $(select_id).append($('<option>', { 
                                     value: json.id,
-                                    text : json.name+' ('+fieldSecond+')' 
+                                    text : json.name+' ('+fieldSecond+') '+fieldThird 
                                 }));
                                 resetForm(form);
                                 hideModal('#modal');

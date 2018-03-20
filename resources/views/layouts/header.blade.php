@@ -1,4 +1,4 @@
-  <a href="index.html" class="logo"></a>
+  <a href="{{ url('/') }}" class="logo {{ Request::is('/') ? 'active' : '' }}"></a>
 
         <div class="buttons">
             <div class="popup" id="subNavControll">
@@ -8,10 +8,10 @@
                 <div class="label"><span class="icos-user2"></span></div>
                 <div class="body" style="width: 160px;">
                     <!--div class="itemLink">
-                        <a href="#"><span class="glyphicon glyphicon-cog"></span> @lang('messages.settings')</a>
+                        <a href="#"><span class="glyphicon glyphicon-cog"></span> @ lang('messages.settings')</a>
                     </div>
                     <div class="itemLink">
-                        <a href="#"><span class="glyphicon glyphicon-comment"></span> @lang('messages.messages')</a>
+                        <a href="#"><span class="glyphicon glyphicon-comment"></span> @ lang('messages.messages')</a>
                     </div-->                    
                     <div class="itemLink">
                         <a href="{{ route('logout') }}"
@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <span class="help-block">Themes:</span>
+                                <span class="help-block">Temas:</span>
                                 <div class="themes">
                                     <a href="#" data-theme="" class="tip" title="Default"><img src="{{ asset('img/themes/default.jpg') }}"/></a>                                    
                                     <a href="#" data-theme="ssDaB" class="tip" title="DaB"><img src="{{ asset('img/themes/dab.jpg')}}"/></a>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                <span class="help-block">Backgrounds:</span>
+                                <span class="help-block">Fondos:</span>
                                 <div class="backgrounds">
                                     <a href="#" data-background="bg_default" class="bg_default"></a>
                                     <a href="#" data-background="bg_mgrid" class="bg_mgrid"></a>
@@ -81,14 +81,14 @@
                                 </div>
                             </div>          
                         </div>
-                        <div class="form-group">
+                        <!--div class="form-group">
                             <div class="col-md-12">
                                 <span class="help-block">Navigation:</span>
                                 <input type="radio" name="navigation" id="fixedNav"/> Fixed 
                                 <input type="radio" name="navigation" id="collapsedNav"/> Collapsible
                                 <input type="radio" name="navigation" id="hiddenNav"/> Hidden
                             </div>                                
-                        </div>
+                        </div-->
                     </div>
                 </div>
             </div>

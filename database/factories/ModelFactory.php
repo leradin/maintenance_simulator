@@ -29,3 +29,6 @@ $factory->define(App\ErrorType::class, function(Faker\Generator $faker){
 		'abbreviation' => $faker->realText()
 	];
 });
+
+
+

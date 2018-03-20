@@ -37,4 +37,9 @@ class Ascription extends Model
     public function user(){
         return $this->belongsTo('\App\User');
     }
+
+    public function getNameAbbreviationAttribute()
+    {
+        return $this->name . ' - ' . $this->abbreviation;
+    }
 }

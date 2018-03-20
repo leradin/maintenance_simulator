@@ -131,86 +131,8 @@
                         <div class="icon"><span class="icos-user1"></span></div>
                         <h2>@lang('messages.title_create_user')</h2>
                     </div>    
-                    {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'user.store','autocomplete' =>'off']) !!}    
-                    <div class="block-fluid">
-
-                        <div class="form-group">
-                            <div class="col-md-2 TAR">@lang('messages.enrollment')</div>
-                            <div class="col-md-10">
-                                <input type="text" id="enrollment" name="enrollment" class="form-control validate[required,maxSize[10]] text-input" value="{{ old('enrollment') }}" />
-                                <span class="help-block"><small>@lang('messages.required_max_10')</small></span>
-                            </div>
-                        </div>
-
-                         <div class="form-group">
-                            <div class="col-md-2 TAR">@lang('messages.password')</div>
-                            <div class="col-md-4">
-                                <input type="password" name="password" class="form-control validate[required,minSize[6],maxSize[20]]" id="password" value="{{ old('password') }}"/>
-                                <span class="help-block"><small>@lang('messages.required_min_password') @lang('messages.required_max_password')</small></span>
-                            </div>
-
-                            <div class="col-md-2 TAR">@lang('messages.confirm_password')</div>
-                            <div class="col-md-4">
-                                <input type="password" name="confirm_password" class="form-control validate[required,equals[password]]" value="{{ old('confirm_password') }}"/>
-                                <span class="help-block"><small>@lang('messages.required_confirm_password')</small></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-2 TAR">@lang('messages.names')</div>
-                            <div class="col-md-4">
-                                <input type="text" value="{{ old('names') }}" name="names" class="form-control validate[required,maxSize[50]]"/>
-                                <span class="help-block"><small>@lang('messages.required_max_50')</small></span>
-                            </div>
-
-                            <div class="col-md-2 TAR">@lang('messages.lastnames')</div>
-                            <div class="col-md-4">
-                                <input type="text" value="{{ old('lastnames') }}" name="lastnames" class="form-control validate[required,maxSize[50]]" />
-                                <span class="help-block"><small>@lang('messages.required_max_50')</small></span>
-                            </div>
-                        </div>   
-                        
-                        <div class="form-group">
-                            <div class="col-md-2 TAR">@lang('messages.degree')</div>
-                            <div class="col-md-4">                            
-                                <select id="degree_id" name="degree_id" class="form-control validate[required]" style="width: 100%;">
-                                    <option value=""></option>  
-                                    @foreach($degrees as $degree)
-                                        <option value="{{ $degree->id}}" @if(old('degree_id') == $degree->id )selected @endif>{{ $degree->name}} ({{ $degree->abbreviation}})</option>
-                                    @endforeach                                   
-                                </select>                            
-                                <span class="help-block"><button id="add_degree" class="btn btn-link" type="button">@lang('messages.create_degree')</button>  </span>
-                            </div>
-                        
-                            <div class="col-md-2 TAR">@lang('messages.ascription')</div>
-                            <div class="col-md-4">                            
-                                <select id="ascription_id" name="ascription_id" class="form-control validate[required]" style="width: 100%;">
-                                    <option value=""></option>
-                                    @foreach($ascriptions as $ascription)
-                                        <option value="{{ $ascription->id}}" @if(old('ascription_id') == $ascription->id )selected @endif>{{ $ascription->name}} ({{ $ascription->abbreviation}})</option>
-                                    @endforeach                                                                          
-                                </select>                            
-                                <span class="help-block"><button id="add_ascription" class="btn btn-link" type="button" >@lang('messages.create_ascription')</button></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">                       
-                            <div class="col-md-2 TAR">@lang('messages.type'):</div>
-                            <div class="col-md-4">
-                                <nobr><input type="radio" class="form-control validate[required]" name="user" value="1"  @if(old('user') ==  1) checked="checked" @endif /> Sistema </nobr> <nobr><input type="radio" class="form-control validate[required]" name="user" value="0" @if(old('user') ==  0) checked="checked" @endif /> Estudiante</nobr>
-                                <span class="help-block"></span>
-                            </div>                        
-                        </div>
-
-                        <div class="toolbar bottom TAR">
-                            <div class="btn-group">
-                                <button class="btn btn-link" type="button" onClick="$('#validate').validationEngine('hide');">@lang('messages.hide_prompts')</button>
-                                <a href="{{url()->previous()}}" class="btn btn-danger">@lang('messages.cancel')</a>
-                                <button class="btn btn-primary" type="submit">@lang('messages.submit')</button>
-                            </div>
-                        </div>
-
-                    </div>
+                    {!! Form::open(['id' => 'validate', 'name' => 'validate','method' => 'post','route' => 'user.store','autocomplete' =>'off']) !!}
+                        @include('user.form')
                     {!!Form::close()!!}                
                 </div>
             </div>            

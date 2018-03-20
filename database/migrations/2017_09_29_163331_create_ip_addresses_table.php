@@ -16,8 +16,6 @@ class CreateIpAddressesTable extends Migration
         Schema::create('ip_addresses', function (Blueprint $table) {
             $table->increments('id');
             $table->ipAddress('ip');
-            $table->integer('unit_type_id')->unsigned();
-            $table->foreign('unit_type_id')->references('id')->on('unit_types')->onDelete('cascade');
             $table->timestamps();
         });
     }

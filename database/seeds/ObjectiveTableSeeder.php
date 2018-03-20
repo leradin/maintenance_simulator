@@ -60,6 +60,12 @@ class ObjectiveTableSeeder extends Seeder
             'description' => 'el cursante sera capaz de poner en funcionamiento del sistema sedam debido a la presencia de errores en la visualizacion del ECOSONDA ',
             'created_at' => $date,
             'updated_at' => $date
+            ),
+            array(
+                'name' => 'funcionamiento',
+                'description' => 'El cursante será capaz de poner en funcionamiento el  sistema SEDAM debido a la incorrecta configuracion del archivo SENSOR SIMULATION',
+                'created_at' => $date,
+                'updated_at' => $date
             )
         );
         foreach($data as $objective)
