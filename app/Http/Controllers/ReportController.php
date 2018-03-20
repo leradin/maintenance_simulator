@@ -128,8 +128,9 @@ class ReportController extends Controller
                                                     'duration' => $practice->duration,
                                                     'error_type' => $practice->errorType->name);
                 
-                $report['stages'][$stage->id]['practices'][$practice->id]['extra'] = array('answer' => $user->practices()->wherePivot('exercise_id',$exercise->id)->get()->first()->pivot->answer,
-                    'score' => $user->practices()->wherePivot('exercise_id',$exercise->id)->get()->first()->pivot->passed);
+                $report['stages'][$stage->id]['practices'][$practice->id]['extra'] = array('answer' => $user->practices()->
+                    wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->answer,
+                    'score' => $user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->passed);
             }
         }
         return response()->json($report);
@@ -180,10 +181,10 @@ class ReportController extends Controller
                                                             'name' => $practice->name,
                                                             'duration' => $practice->duration,
                                                             'error_type' => $practice->errorType->name,
-                                                            'answer' => $user->practices()->wherePivot('exercise_id',$exercise->id)->first()->pivot->answer,
-                    'score' => $user->practices()->wherePivot('exercise_id',$exercise->id)->first()->pivot->passed
+                                                            'answer' => $user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->answer,
+                    'score' => $user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->passed
                 );
-                        if($user->practices()->get()->first()->pivot->passed){
+                        if($user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->passed){
                             $score ['approved'] += 1;  
                         }else{
                             $score ['approved_not'] += 1;  
@@ -193,6 +194,7 @@ class ReportController extends Controller
 
                     }
                 }
+
         $pdf = PDF::setOptions([
             'images' => true,
             'defaultFont', 'Courier'
