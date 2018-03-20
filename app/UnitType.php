@@ -25,7 +25,7 @@ class UnitType extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','abbreviation','command'];
+    protected $fillable = ['name','abbreviation','ip_address_id'];
 
     /**
      * The attributes that aren't mass assignable.
@@ -40,7 +40,7 @@ class UnitType extends Model
 
     public function ipAddress()
     {
-        return $this->hasOne('\App\IpAddress','unit_type_id','id');
+        return $this->belongsTo('\App\IpAddress');
     }
 
     //public function stage(){

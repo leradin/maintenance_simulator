@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Objective;
 use Illuminate\Http\Request;
+use Lang;
 
 class ObjectiveController extends Controller
 {
@@ -18,7 +19,8 @@ class ObjectiveController extends Controller
      */
     public function index()
     {
-        //
+        $objectives = Objective::all();
+        return view('catalog.objective.index',['objectives' => $objectives]);
     }
 
     /**
@@ -28,7 +30,7 @@ class ObjectiveController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.objective.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class ObjectiveController extends Controller
         if($request->ajax()){
             return \Response::json($objective);
         }
-        return $objective;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_objective');
+        return redirect('/objective')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class ObjectiveController extends Controller
      */
     public function edit(Objective $objective)
     {
-        //
+        return view('catalog.objective.edit',['objective' => $objective]);
     }
 
     /**
@@ -77,7 +81,11 @@ class ObjectiveController extends Controller
      */
     public function update(Request $request, Objective $objective)
     {
-        //
+        $objective->fill($request->except(['_token']));
+        $objective->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_objective');
+        return redirect('/objective')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,15 @@ class ObjectiveController extends Controller
      */
     public function destroy(Objective $objective)
     {
-        //
+        try{
+            $objective->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_objective');
+            return redirect('/objective')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_objective');
+            return redirect('/objective')->with('message',$message);
+        }
     }
 }

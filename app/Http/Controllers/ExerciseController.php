@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Lang;
 use SSH;
+use Cookie;
+use Carbon\Carbon;
+
 
 class ExerciseController extends Controller
 {
@@ -288,7 +291,7 @@ class ExerciseController extends Controller
     {
         $stages =  \App\Stage::all();
         $users =  \App\User::where('user', 0)->get();
-        $unitTypes = \App\unitType::all();
+        $unitTypes = \App\UnitType::all();
         return view('exercise.create',[ 'stages' => $stages,
                                         'users' => $users,
                                         'unitTypes' => $unitTypes
@@ -301,19 +304,15 @@ class ExerciseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-
+    public function store(Request $request){
         if($this->noDupes($request->get('users_id'))){
-            $message['type'] = 'error';
-            $message['status'] = Lang::get('messages.error_user_duplicate');
+            $message = $this->returnMessageFrontEnd('error',Lang::get('messages.error_user_duplicate'));
             return back()->withInput()->with('message',$message);
         }
 
         if($this->noDupes($request->get('tables_id'))){
-            $message['type'] = 'error';
-            $message['status'] = Lang::get('messages.error_table_duplicate');
-            return back()->withInput()->with('message',$message);
+             $message = $this->returnMessageFrontEnd('error',Lang::get('messages.error_table_duplicate'));
+             return back()->withInput()->with('message',$message);
         }
 
         $exercise = Exercise::create([
@@ -344,8 +343,7 @@ class ExerciseController extends Controller
             }
         }
 
-        $message['type'] = 'success';
-        $message['status'] = Lang::get('messages.success_exercise');
+        $message = $this->returnMessageFrontEnd('success',Lang::get('messages.success_exercise'));
         return redirect('/exercise')->with('message',$message);
     }
 
@@ -363,12 +361,9 @@ class ExerciseController extends Controller
             //start exercise
             if($exercise->status==0){
                 if(!$this->isStartedExercise()){
-                    try{
-                        $exercise->status = 1;
-                        $exercise->save();
-                        
-                        $this->startLogExercise();
-                        $this->startRecordExercise();
+                    try{                        
+                        //$this->startLogExercise();
+                        //$this->startRecordExercise();
 
                         foreach ($exercise->stages as $stage) {
                             $json  = json_decode($stage->pivot->structure, JSON_PRETTY_PRINT);
@@ -376,6 +371,9 @@ class ExerciseController extends Controller
                         }
                         $message['type'] = 'success';
                         $message['status'] = Lang::get('messages.start_exercise');
+
+                        $exercise->status = 1;
+                        $exercise->save();
                         //return redirect('/exercise')->with('message',$message);
                         return view('exercise.play',['message' => $message,
                                                      'exercise' => $exercise
@@ -400,11 +398,28 @@ class ExerciseController extends Controller
                                                  'exercise' => $exercise
                                                 ]);
                 }
+                if($request->get('restart')){
+                    $exercise->status = 0;
+                    $exercise->save();
+                    $this->killExercise($exercise,true);
+                    $message['type'] = 'success';
+                    $message['status'] = Lang::get('messages.restart_exercise');
+                    return redirect('/exercise')->with('message',$message); 
+                }
+
+
                 $exercise->status = 2;
                 $exercise->save();
+                $this->killExercise($exercise);
+                /*foreach ($exercise->stages as $stage) {
+                    $kill['idMesa'] = $stage->pivot->table_id; 
+                    $kill['topic'] = 'KILL';
+                    event(new \App\Events\RequestEvent($kill));
+                }*/
+                //dd($exercise->stages()->get()->first()->pivot->table_id);
 
-                $this->endLogExercise();
-                $this->endRecordExercise();
+                //$this->endLogExercise();
+                //$this->endRecordExercise();
 
                 $message['type'] = 'success';
                 $message['status'] = Lang::get('messages.end_exercise');
@@ -414,7 +429,7 @@ class ExerciseController extends Controller
                     $stage['user'] = User::with('Degree','Ascription')->find($stage->pivot->user_id);
                     //$stage->users()->where('practice_user_pivot.exercise_id', 1);
                     foreach ($stage->users->where('practice_user_pivot.exercise_id',2) as $item) {
-                        dd($item);
+                        //dd($item);
                     }
                     /*foreach ($stage->practices as $practice) { 
                         foreach ($practice->users as $user) {
@@ -478,44 +493,48 @@ class ExerciseController extends Controller
         return redirect('/exercise')->with('message',$message);
     }
 
-    private function startLogExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/logs',
-        'screen -d -m ./startLogsMaster.sh'
-            ];
-        $this->executeCommand($commands);
-    }
-
-    private function endLogExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/logs',
-        'screen -d -m ./killLogsMaster.sh'
-            ];
-        $this->executeCommand($commands);
-    }
-
-    private function startRecordExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/grabacion',
-        'screen -d -m ./grabacionMaster.sh'
-            ];
-        $this->executeCommand($commands);
-    }
-
-    private function endRecordExercise(){
-        $commands = ['cd /Users/leninvladimirramirez/scripts/grabacion',
-        'screen -d -m ./killgrabacionMaster.sh'
-            ];
-        $this->executeCommand($commands);
-    }
-
-    private function executeCommand($commands){
-        
-        try{
-            SSH::run($commands, function($line){
-                echo $line.PHP_EOL;
-            });
-            return true;
+    public function startPractice(Request $request){
+        $practice = \App\Practice::with('users')->find($request->practice_id);
+        $practice->users()->attach($request->user_id,['practice_id'=>$practice->id, 
+                                                  'exercise_id' => $request->exercise_id]);
+        if($practice){
+            if(Cookie::get('practices')){
+                $practices = Cookie::get('practices');
+            }else{
+                $practices = array();
+            }
+            array_push($practices, [$request->exercise_id.'|'.$request->table_id.'|'.$request->user_id.'|'.$request->practice_id => $request->time]);
+                Cookie::queue('practices', $practices, $request->time,'/',null, false, true);
+            return response()->json(['success' => $practice], 200,array('Access-Control-Allow-Origin' => '*'));
+        }else{
+            return response()->json(['error'=>'Not Found'], 404, array('Access-Control-Allow-Origin' => '*'));
         }
-        catch(\Exception $e){
-            return false;
+    }
+
+    public function finishPractice(Request $request){
+        $practice = \App\Practice::find($request->practice_id);
+        $response = $practice->users()->wherePivot('exercise_id',$request->exercise_id)->updateExistingPivot($request->user_id,['answer' => 'Práctica Finalizada por el Administrador'],false);
+    }
+
+    private function returnMessageFrontEnd($typeMessage,$messageLang){
+        $message['type'] = $typeMessage;
+        $message['status'] = $messageLang;
+        return $message;
+    }
+
+    private function killExercise(Exercise $exercise,$restart = false){
+        Cookie::queue(Cookie::forget('practices'));
+        foreach ($exercise->stages as $stage) {
+            $kill['idMesa'] = $stage->pivot->table_id; 
+            $kill['topic'] = 'KILL';
+            event(new \App\Events\RequestEvent($kill));
+            if($restart){
+                foreach ($stage->practices as $practice) {
+                    $practice->users()->
+                        wherePivot('exercise_id',$exercise->id)->
+                        wherePivot('practice_id',$practice->id)->detach();
+                }
+            }
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tool;
 use Illuminate\Http\Request;
+use Lang;
 
 class ToolController extends Controller
 {
@@ -18,7 +19,8 @@ class ToolController extends Controller
      */
     public function index()
     {
-        //
+        $tools = Tool::all();
+        return view('catalog.tool.index',['tools' => $tools]);
     }
 
     /**
@@ -28,7 +30,7 @@ class ToolController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.tool.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class ToolController extends Controller
         if($request->ajax()){
             return \Response::json($tool);
         }
-        return $tool;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_tool');
+        return redirect('/tool')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class ToolController extends Controller
      */
     public function edit(Tool $tool)
     {
-        //
+        return view('catalog.tool.edit',['tool' => $tool]);
     }
 
     /**
@@ -77,7 +81,11 @@ class ToolController extends Controller
      */
     public function update(Request $request, Tool $tool)
     {
-        //
+        $tool->fill($request->except(['_token']));
+        $tool->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_tool');
+        return redirect('/tool')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,15 @@ class ToolController extends Controller
      */
     public function destroy(Tool $tool)
     {
-        //
+        try{
+            $tool->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_tool');
+            return redirect('/tool')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_tool');
+            return redirect('/tool')->with('message',$message);
+        }
     }
 }

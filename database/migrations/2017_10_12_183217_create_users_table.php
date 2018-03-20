@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('ascription_id')->unsigned();
             $table->foreign('ascription_id')->references('id')->on('ascriptions');
             $table->boolean('user'); // if is user = 1 then student = 0
+            $table->text('session_id'); // if is user = 1 then student = 0
             $table->rememberToken();
             $table->timestamps();
         });

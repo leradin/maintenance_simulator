@@ -44,5 +44,12 @@ class Exercise extends Model
         return $this->belongsToMany('\App\User','exercise_stage_pivot')
             ->withPivot('id','exercise_id','stage_id','user_id','date_time','structure','table_id');
     }
+
+    public function setDescriptionAttribute($value)
+    {
+        if(empty($this->attributes['description'])){
+            $this->attributes['description'] = "Sin descripción";
+        }
+    }
     
 }

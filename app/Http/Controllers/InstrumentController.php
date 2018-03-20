@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Instrument;
 use Illuminate\Http\Request;
+use Lang;
 
 class InstrumentController extends Controller
 {
@@ -18,7 +19,8 @@ class InstrumentController extends Controller
      */
     public function index()
     {
-        //
+        $instruments = Instrument::all();
+        return view('catalog.instrument.index',['instruments' => $instruments]);
     }
 
     /**
@@ -28,7 +30,7 @@ class InstrumentController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.instrument.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class InstrumentController extends Controller
         if($request->ajax()){
             return \Response::json($instrument);
         }
-        return $instrument;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_instrument');
+        return redirect('/instrument')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class InstrumentController extends Controller
      */
     public function edit(Instrument $instrument)
     {
-        //
+        return view('catalog.instrument.edit',['instrument' => $instrument]);
     }
 
     /**
@@ -77,7 +81,11 @@ class InstrumentController extends Controller
      */
     public function update(Request $request, Instrument $instrument)
     {
-        //
+        $instrument->fill($request->except(['_token']));
+        $instrument->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_instrument');
+        return redirect('/instrument')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,15 @@ class InstrumentController extends Controller
      */
     public function destroy(Instrument $instrument)
     {
-        //
+        try{
+            $instrument->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_instrument');
+            return redirect('/instrument')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_instrument');
+            return redirect('/instrument')->with('message',$message);
+        }
     }
 }

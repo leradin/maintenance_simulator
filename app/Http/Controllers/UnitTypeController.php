@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\UnitType;
 use App\IpAddress;
 use Illuminate\Http\Request;
+use Lang;
 
 class UnitTypeController extends Controller
 {
@@ -19,7 +20,8 @@ class UnitTypeController extends Controller
      */
     public function index()
     {
-        //
+        $unitTypes = UnitType::with('ipAddress')->get();
+        return view('catalog.unitType.index',['unitTypes' => $unitTypes]);
     }
 
     /**
@@ -29,7 +31,7 @@ class UnitTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.unitType.create');
     }
 
     /**
@@ -40,16 +42,22 @@ class UnitTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //return \Response::json($request->all());
-       
-        $unitType = UnitType::create($request->except(['_token','ip']));
-        $ipAddress = IpAddress::create(['ip' => $request->ip,
-                                        'unit_type_id' => $unitType->id]);
-        $unitType->ipAddress()->save($ipAddress);
+        
+        $ipAddress = IpAddress::create(['ip' => $request->ip]);
+
+        $unitType = UnitType::create(['name' => $request->name,
+                                      'abbreviation' => $request->abbreviation,
+                                      'ip_address_id' => $ipAddress->id]);
+
+        //$unitType->ipAddress()->save($ipAddress);
+
+        $unitType = $unitType::with('ipAddress')->find($unitType->id);
         if($request->ajax()){
             return \Response::json($unitType);
         }
-        return $unitType;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_unit_type');
+        return redirect('/unit_type')->with('message',$message);
     }
 
     /**
@@ -71,7 +79,7 @@ class UnitTypeController extends Controller
      */
     public function edit(UnitType $unitType)
     {
-        //
+        return view('catalog.unitType.edit',['unitType' => $unitType]);
     }
 
     /**
@@ -83,7 +91,19 @@ class UnitTypeController extends Controller
      */
     public function update(Request $request, UnitType $unitType)
     {
-        //
+        if (IpAddress::where('ip',$request->ip)->exists()) {
+            $ipAddress = IpAddress::where('ip',$request->ip)->get();
+        }else{
+            $ipAddress = IpAddress::create(['ip' => $request->ip]);
+        }
+
+        $unitType->fill(['name' => $request->name,
+                         'abbreviation' => $request->abbreviation,
+                         'ip_address_id' => $ipAddress->id]);
+        $unitType->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_unit_type');
+        return redirect('/unit_type')->with('message',$message);
     }
 
     /**
@@ -94,6 +114,15 @@ class UnitTypeController extends Controller
      */
     public function destroy(UnitType $unitType)
     {
-        //
+        try{
+            $unitType->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_unit_type');
+            return redirect('/unit_type')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_unit_type');
+            return redirect('/unit_type')->with('message',$message);
+        }
     }
 }

@@ -27,7 +27,7 @@ redis.subscribe([CHANNEL_NAME,CHANEL_NAME_REQUEST], function(err, count) {
 });
 
 redis.on('message', function(channel, message) {
-    console.log(chalk.blue('Channel source'+channel+' Message Recieved: '+message));
+    //console.log(chalk.blue('Channel source'+channel+' Message Recieved: '+message));
     var modifyMessage = JSON.parse(message);
 
    

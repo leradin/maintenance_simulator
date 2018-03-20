@@ -2,75 +2,21 @@
 @section('title', 'Reproduciendo')
 @section('js')
     <script>
-        $(document).ready(function(){
+        const KINEMATIC_ACTIONS = 0;
+        const PRACTICE_ACTIONS = 1;
+        const KILL_FINISH_PRACTICE = 2;
+        const KILL_TABLE_ACTIONS = 3;
 
-            // config ajax
+        $(document).ready(function(){
+            // Configuration ajax
             $.ajaxSetup({
               headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               }
             });
 
-            var cookies = {};
-            var date = Date();
-            //var date = new Date("November 26, 2017 18:28:00");
-            //console.log("new Date "+ date);
-            if(Cookies.get('durations')){
-                $.each(JSON.parse(Cookies.get('durations')), function (index, value) {
-                    cookies[index] =  value; 
-                    //console.log("timestamp "+index+" "+value);
-                    var differenceNowVsInitPractice = Math.abs(Date.parse(date)-Date.parse(value));
-                    var dateNowVsInitPractice = new Date(differenceNowVsInitPractice);
-                    //console.log(parseMillisecondsIntoReadableTime(dateNowVsInitPractice.getTime()));
-
-                    var d = new moment(parseMillisecondsIntoReadableTime(dateNowVsInitPractice.getTime()),'hh:mm:ss');
-                    //console.log("moment"+d+d.local().toDate());
-                    //console.log(sd_2.getHours());
-                    //console.log(sd_2.getHours()+":"+sd_2.getMinutes()+":"+sd_2.getSeconds());
-                    //console.log("a "+sd_2.toUTCString().replace("UTC","GMT"));
-                    //console.log("b "+sd_2.getHours());
-                    //console.log("c "+sd_2.getMinutes());
-                    //console.log($('#'+index).text());
-                    var d2 = new moment($('#'+index).text(),'hh:mm:ss');
-                    //console.log("moment"+d2+d2.local().toDate());
-
-
-                    /**/
-                    //console.log("-a-a-"+Math.abs(d.local().toDate()-d2.local().toDate()));
-                    var sd_3 = new Date(Math.abs(d.local().toDate()-d2.local().toDate()));
-                    //console.log(sd_3);
-                    //console.log(parseMillisecondsIntoReadableTime(sd_3.getTime()));
-                    var timeOut = new moment(parseMillisecondsIntoReadableTime(sd_3.getTime()),'hh:mm:ss');
-                    /**/
-                    if(d > d2){
-                        alert("Se finalizalo el tiempo de la práctica #"+index.charAt(1)+" de la mesa "+index.charAt(0));
-                        $("#button"+index).addClass("disabled");
-                    }else{
-                        var element = $('#'+index);
-                        var duration = parseMillisecondsIntoReadableTime(sd_3.getTime()).replace(":","h");
-                        duration = duration.replace(":","m");
-                        duration += "s";
-                        initTimer(element,duration,$("#button"+index));
-                        $("#button"+index).addClass("disabled");
-                    }
-                    /*var str         = $('#'+index).text();
-                    str=str.replace(":","h");
-                    str=str.replace(":","m");
-                    alert(str);*/
-                    /*var timePractice = new Date(Number($('#'+index).text().split(":")[0]) * 3600000);
-                    console.log(timePractice);
-                    console.log(((timePractice - sd_2)));
-                    if ((timePractice - sd_2) >= 0) {   
-                        var element = $('#'+index);
-                        var duration = $('#'+index).text();
-                        //initTimer(element,parseMillisecondsIntoReadableTime(sd_2.getTime()),element);
-                    }*/
-                });
-            }
-
-            
-
-            $( "button" ).tooltip({
+            // Configuration tooltip
+            $( "button,a" ).tooltip({
                 show: {
                     effect: "slideDown",
                     delay: 250
@@ -81,6 +27,181 @@
                     collision: "flipfit"
                 },
             });
+
+            // Variables
+            var cookies = {};
+            var dateNow = Date();
+
+            verifyTime();
+            
+            // Events
+            $("#restartExercise").click(function(){
+                if (!confirm('@lang('messages.question_restart_exercise')')){
+                    return false;
+                }else{
+                   removeAllCookies();
+                }
+            });
+
+            $('button').on('click',function(event) {
+                event.stopPropagation(); // prevent default bootstrap behavior
+                var tableId = $(this).attr('data-table_id');
+                var practiceId = parseInt($(this).attr('data-practice_id'));
+                var exerciseId = parseInt($(this).attr('data-exercise_id'));
+                var userId = parseInt($(this).attr('data-user_id'));
+                var sensorName = $(this).text();
+                var status = $(this).attr('data-status');
+                var errorType = parseInt($(this).attr("data-error"));
+                if(status >= 0){
+                    var element = $('#'+tableId+practiceId);
+                    var duration = $('#'+tableId+practiceId).text();
+                    var objectSendPractice = {};
+                    objectSendPractice.exercise_id = exerciseId;
+                    objectSendPractice.practice_id = practiceId;
+                    objectSendPractice.user_id = userId;
+                    objectSendPractice.table_id = tableId;
+                    objectSendPractice.time = parseInt(duration.substr(0,2))*60;
+                    if(status == 0){
+                        if(confirmed('@lang('messages.question_start_practice')')){
+                            cookies[tableId+practiceId] = Date();
+                            Cookies.set('durations', cookies);
+                            $(this).removeClass("btn-primary").addClass("btn-danger").text('@lang('messages.button_practice_finish')');
+                            initTimer(element,(duration.substr(0,2)+'h'),$(this));
+                            $(this).attr("data-status", "1");
+                            actions(objectSendPractice,PRACTICE_ACTIONS); 
+                        }
+                    }else if(status == 1){
+                        if(confirmed('@lang('messages.question_end_practice')')){
+                            $(this).addClass("disabled btn-danger").text('@lang('messages.button_finished_practice')');
+                            endTimer(element,(tableId+practiceId),duration);
+                            $(this).attr("data-status", "2");
+                            actions(objectSendPractice,KILL_FINISH_PRACTICE);
+                            console.log('duration'+duration);
+                        } 
+                    }
+                }else{
+                    var enable = false;
+                    if($(this).hasClass('btn-danger')){
+                        $(this).removeClass("btn-danger").addClass("btn-success");
+                        enable = true;
+                    }else{
+                        $(this).removeClass("btn-success").addClass("btn-danger");
+                        enable = false;
+                    } 
+                    
+                    if(userId){
+                        return false;
+                    }  
+
+                    // for error type
+                    var objectSendKinematic = {};
+                        objectSendKinematic.idMesa = tableId;
+                    switch(errorType) {
+                        case 0: // for sensor
+                            objectSendKinematic.sensor = sensorName;
+                            objectSendKinematic.active = enable;
+                            actions(objectSendKinematic,KINEMATIC_ACTIONS);  
+                            break;
+                        case 1: // for sedam
+                            var fileName = $(this).attr('data-file_name');
+                            var moduleName = $(this).attr('data-module_name');
+                            var ipAddress = $(this).attr('data-ip_address');
+                            var unit = $(this).attr('data-unit');
+                            var topic = $(this).attr('data-topic');
+                            var  newConfigJSON = [{ port: '0000', ip: '172.16.212.13', name: 'GPS' },
+                                { port: '999', ip: '172.16.212.55', name: 'Gyro' },
+                                { port: '1111', name: 'SoundDeeper' }];
+
+                            objectSendKinematic.fileName = fileName;
+                            objectSendKinematic.moduleName = moduleName;
+                            objectSendKinematic.unidad = unit;
+                            objectSendKinematic.newConfigJSON = newConfigJSON;
+                            objectSendKinematic.ip = ipAddress;
+                            objectSendKinematic.status = (enable ? 'good' : 'bad');
+                            objectSendKinematic.topic = topic;
+                            actions(objectSendKinematic,KINEMATIC_ACTIONS);
+                            break;
+                        case 2: // for moxxa
+                            var topic = $(this).attr('data-topic');
+                            var sensor = $(this).attr('data-sensor');
+                            //objectSendKinematic.portName = sensor;
+                            //objectSendKinematic.portNumber = 3004;
+                            objectSendKinematic.moxaType = 'INTERNAL';
+                            objectSendKinematic.topic = topic;
+                            actions(objectSendKinematic,KINEMATIC_ACTIONS);
+                            break;
+                    } 
+                }
+            });
+
+            $('a.kill_table').on('click',function(event){
+                event.stopPropagation(); // prevent default bootstrap behavior
+                var tableId = $(this).attr('data-table_id');
+                if(tableId !== undefined){
+                    if(confirmed('@lang('messages.question_end_all_practices_of_table') '+tableId+'?')){
+                        var objectKillTable = {};
+                        objectKillTable.table_id = tableId;
+                        actions(objectKillTable,KILL_TABLE_ACTIONS);
+                    }
+                }
+                event.preventDefault();
+            });
+            
+            // Functions
+            function confirmed(message){
+                var pass = confirm(message);
+                if (pass) {
+                    return true;
+                } else {
+                    return false;
+                } 
+            }
+
+            function initTimer(element,duration,elementButton){
+                $(element).timer({
+                    countdown: true,
+                    seconds:    '0',      // The number of seconds to start the timer from
+                    duration:   duration,   // The time to countdown from. `seconds` and `duration` are mutually exclusive
+                    callback:   function(){
+                        alert("El tiempo de la practica ha finalizado");
+                        $(elementButton).addClass("disabled").text('@lang('messages.button_finished_practice')');
+                    }, // If duration is set, this function is called after `duration` has elapsed
+                    repeat:     false,     // If duration is set, `callback` will be called repeatedly
+                    format:     '%H:%M:%S'    // Format to show time in
+                });
+            }
+
+            function endTimer(element,id,duration){
+                cookies[id] = duration;
+                Cookies.set('durations', cookies);
+                $(element).timer('pause');
+            }
+            
+            function actions(objectSend,typeActions){
+                var url = "";
+                if(typeActions ==  KINEMATIC_ACTIONS || typeActions ==  KILL_TABLE_ACTIONS){
+                    url = "{{ url('send_kinect') }}";
+                }if(typeActions == PRACTICE_ACTIONS){
+                    url = "{{ url('start_practice') }}";
+                }if(typeActions == KILL_FINISH_PRACTICE){
+                    url = "{{ url('finish_practice') }}";
+                }
+                
+                $.ajax({
+                    url: url,
+                    type : "GET",
+                    data: objectSend,
+                    dataType : 'json',
+                    success : function(json) {
+                        console.log(json);
+                    },
+                    error : function(xhr, status) {
+                        console.log(xhr);
+                    },
+                    complete : function(xhr, status) {
+                    }
+                });
+            }
 
             function parseMillisecondsIntoReadableTime(milliseconds){
               //Get hours from milliseconds
@@ -100,122 +221,38 @@
               return h + ':' + m + ':' + s;
             }
 
-            $('button').on('click',function(event) {
-                event.stopPropagation(); // prevent default bootstrap behavior
-                var tableId = $(this).attr('data-table_id');
-                var practiceId = parseInt($(this).attr('data-practice_id'));
-                var sensorName = $(this).text();
-                var status = $(this).attr('data-status');
-                var errorType = parseInt($(this).attr("data-error"));
-
-                if(status >= 0){
-                    var element = $('#'+tableId+practiceId);//$(this).parents('.block, .accordion').find("tbody tr td:eq(1) h1").get(practiceId-1);
-                    var duration = $('#'+tableId+practiceId).text(); //$(this).parents('.block, .accordion').find("tbody tr td:eq(1) h1").eq(practiceId-1).text();
-                    if(status == 0){
-                         if(confirmed()){
-                            cookies[tableId+practiceId] = Date();
-                            Cookies.set('durations', cookies);
-                            $(this).removeClass("btn-primary").addClass("btn-danger").text("Finalizar Práctica");
-                            initTimer(element,(duration.substr(0,2)+'h'),$(this));
-                            $(this).attr("data-status", "1");
-                        }
-                    }else if(status == 1){
-                        $(this).addClass("disabled");
-                        endTimer(element);
-                        $(this).attr("data-status", "2");
-                    }
-                }else{
-                    var enable = false;
-                    if($(this).hasClass('btn-danger')){
-                    $(this).removeClass("btn-danger").addClass("btn-success");
-                        enable = true;  
+            function verifyTime(){
+                if(Cookies.get('durations')){
+                $.each(JSON.parse(Cookies.get('durations')), function (index, value) {                   
+                    cookies[index] =  value; 
+                    var differenceNowVsInitPractice = Math.abs(Date.parse(dateNow)-Date.parse(value));
+                    var dateNowVsInitPractice = new Date(differenceNowVsInitPractice);
+                    var convertFormatDate = new moment(parseMillisecondsIntoReadableTime(dateNowVsInitPractice.getTime()),'hh:mm:ss');
+                    var dateFormatText = new moment($('#'+index).text(),'hh:mm:ss');
+                    var dateNew = new Date(Math.abs(convertFormatDate.local().toDate()-dateFormatText.local().toDate()));
+                    var timeOut = new moment(parseMillisecondsIntoReadableTime(dateNew.getTime()),'hh:mm:ss');
+                    if(convertFormatDate > dateFormatText){
+                        alert("Se finalizalo el tiempo de la práctica #"+index.charAt(1)+" de la mesa "+index.charAt(0));
+                        $("#button"+index).addClass("disabled btn-danger").text('@lang('messages.button_finished_practice')');
+                        $("#button"+index).attr("data-status", "2");
                     }else{
-                        $(this).removeClass("btn-success").addClass("btn-danger"); 
-                        enable = false;    
-                    } 
-                    var objectSendKinematic = {};
-                        objectSendKinematic.idMesa = tableId;
-                    switch(errorType) {
-                        case 0: // for sensor
-                            objectSendKinematic.sensor = sensorName;
-                            objectSendKinematic.active = enable;
-                            actions(objectSendKinematic);  
-                            break;
-                        case 1: // for sedam
-                            var fileName = $(this).attr('data-file_name');
-                            var moduleName = $(this).attr('data-module_name');
-                            var ipAddress = $(this).attr('data-ip_address');
-                            var unit = $(this).attr('data-unit');
-                            var topic = $(this).attr('data-topic');
-                            var  newConfigJSON = [{ port: '0000', ip: '172.16.212.13', name: 'GPS' },
-                                { port: '999', ip: '172.16.212.55', name: 'Gyro' },
-                                { port: '1111', name: 'SoundDeeper' }];
-
-                            objectSendKinematic.fileName = fileName;
-                            objectSendKinematic.moduleName = moduleName;
-                            objectSendKinematic.unidad = unit;
-                            objectSendKinematic.newConfigJSON = newConfigJSON;
-                            objectSendKinematic.ip = ipAddress;
-                            objectSendKinematic.status = (enable ? 'good' : 'bad');
-                            objectSendKinematic.topic = topic;
-                            actions(objectSendKinematic);
-                            break;
-                        case 2: // for moxxa
-                            var topic = $(this).attr('data-topic');
-                            var sensor = $(this).attr('data-sensor');
-                            //objectSendKinematic.portName = sensor;
-                            //objectSendKinematic.portNumber = 3004;
-                            objectSendKinematic.moxaType = 'INTERNAL';
-                            objectSendKinematic.topic = topic;
-                            actions(objectSendKinematic);
-                            break;
-                    } 
-                }
-            });
-
-            function confirmed(){
-                var pass = confirm("¿Está seguro de iniciar la práctica?");
-                if (pass) {
-                    return true;
-                } else {
-                    return false;
-                } 
-            }
-
-            function initTimer(element,duration,elementButton){
-                $(element).timer({
-                    countdown: true,
-                    seconds:    '0',      // The number of seconds to start the timer from
-                    duration:   duration,   // The time to countdown from. `seconds` and `duration` are mutually exclusive
-                    callback:   function(){
-                        alert("El tiempo de la practica ha finalizado");
-                        $(elementButton).addClass("disabled");
-                    }, // If duration is set, this function is called after `duration` has elapsed
-                    repeat:     false,     // If duration is set, `callback` will be called repeatedly
-                    format:     '%H:%M:%S'    // Format to show time in
-                });
-                console.log(Cookies.get('durations'));
-            }
-
-            function endTimer(element){
-                Cookies.remove('name');
-                $(element).timer('pause');
-            }
-            
-            function actions(objectSendKinematic){
-                $.ajax({
-                    url: "{{ url('send_kinect') }}",
-                    type : "GET",
-                    data: objectSendKinematic,
-                    dataType : 'text',
-                    success : function(json) {
-                        console.log(json);
-                    },
-                    error : function(xhr, status) {
-                    },
-                    complete : function(xhr, status) {
+                        var element = $('#'+index);
+                        var duration = parseMillisecondsIntoReadableTime(dateNew.getTime()).replace(":","h");
+                        duration = duration.replace(":","m");
+                        duration += "s";
+                        // Compare lenght of duration time, but if less to 10 character then resume pause time
+                        if(value.length>10){
+                            initTimer(element,duration,$("#button"+index));
+                            $("#button"+index).removeClass("btn-primary").addClass("btn-danger").text('@lang('messages.button_practice_finish')');
+                            $("#button"+index).attr("data-status", "1");
+                        }else{
+                            element.text(value);
+                            $("#button"+index).removeClass("btn-primary").addClass("disabled btn-danger").text('@lang('messages.button_finished_practice')');
+                            $("#button"+index).attr("data-status", "2");
+                        }
                     }
                 });
+                }
             }
         });
     </script>
@@ -223,8 +260,8 @@
 
 @section('breadCrumb')
     <li><a href="{{ url('/') }}">@lang('messages.title_home')</a></li>
-    <li><a href="{{ url('/exercise') }}">@lang('messages.title_exercise')</a></li>
-    <li>{{ $exercise->name }} ({{ $exercise->description }})</li>
+    <li><a href="{{ url('exercise') }}">@lang('messages.title_exercise')</a></li>
+    <li>{{ $exercise->name }} @isset($exercise->description) ({{ $exercise->description }}) @endisset</li>
 @endsection
 
 @section('content')
@@ -237,15 +274,17 @@
                         <div class="icon"><i class="icos-paragraph-justify"></i></div>
                         <h2>{{ $stage->name }} @lang('messages.table') #{{ $stage->pivot->table_id }}</h2>
                         <ul class="buttons">                                                        
-                            <li><a href="#" class="cblock"><span class="icos-menu"></span></a></li>
+                            <li><a href="#" title="@lang('messages.minimize_window')" class="cblock"><span class="icos-menu"></span></a></li>
                         </ul>
+                        <!--ul class="buttons">                                     
+                            <li><a  data-table_id="{ { $stage->pivot->table_id }}" title="@ lang('messages.end_table')" class="kill_table"><span class="icos-exit"></span></a></li>
+                        </ul--> 
                     </div>                        
                     <div class="block accordion" data-collapse="eblock_1">
                         @if(count($stage->practices) > 0)
                             @foreach ($stage->practices as $practice)
                             <h3>{{ $practice->name }}</h3>
                             <div class="widget">
-                        
                                 <div class="block invoice">
                                     <!-- General -->
                                     <div class="row">
@@ -271,7 +310,6 @@
                                                             {{ $stage->users()->where('exercise_id',$exercise->id)->get()->first()->names }}
                                                             {{ $stage->users()->where('exercise_id',$exercise->id)->get()->first()->lastnames }}
                                                             </h1></td>
-                                                      
                                                     </tr>                                    
                                                 </tbody>
                                             </table>     
@@ -283,31 +321,36 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <h4>@lang('messages.material')</h4>
-                                            @foreach ($practice->materials as $material)
+                                            @forelse ($practice->materials as $material)
                                                 <address>
                                                     <strong>{{ $material->name }}</strong><br>
                                                     {{ $material->description }}<br>
                                                 </address>
-                                            @endforeach
+                                            @empty
+                                                <p>@lang('messages.dont_exists_information')</p>
+                                            @endforelse
                                         </div>
                                         <div class="col-md-4">
                                             <h4>@lang('messages.instrument')</h4>
-                                            @foreach ($practice->instruments as $instrument)
+                                            @forelse ($practice->instruments as $instrument)
                                                 <address>
                                                     <strong>{{ $instrument->name }}</strong><br>
                                                     {{ $instrument->description }}<br>
                                                 </address>
-                                            @endforeach                              
+                                            @empty
+                                                <p>@lang('messages.dont_exists_information')</p>
+                                            @endforelse                              
                                         </div>
                                         <div class="col-md-4">
                                             <h4>@lang('messages.tool')</h4>
-                                            @foreach ($practice->tools as $tool)
+                                            @forelse ($practice->tools as $tool)
                                                 <address>
                                                     <strong>{{ $tool->name }}</strong><br>
                                                     {{ $tool->description }}<br>
                                                 </address>
-                                            @endforeach
-
+                                            @empty
+                                                <p>@lang('messages.dont_exists_information')</p>
+                                            @endforelse 
                                         </div>
                                         <div class="col-md-3">
                                         </div>
@@ -317,21 +360,25 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h4>@lang('messages.knowledge')</h4>
-                                            @foreach ($practice->knowledge as $knowledg)
+                                            @forelse ($practice->knowledge as $knowledg)
                                                 <address>
                                                     <strong>{{ $knowledg->name }}</strong><br>
                                                     {{ $knowledg->description }}<br>
                                                 </address>
-                                            @endforeach
+                                            @empty
+                                                <p>@lang('messages.dont_exists_information')</p>
+                                            @endforelse 
                                         </div>
                                         <div class="col-md-6">
                                             <h4>@lang('messages.objective')</h4>
-                                            @foreach ($practice->objectives as $objective)
+                                            @forelse ($practice->objectives as $objective)
                                                 <address>
                                                     <strong>{{ $objective->name }}</strong><br>
                                                     {{ $objective->description }}<br>
                                                 </address>
-                                            @endforeach
+                                            @empty
+                                                <p>@lang('messages.dont_exists_information')</p>
+                                            @endforelse 
                                         </div>
                                     </div>
                                     
@@ -341,7 +388,7 @@
                                             <h4>@lang('messages.activitie')/@lang('messages.solution')</h4>
                                             <address>
                                             <ol>
-                                        @foreach ($practice->activities as $activitie)
+                                        @forelse ($practice->activities as $activitie)
                                             <li><strong>{{ $activitie->name }} : {{ $activitie->description }}</strong></li>
                                             <ul>
                                             @foreach ($activitie->solutions as $solution)
@@ -350,7 +397,9 @@
                                             @endforeach
                                             </ul>
                                             <div class="dr"><span></span></div>
-                                        @endforeach  
+                                        @empty
+                                            <p>@lang('messages.dont_exists_information')</p>
+                                        @endforelse   
                                             </ol>
                                              </address>
                                         </div>
@@ -361,24 +410,30 @@
                                         <h4>@lang('messages.actions')</h4>
                                         <div class="col-md-12">
                                                 <div class="col-md-4">
-                                                    <span class="top title">Sensores : </span> 
-                                                    @foreach ($practice->sensors as $sensor)
+                                                    <span class="top title">Sensores : </span>
+                                                    @forelse ($practice->sensors as $sensor)
                                                         <button class="btn btn-danger" data-error="0" data-table_id="{{ $stage->pivot->table_id }}" data-toggle="button" title="@lang('messages.enable_disabled')" type="button"><span class="glyphicon glyphicon-off tipb"></span> {{ $sensor->name }}</button>
-                                                    @endforeach                                       
+                                                    @empty
+                                                        <p>@lang('messages.dont_exists_actions_to_manipulate')</p>
+                                                    @endforelse                                 
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <span class="top title">Fallas Sedam : </span> 
-                                                    @foreach ($practice->sedamFails as $sedamFail)
+                                                    @forelse ($practice->sedamFails as $sedamFail)
                                                         <button type="button" data-file_name="{{ $sedamFail->file_name }}" data-module_name="{{ $sedamFail->module_name }}" data-error="1" data-table_id="{{ $stage->pivot->table_id }}" data-ip_address="{{ $practice->unitType->ipAddress->ip }}" data-unit="{{ $practice->unitType->abbreviation }}" data-topic="{{ $sedamFail->topic }}"  title="{{ $sedamFail->description }}" class="btn btn-warning">{{ $sedamFail->name }}</button>
-                                                    @endforeach
+                                                    @empty
+                                                        <p>@lang('messages.dont_exists_actions_to_manipulate')</p>
+                                                    @endforelse
                                                 </div>
                                         
                                                 <div class="col-md-4">
                                                     <span class="top title">Fallas Moxa : </span> 
-                                                    @foreach ($practice->moxaFails as $moxaFail)
+                                                    @forelse ($practice->moxaFails as $moxaFail)
                                                         <button type="button" data-topic="{{ $moxaFail->topic }}"  data-error="2" data-table_id="{{ $stage->pivot->table_id }}" data-sensor="{{ $moxaFail->sensor }}" title="{{ $moxaFail->description }}" class="btn btn-warning">{{ $moxaFail->name }}</button>
-                                                    @endforeach
+                                                    @empty
+                                                        <p>@lang('messages.dont_exists_actions_to_manipulate')</p>
+                                                    @endforelse
                                                 </div>
                                         </div>
                                     </div>
@@ -389,7 +444,7 @@
                                     <!-- Start -->
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button id="button{{ $stage->pivot->table_id }}{{ $practice->id }}" data-table_id="{{ $stage->pivot->table_id }}" data-practice_id="{{ $practice->id }}" data-status="0" class="btn btn-default btn-lg btn-block btn-primary" type="button">@lang('messages.start_practice')</button>  
+                                            <button id="button{{ $stage->pivot->table_id }}{{ $practice->id }}" data-table_id="{{ $stage->pivot->table_id }}" data-practice_id="{{ $practice->id }}" data-status="0" class="btn btn-default btn-lg btn-block btn-primary" data-exercise_id="{{ $exercise->id }}" data-user_id="{{ $stage->users()->where('exercise_id',$exercise->id)->get()->first()->id }}" type="button">@lang('messages.start_practice')</button>  
                                         </div>
                                     </div>
                                 </div>

@@ -24,7 +24,19 @@ class MaterialTableSeeder extends Seeder
             'description' => 'Tarjeta Ethernet Shield para tarjeta UNO',
             'created_at' => $date,
             'updated_at' => $date
-	    	)
+	    	),
+            array(
+            'name' => 'Manual de Usuario SEDAM',
+            'description' => '',
+            'created_at' => $date,
+            'updated_at' => $date
+            ),
+            array(
+            'name' => 'Máquina Apoyo/Diagnóstico con conexión a red e Hyperterminal instalado',
+            'description' => '',
+            'created_at' => $date,
+            'updated_at' => $date
+            )
     	);
 
     	foreach($data as $material)

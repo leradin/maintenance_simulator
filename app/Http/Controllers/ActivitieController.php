@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Activitie;
 use Illuminate\Http\Request;
+use Lang;
 
 class ActivitieController extends Controller
 {
@@ -16,10 +17,13 @@ class ActivitieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $activities = Activitie::all();
-        return \Response::json($activities);
+        if($request->ajax()){
+            return \Response::json($activities);
+        }
+        return view('catalog.activitie.index',['activities' => $activities]);
     }
 
     /**
@@ -29,7 +33,7 @@ class ActivitieController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.activitie.create');
     }
 
     /**
@@ -44,7 +48,9 @@ class ActivitieController extends Controller
         if($request->ajax()){
             return \Response::json($activitie);
         }
-        return $activitie;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_activitie');
+        return redirect('/activitie')->with('message',$message);
     }
 
     /**
@@ -66,7 +72,7 @@ class ActivitieController extends Controller
      */
     public function edit(Activitie $activitie)
     {
-        //
+        return view('catalog.activitie.edit',['activitie' => $activitie]);
     }
 
     /**
@@ -78,7 +84,11 @@ class ActivitieController extends Controller
      */
     public function update(Request $request, Activitie $activitie)
     {
-        //
+        $activitie->fill($request->except(['_token']));
+        $activitie->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_activitie');
+        return redirect('/activitie')->with('message',$message);
     }
 
     /**
@@ -89,6 +99,15 @@ class ActivitieController extends Controller
      */
     public function destroy(Activitie $activitie)
     {
-        //
+        try{
+            $activitie->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_activitie');
+            return redirect('/activitie')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_activitie');
+            return redirect('/activitie')->with('message',$message);
+        }
     }
 }

@@ -38,9 +38,13 @@ class SolutionTableSeeder extends Seeder
             'updated_at' => $date
             )
         );
-        foreach($data as $solution)
+        $activities = \DB::table('activities')->get()->toArray();
+
+        foreach($data as $i => $solution)
 	 	{
-            \DB::table('solutions')->insert($solution);
+            $newSolution = \App\Solution::create($solution);
+            $newSolution->activities()->attach($activities[$i]->id);
+
 	 	}
     }
 }

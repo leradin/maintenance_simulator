@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\HardwareBehavior;
 use Illuminate\Http\Request;
+use Lang;
 
 class HardwareBehaviorController extends Controller
 {
@@ -18,7 +19,8 @@ class HardwareBehaviorController extends Controller
      */
     public function index()
     {
-        //
+        $hardwareBehaviors = HardwareBehavior::all();
+        return view('catalog.hardwareBehavior.index',['hardwareBehaviors' => $hardwareBehaviors]);
     }
 
     /**
@@ -28,7 +30,7 @@ class HardwareBehaviorController extends Controller
      */
     public function create()
     {
-        //
+         return view('catalog.hardwareBehavior.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class HardwareBehaviorController extends Controller
         if($request->ajax()){
             return \Response::json($hardwareBehavior);
         }
-        return $hardwareBehavior;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_hardware_behavior');
+        return redirect('/hardware_behavior')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class HardwareBehaviorController extends Controller
      */
     public function edit(HardwareBehavior $hardwareBehavior)
     {
-        //
+        return view('catalog.hardwareBehavior.edit',['hardwareBehavior' => $hardwareBehavior]);
     }
 
     /**
@@ -77,7 +81,11 @@ class HardwareBehaviorController extends Controller
      */
     public function update(Request $request, HardwareBehavior $hardwareBehavior)
     {
-        //
+        $hardwareBehavior->fill($request->except(['_token']));
+        $hardwareBehavior->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_hardware_behavior');
+        return redirect('/hardware_behavior')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,15 @@ class HardwareBehaviorController extends Controller
      */
     public function destroy(HardwareBehavior $hardwareBehavior)
     {
-        //
+        try{
+            $hardwareBehavior->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_hardware_behavior');
+            return redirect('/hardware_behavior')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.error_delete_behaviors_hardware');
+            return redirect('/hardware_behavior')->with('message',$message);
+        }
     }
 }

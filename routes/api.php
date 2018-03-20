@@ -26,9 +26,9 @@ Route::post('login', 'api\UserController@login');
 
 Route::post('register', 'api\UserController@register');
 
-
 Route::group(['middleware' => 'auth:api'], function(){
-
+	// get all users
+	Route::get('users','api\UserController@index');
 	// details for user
 	Route::post('details', 'api\UserController@details');
 	//details for exercise
@@ -36,11 +36,19 @@ Route::group(['middleware' => 'auth:api'], function(){
 	//detaills finish exercises
 	Route::post('finished_exercises','api\ExerciseController@finishedExercises');
 	// detail practice
-	Route::post('practice/{id}','api\PracticeController@show');
+	Route::post('practice','api\PracticeController@show');
 	// answer practice 
 	Route::post('practice_answer','api\PracticeController@practiceAnswer');	
 	// quialify practice
 	Route::post('practice_quialify','api\PracticeController@practiceQualify');
 	// details practice complete with answer and qualift
 	Route::post('practice_user_answer','api\PracticeController@practiceUserAnswer');
+	/* Users */
+	Route::get('users',function(){
+		return \App\User::pluck('names','id');
+	});	
 });
+
+
+
+

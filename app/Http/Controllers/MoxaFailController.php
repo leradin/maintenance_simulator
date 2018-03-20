@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\MoxaFail;
 use Illuminate\Http\Request;
+use Lang;
 
 class MoxaFailController extends Controller
 {
@@ -18,7 +19,8 @@ class MoxaFailController extends Controller
      */
     public function index()
     {
-        //
+        $moxaFails = MoxaFail::all();
+        return view('catalog.moxaFail.index',['moxaFails' => $moxaFails]);
     }
 
     /**
@@ -28,7 +30,7 @@ class MoxaFailController extends Controller
      */
     public function create()
     {
-        //
+        return view('catalog.moxaFail.create');
     }
 
     /**
@@ -43,7 +45,9 @@ class MoxaFailController extends Controller
         if($request->ajax()){
             return \Response::json($moxaFail);
         }
-        return $moxaFail;
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_moxa_fail');
+        return redirect('/moxa_fail')->with('message',$message);
     }
 
     /**
@@ -65,7 +69,7 @@ class MoxaFailController extends Controller
      */
     public function edit(MoxaFail $moxaFail)
     {
-        //
+        return view('catalog.moxaFail.edit',['moxaFail' => $moxaFail]);
     }
 
     /**
@@ -77,7 +81,11 @@ class MoxaFailController extends Controller
      */
     public function update(Request $request, MoxaFail $moxaFail)
     {
-        //
+        $moxaFail->fill($request->except(['_token']));
+        $moxaFail->save();
+        $message['type'] = 'success';
+        $message['status'] = Lang::get('messages.success_moxa_fail');
+        return redirect('/moxa_fail')->with('message',$message);
     }
 
     /**
@@ -88,6 +96,15 @@ class MoxaFailController extends Controller
      */
     public function destroy(MoxaFail $moxaFail)
     {
-        //
+        try{
+            $moxaFail->delete();
+            $message['type'] = 'success';
+            $message['status'] = Lang::get('messages.remove_moxa_fail');
+            return redirect('/moxa_fail')->with('message',$message);
+        }catch(\Exception $e){
+            $message['type'] = 'error';
+            $message['status'] = Lang::get('messages.error_delete_moxa_fail');
+            return redirect('/moxa_fail')->with('message',$message);
+        }
     }
 }

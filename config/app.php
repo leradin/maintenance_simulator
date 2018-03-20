@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Mexico_City',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,7 +162,9 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        Laravel\Passport\PassportServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -177,7 +179,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Laravel\Passport\PassportServiceProvider::class,
         Collective\Remote\RemoteServiceProvider::class,
 
     ],
@@ -231,6 +232,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'SSH' => Collective\Remote\RemoteFacade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];
