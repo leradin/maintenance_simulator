@@ -45,8 +45,17 @@ Route::group(['middleware' => 'auth:api'], function(){
 	Route::post('practice_user_answer','api\PracticeController@practiceUserAnswer');
 	/* Users */
 	Route::get('users',function(){
-		return \App\User::pluck('names','id');
+		return  response()->json(\App\User::where('user',1)->get()->pluck('full_name','id')); 
 	});	
+	/* Students */
+	Route::get('students',function(){
+		return  response()->json(\App\User::with('degree','ascription')->where('user',0)->get());  
+	});	
+
+	/* Current user*/
+	Route::get('user',function(){
+		return response()->json(\App\User::with('degree','ascription')->find(Auth::user()->id));
+	});
 });
 
 

@@ -20,7 +20,7 @@ class SedamFailController extends Controller
     public function index()
     {
         $sedamFails = SedamFail::all();
-        return view('catalog.SedamFail.index',['sedamFails' => $sedamFails]);
+        return view('catalog.sedamFail.index',['sedamFails' => $sedamFails]);
     }
 
     /**

@@ -43,6 +43,7 @@ class UserController extends Controller
         if(Auth::attempt(['enrollment' => request('enrollment'), 'password' => request('password')])){
             $user = Auth::user(['enrollment' => request('enrollment'), 'password' => request('password')]);
             $success['token'] =  $user->createToken('Laravel')->accessToken;
+            $success['user'] = $user;
             return response()->json(['success' => $success], $this->successStatus);
         }
         else{

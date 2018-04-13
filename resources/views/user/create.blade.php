@@ -28,7 +28,7 @@
                         success : function(json) {
                             $(select_id).append($('<option>', { 
                                 value: json.id,
-                                text : json.name+' ('+json.abbreviation+')' 
+                                text : json.name+' - '+json.abbreviation
                             }));
                             resetForm(form);
                             hideModal('#modal');
@@ -80,13 +80,6 @@
                                             '<span class="help-block">@lang('messages.required_max_50')</span>'+
                                         '</div>'+
                                     '</div>';
-                        htmlBody += /*'<div class="form-group">'+
-                                        '<div class="col-md-2">@ lang('messages.priority')</div>'+
-                                        '<div class="col-md-10">'+*/
-                                            '<input type="hidden" name="priority" value="1" class="form-control validate[required,maxSize[3]]"/>';
-                                            /*'<span class="help-block">@ lang('messages.required_max_10')</span>'+
-                                        '</div>'+
-                                    '</div>';*/
                         action = "{{ route('degree.store') }}";
                         select_id = "#degree_id";
                         break;

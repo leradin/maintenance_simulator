@@ -96,6 +96,54 @@ class UserTableSeeder extends Seeder
             'session_id' => '0',
             'created_at' => $date,
             'updated_at' => $date
+            ),
+            array(
+            'enrollment' => 'H-12345678',
+            'password' => bcrypt('123456'),
+            'names' => 'Perla',
+            'lastnames' => 'Ramirez Sosa',
+            'degree_id' => 1,
+            'ascription_id' => 1,
+            'user' => false,
+            'session_id' => '0',
+            'created_at' => $date,
+            'updated_at' => $date
+            ),
+             array(
+            'enrollment' => 'I-12345678',
+            'password' => bcrypt('123456'),
+            'names' => 'Roberto',
+            'lastnames' => 'Cruz Sosa',
+            'degree_id' => 1,
+            'ascription_id' => 1,
+            'user' => false,
+            'session_id' => '0',
+            'created_at' => $date,
+            'updated_at' => $date
+            ),
+             array(
+            'enrollment' => 'J-12345678',
+            'password' => bcrypt('123456'),
+            'names' => 'Rosa',
+            'lastnames' => 'Diaz Susunaga',
+            'degree_id' => 1,
+            'ascription_id' => 1,
+            'user' => false,
+            'session_id' => '0',
+            'created_at' => $date,
+            'updated_at' => $date
+            ),
+             array(
+            'enrollment' => 'K-12345678',
+            'password' => bcrypt('123456'),
+            'names' => 'Mario',
+            'lastnames' => 'Rivera Dominguez',
+            'degree_id' => 1,
+            'ascription_id' => 1,
+            'user' => false,
+            'session_id' => '0',
+            'created_at' => $date,
+            'updated_at' => $date
             )
         );
 

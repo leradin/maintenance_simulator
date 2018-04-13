@@ -25,7 +25,7 @@ class Degree extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','abbreviation','priority'];
+    protected $fillable = ['name','abbreviation'];
 
     /**
      * The attributes that aren't mass assignable.

@@ -52,13 +52,13 @@
     <div class="form-group">
         <div class="col-md-2 TAR">@lang('messages.degree')</div>
         <div class="col-md-4">
-            {!! Form::select('degree_id',$degrees, null, ['placeholder' => 'Grado','class' => 'form-control validate[required]']) !!}                       
+            {!! Form::select('degree_id',$degrees, null, ['placeholder' => 'Grado','class' => 'form-control validate[required]','id' => 'degree_id']) !!}                       
             <span class="help-block"><button id="add_degree" class="btn btn-link" type="button">@lang('messages.create_degree')</button>  </span>
         </div>
     
         <div class="col-md-2 TAR">@lang('messages.ascription')</div>
         <div class="col-md-4">
-            {!! Form::select('ascription_id',$ascriptions, null, ['placeholder' => 'Ascripción','class' => 'form-control validate[required]']) !!}
+            {!! Form::select('ascription_id',$ascriptions, null, ['placeholder' => 'Ascripción','class' => 'form-control validate[required]','id'=> 'ascription_id']) !!}
             <span class="help-block"><button id="add_ascription" class="btn btn-link" type="button" >@lang('messages.create_ascription')</button></span>
         </div>
     </div>
