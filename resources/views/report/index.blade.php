@@ -90,6 +90,8 @@
                     $.each(value.practices,function(key3,value3) {
                         sOut += '<li>'+value3.name;
                         sOut += '<br /> R = <b>'+value3.extra.answer +'</b></br /> S = <font '+(value3.extra.score ? "color=green>Aprobo" : "color=red>No Aprobo")+'</font>';
+                        sOut += '<br /> Calificado por = '+
+                            (value3.extra.evaluator.names ? (value3.extra.evaluator.names+" "+value3.extra.evaluator.lastnames) : "Pendiente de Calificar");
                         sOut +='</li>';
                     });
                     sOut += '</ul></td></tr>';

@@ -71,10 +71,11 @@
                                             <tr>
                                                 <th width="5%">Id</th>
                                                 <th width="40%">Nombre</th>
-                                                <th width="10%">Duración</th>
-                                                <th width="20%">Tipo de Error</th>
+                                                <th width="5%">Duración</th>
+                                                <th width="10%">Tipo de Error</th>
                                                 <th width="20%">Respuesta</th>
-                                                <th width="20%">Calificación</th>
+                                                <th width="10%">Calificación</th>
+                                                <th width="10%">Evaluador</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -86,6 +87,9 @@
                                                     <td>{{ $practice['error_type'] }}</td>
                                                     <td>{{ $practice['answer'] }}</td>
                                                     <td>{{ ($practice['score']) ? 'Aprobo':'No Aprobo' }}</td>
+                                                    <td>
+                                                        {{ ($practice['evaluator']['names']) ? $practice['evaluator']['names'].' '.$practice['evaluator']['lastnames']:' Pendiente de Calificar' }}
+                                                    </td>
                                                 </tr>
                                             @endforeach  
                                         </tbody>
