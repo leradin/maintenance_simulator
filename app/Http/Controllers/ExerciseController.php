@@ -374,7 +374,6 @@ class ExerciseController extends Controller
 
                         $exercise->status = 1;
                         $exercise->save();
-                        //return redirect('/exercise')->with('message',$message);
                         return view('exercise.play',['message' => $message,
                                                      'exercise' => $exercise
                                                     ]);

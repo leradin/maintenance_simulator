@@ -46,6 +46,11 @@
                 }
             });
 
+            $("#unit_type_id").live('change',function(event) {
+                var id = $('option:selected',this).text();
+                table.fnFilter(id);
+            });
+
             $("a").on("click",function(){
                 var id = $(this).attr("data-id");
                 var name = $(this).attr("data-name");
@@ -200,18 +205,26 @@
 
                         <div class="form-group">
                             <div class="col-md-2">@lang('messages.name')</div>
-                            <div class="col-md-10">
+                            <div class="col-md-2">
                                 <input type="text" value="{{ old('name') }}" id="name" name="name" class="form-control validate[required,maxSize[50]] text-input" />
                                 <span class="help-block"><small>@lang('messages.required_max_50')</small></span>
                             </div>
-                        </div>
-
-     
-                        <div class="form-group">
-                            <div class="col-md-2">@lang('messages.description')</div>
-                            <div class="col-md-10">
+ 
+                            <div class="col-md-2 TAR">@lang('messages.description')</div>
+                            <div class="col-md-2">
                                 <input type="text" value="{{ old('description') }}" name="description" class="form-control validate[maxSize[100]]" />
                                 <span class="help-block"><small>@lang('messages.required_max_100')</small></span>
+                            </div>
+
+                            <div class="col-md-2 TAR">@lang('messages.table')</div>
+                            <div class="col-md-2">
+                                <select id="unit_type_id" name="unit_type_id" class="form-control validate[required]" style="width: 100%;">
+                                    <option value=""></option>  
+                                    @foreach($unitTypes as $unitType)
+                                        <option value="{{ $unitType->id}}">{{ $unitType->name}}</option>
+                                    @endforeach                                   
+                                </select>
+                                <span class="help-block"><small>@lang('messages.table')</small></span>
                             </div>
                         </div> 
 
