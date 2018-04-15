@@ -56,6 +56,11 @@ Route::group(['middleware' => 'auth:api'], function(){
 	Route::get('user',function(){
 		return response()->json(\App\User::with('degree','ascription')->find(Auth::user()->id));
 	});
+
+	/* Find user */
+	Route::get('user/{user_id}',function($userId){
+		return response()->json(\App\User::with('degree','ascription')->find($userId));
+	});
 });
 
 
