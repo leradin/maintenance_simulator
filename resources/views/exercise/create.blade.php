@@ -226,12 +226,14 @@
                                                 @endforeach                     
                                             </select>
                                         </td>
-                                        <td>
-                                            <select @if((is_array(old('stages_id'))) && (in_array(($index), old('stages_id')))) '' @else disabled @endif id="tables" name="tables_id[]" style="width: 100%;">
-                                                @foreach($unitTypes as $unitType)
-                                                    <option value="{{ $unitType->id}}" {{(old('tables_id.'.$indexUser) == $unitType->id?'selected':'')}}>{{ $unitType->id }} ({{ $unitType->name }})</option>
-                                                @endforeach                     
-                                            </select>
+                                        <td class="center">
+                                            {{ $stage->table_id }}
+                                            <input type="hidden" name="tables_id[]" value="{{ $stage->table_id }}" />  
+                                            <!--select @ if((is_array(old('stages_id'))) && (in_array(($index), old('stages_id')))) '' @ else disabled @ endif id="tables" name="tables_id[]" style="width: 100%;">
+                                                @ foreach($unitTypes as $unitType)
+                                                    <option value="{ { $unitType->id}}" { {(old('tables_id.'.$indexUser) == $unitType->id?'selected':'')}}>{ { $unitType->id }} ({ { $unitType->name }})</option>
+                                                @ endforeach                     
+                                            </select-->
                                         </td>
                                         <td class="TAC">
                                              <a data-id="{{ $stage->id }}" data-name="{{ $stage->name }}" class="icon-button"><span class=" glyphicon glyphicon-info-sign"></span></a>  

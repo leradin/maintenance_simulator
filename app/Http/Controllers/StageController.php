@@ -31,7 +31,9 @@ class StageController extends Controller
     public function create()
     {
         $practices = \App\Practice::all();
-        return view('stage.create',['practices' => $practices]);
+        $unitTypes =  \App\UnitType::all();
+        return view('stage.create',['practices' => $practices,
+                                    'unitTypes' => $unitTypes]);
     }
 
     /**
@@ -46,6 +48,7 @@ class StageController extends Controller
         $stage = Stage::create([
             'name' =>  $request->name,
             'description' => $request->description,
+            'table_id' => $request->unit_type_id
         ]);
 
         if($request->has('practices_id')) {

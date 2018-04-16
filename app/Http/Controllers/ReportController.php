@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Exercise;
+use App\User;
 use Carbon\Carbon;
 use PDF;
 
@@ -33,6 +34,7 @@ class ReportController extends Controller
             $exercises = Exercise::where('status',2)->whereHas('stages', function ($query) use ($request) {
                 $query->where('date_time','>=',$request->start_date)->where('date_time','<=',$request->finish_date);
             })->get();
+
 
             /*foreach ($exercises as $exercise) {
                 $report['exercise'][$exercise->id] = array('id' => $exercise->id,
@@ -74,11 +76,11 @@ class ReportController extends Controller
         }
 
         if(!empty($request->exercise)){
-            $exercises = Exercise::where('name','like','%'.$request->exercise.'%')->get();
+            $exercises = Exercise::where('status',2)->where('name','like','%'.$request->exercise.'%')->get();
         }
 
         if(!empty($request->student)){
-            foreach (Exercise::all() as $exercise) {
+            foreach (Exercise::where('status',2)->get() as $exercise) {
                 foreach ($exercise->stages as $stage) {
                     $user = $stage->users()
                     ->wherePivot('exercise_id',$exercise->id)
@@ -128,8 +130,12 @@ class ReportController extends Controller
                                                     'duration' => $practice->duration,
                                                     'error_type' => $practice->errorType->name);
                 
-                $report['stages'][$stage->id]['practices'][$practice->id]['extra'] = array('answer' => $user->practices()->get()->first()->pivot->answer,
-                    'score' => $user->practices()->get()->first()->pivot->passed);
+                $evaluator =  User::find($user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->evaluator_user_id);
+                $report['stages'][$stage->id]['practices'][$practice->id]['extra'] = array('answer' => $user->practices()->
+                    wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->answer,
+                    'score' => $user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->passed,
+                    'evaluator' => ($evaluator ? $evaluator:'')
+                    );
             }
         }
         return response()->json($report);
@@ -180,10 +186,11 @@ class ReportController extends Controller
                                                             'name' => $practice->name,
                                                             'duration' => $practice->duration,
                                                             'error_type' => $practice->errorType->name,
-                                                            'answer' => $user->practices()->get()->first()->pivot->answer,
-                    'score' => $user->practices()->get()->first()->pivot->passed
+                                                            'answer' => $user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->answer,
+                    'score' => $user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->passed,
+                    'evaluator' => User::find($user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->evaluator_user_id)
                 );
-                        if($user->practices()->get()->first()->pivot->passed){
+                        if($user->practices()->wherePivot('exercise_id',$exercise->id)->wherePivot('practice_id',$practice->id)->first()->pivot->passed){
                             $score ['approved'] += 1;  
                         }else{
                             $score ['approved_not'] += 1;  
@@ -193,6 +200,7 @@ class ReportController extends Controller
 
                     }
                 }
+
         $pdf = PDF::setOptions([
             'images' => true,
             'defaultFont', 'Courier'

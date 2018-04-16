@@ -8,6 +8,7 @@ use App\Practice;
 use App\Stage;
 use App\Exercise;
 use App\User;
+use Auth;
 
 class PracticeController extends Controller{
      public $successStatus = 200;
@@ -37,8 +38,9 @@ class PracticeController extends Controller{
     }
 
     public function practiceQualify(Request $request){
+
         $practice = Practice::find($request->practice_id);
-        $response = $practice->users()->wherePivot('exercise_id',$request->exercise_id)->updateExistingPivot($request->user_id,['passed' => intval($request->pass)],false);
+        $response = $practice->users()->wherePivot('exercise_id',$request->exercise_id)->updateExistingPivot($request->user_id,['passed' => intval($request->pass),'evaluator_user_id' => Auth::user()->id],false);
         //
         return response()->json(['success' => ["response" => $practice->users()->wherePivot('exercise_id',$request->exercise_id)->get()]], $this->successStatus,array('Access-Control-Allow-Origin' => '*'));
     }

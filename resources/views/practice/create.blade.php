@@ -204,7 +204,7 @@
                 onValidationComplete:validationComplete
             });
             // events add new reg
-            $('#add_error_type,#add_unit_type,#add_material,#add_tool,#add_instrument,#add_knowledge,#add_software_behavior,#add_hardware_behavior,#add_objective,#add_activitie,#add_solution,#add_sensor,#add_sedam_fail,#add_moxa_fail').on('click',function(){
+            $('#add_error_type,#add_unit_type,#add_material,#add_tool,#add_instrument,#add_knowledge,#add_software_behavior,#add_hardware_behavior,#add_objective,#add_activitie,#add_solution,#add_sensor,#add_sedam_fail,#add_moxa_fail').live('click',function(){
                 $('#modal').modal('show');
                 var id = $(this).attr('id');
                 var titleHeader = "";
@@ -331,11 +331,11 @@
               language: "es"
             });
 
-            $('select').on("change",function(e){
+            $('select').live("change",function(e){
                 notify('Seleccion',$(this).find("option:selected").text());
             });
             
-            $('#activitie_id').on("change", function(e) { 
+            $('#activitie_id').live("change", function(e) { 
                 if(e.added){
                     $('#modal').modal('show');
                     $('.modal-title').text("Asignar Solución");

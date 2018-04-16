@@ -25,7 +25,7 @@ class Stage extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description'];
+    protected $fillable = ['name','description','table_id'];
 
     /**
      * The attributes that aren't mass assignable.
