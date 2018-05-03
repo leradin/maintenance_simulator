@@ -14,11 +14,13 @@
                         <a href="#"><span class="glyphicon glyphicon-comment"></span> @ lang('messages.messages')</a>
                     </div-->                    
                     <div class="itemLink">
-                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
+                        <a href="{{ route('user_edit') }}">
+                            <span class="glyphicon glyphicon-user"></span> @lang('messages.user_edit')
+                        </a>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            <span class="glyphicon glyphicon-off"></span> @lang('messages.logout')
-                                        </a>
+                            <span class="glyphicon glyphicon-off"></span> @lang('messages.logout')
+                        </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                         </form>

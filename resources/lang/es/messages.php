@@ -358,6 +358,7 @@ return [
     'messages' => 'Mensajes',
     'logout' => 'Salir',
     'close' => 'Cerrar',
+    'user_edit' => 'Editar Usuario',
     //Forms
     'name' => 'Nombre',
     'password' => 'Contraseña',
