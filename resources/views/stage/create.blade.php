@@ -212,8 +212,8 @@
  
                             <div class="col-md-2 TAR">@lang('messages.description')</div>
                             <div class="col-md-2">
-                                <input type="text" value="{{ old('description') }}" name="description" class="form-control validate[maxSize[100]]" />
-                                <span class="help-block"><small>@lang('messages.required_max_100')</small></span>
+                                <input type="text" value="{{ old('description') }}" name="description" class="form-control" />
+                                <span class="help-block"><small></small></span>
                             </div>
 
                             <div class="col-md-2 TAR">@lang('messages.table')</div>

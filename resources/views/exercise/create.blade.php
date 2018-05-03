@@ -42,17 +42,25 @@
             });  
            
             $("input[type='checkbox']").change(function() {
-                var  elements = $(this).closest('tr');//find('.block-fluid').children();//find('table tbody tr td').children();
+                var  elements = $(this).closest('tr');
                 if($(this).is(':checked')){
                     $.each(elements.children().find('select'),function(index, item) {
                         var select = item;
-                        //select.classList.remove("select");
                         select.disabled = false;
+                    });
+                    $.each(elements.children().find('input:hidden'),function(index, item) {
+                        var input = item;
+                        console.log(item);
+                        input.disabled = false;
                     });
                 } else {
                     $.each(elements.children().find('select'),function(index, item) {
                         var select = item;
                         select.disabled = true;
+                    });
+                    $.each(elements.children().find('input:hidden'),function(index, item) {
+                        var input = item;
+                        input.disabled = true;
                     });
                 }
             });
@@ -183,8 +191,8 @@
                         <div class="form-group">
                             <div class="col-md-2 TAR">@lang('messages.description')</div>
                             <div class="col-md-10">
-                                <input type="text" value="{{ old('description') }}" name="description" class="form-control validate[maxSize[100]]" />
-                                <span class="help-block"><small>@lang('messages.required_max_100')</small></span>
+                                <input type="text" value="{{ old('description') }}" name="description" class="form-control" />
+                                <span class="help-block"><small></small></span>
                             </div>
                         </div>
 
@@ -228,7 +236,7 @@
                                         </td>
                                         <td class="center">
                                             {{ $stage->table_id }}
-                                            <input type="hidden" name="tables_id[]" value="{{ $stage->table_id }}" />  
+					    <input type="hidden"  name="tables_id[]" value="{{ $stage->table_id }}"  @if((is_array(old('stages_id'))) && (in_array(($index), old('stages_id')))) '' @else disabled @endif />   
                                             <!--select @ if((is_array(old('stages_id'))) && (in_array(($index), old('stages_id')))) '' @ else disabled @ endif id="tables" name="tables_id[]" style="width: 100%;">
                                                 @ foreach($unitTypes as $unitType)
                                                     <option value="{ { $unitType->id}}" { {(old('tables_id.'.$indexUser) == $unitType->id?'selected':'')}}>{ { $unitType->id }} ({ { $unitType->name }})</option>

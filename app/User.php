@@ -61,4 +61,7 @@ class User extends Authenticatable
         return $this->belongsToMany('\App\Exercise','exercise_stage_pivot')
             ->withPivot('id','exercise_id','stage_id','practice_id','user_id','date_time','structure','table_id');
     }
+    public function findForPassport($enrollment){
+	return $this->where('enrollment',$enrollment)->first();
+    }
 }

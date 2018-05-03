@@ -309,7 +309,6 @@ class ExerciseController extends Controller
             $message = $this->returnMessageFrontEnd('error',Lang::get('messages.error_user_duplicate'));
             return back()->withInput()->with('message',$message);
         }
-
         if($this->noDupes($request->get('tables_id'))){
              $message = $this->returnMessageFrontEnd('error',Lang::get('messages.error_table_duplicate'));
              return back()->withInput()->with('message',$message);
@@ -356,14 +355,10 @@ class ExerciseController extends Controller
     public function show(Exercise $exercise,Request $request)
     {
             $exercise = Exercise::with('stages')->find($exercise->id);
-            $user; //User::find($exercise->pivot->user_id);
-            //dd($exercise->stages->pivot->user_id);
             //start exercise
             if($exercise->status==0){
                 if(!$this->isStartedExercise()){
                     try{                        
-                        //$this->startLogExercise();
-                        //$this->startRecordExercise();
 
                         foreach ($exercise->stages as $stage) {
                             $json  = json_decode($stage->pivot->structure, JSON_PRETTY_PRINT);
@@ -447,8 +442,7 @@ class ExerciseController extends Controller
      * @param  \App\Exercise  $exercise
      * @return \Illuminate\Http\Response
      */
-    public function edit(Exercise $exercise)
-    {
+    public function edit(Exercise $exercise){
         //
     }
 
@@ -459,8 +453,7 @@ class ExerciseController extends Controller
      * @param  \App\Exercise  $exercise
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Exercise $exercise)
-    {
+    public function update(Request $request, Exercise $exercise){
         //
     }
 
